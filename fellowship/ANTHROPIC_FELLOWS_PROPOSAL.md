@@ -391,6 +391,63 @@ guarantee against semantic drift across multi-agent boundaries. Its Dual-Plane
 Allocation (U+E000 ground / U+E800 elevated) provides a formal, human-readable
 semiotic geometry, alongside the Rust `rytt-core` crate.
 
+### 11.2 Novel Cognitive Geometries & Systems Engineering Precedents
+
+The control mechanisms formalised in Nova Conscientia are not ad-hoc
+heuristics; they are the pure mathematical abstractions of physical,
+geometric, and dynamical systems engineered and benchmarked across the
+applicant's prior research. Five precedents:
+
+1. **Harmonic Potential-Well Memory Kinetics.** Standard transformer
+   architectures treat retrieval as static dot-product projections across
+   passive vector spaces. To prevent high-dimensional drift, the applicant
+   engineered a dynamic retrieval model treating active reasoning states as
+   *coupled harmonic oscillators within quantized potential wells*: active
+   memory traces possess explicit numerical tension, inertia, and resonant
+   frequency, so high-frequency semantic noise is damped before it corrupts
+   the working context; and reasoning states settle into localized
+   topological energy basins, where divergence is resisted because
+   transitioning out of a verified task basin requires overcoming a
+   quantifiable activation-energy barrier ΔE. This is the physical intuition
+   that directly produced the ADCCL energy ledger (§3) and the fail-closed
+   τ = 0.9539 clipping boundary.
+
+2. **Permutation-Lattice Context Preservation.** To resolve catastrophic
+   context degradation during multi-turn domain shifts, conversational and
+   epistemic states are modeled as *non-destructive group-action permutation
+   lattices*: updating local task orientation (e.g. pivoting from statutory
+   analysis to formal Lean 4 compilation) acts as an orthogonal rotation on a
+   multi-dimensional state space, altering the local projection while
+   preserving global invariant symmetries and relational distances across
+   un-manipulated domains — eliminating semantic destruction without
+   expensive recursive summarization or parameter fine-tuning.
+
+3. **Closed-Loop Differential Holonomy Tracking.** Multi-agent consensus
+   failure is mathematically modeled as an *uncompensated holonomy*: parallel
+   transport of semantic embeddings around a closed multi-agent communication
+   loop (A → B → C → A) induces an angular phase shift when the latent
+   reasoning space possesses non-zero curvature. The monitoring layer
+   instruments the discrete affine connection along the trajectory, directly
+   measuring the angular deficit after deliberation; if the accumulated
+   holonomic rotation exceeds the critical geometric bound (17.465°,
+   corresponding to τ = 0.9539), the system diagnoses curvature divergence
+   and immediately triggers the fail-closed clipping gate.
+
+4. **Trophic Detritivore Error-Recycling Pipeline.** Rather than treating
+   rejected solver attempts or AST validation errors as discarded tokens, the
+   architecture employs a hierarchical detritivore model: specialized static
+   analysis subagents digest failed solver passes, isolating the exact
+   boundary condition or syntax violation; those failures are automatically
+   converted into negative constraints and structural invariants, recycling
+   computational waste directly into immune-defense priors for subsequent
+   exploration cycles (the Clean-Up Crew roles of §2.7, ARCHITECTURE.md).
+
+5. **Proprietary Hardware & Intellectual Property Foundations.** These
+   cognitive and thermodynamic control principles are further grounded in the
+   applicant's independent intellectual-property portfolio: novel formal
+   system specifications, physical computing architectures, and registered
+   patent-pending engineering designs.
+
 ## 12. The ask
 
 A fellowship placement with the scalable oversight team to run E1 on your

@@ -72,6 +72,28 @@ this runtime.
 | MVPC-X | `Mega-Therion/Chyren` (MVPC) | Standalone formal proof-checking harness (CI claim-verifier: `mvpc.cli verify artifact` over JSON fixture manifests) | Python, JSON fixtures |
 | Sovereign Semiotics | `Mega-Therion/RYTT-Sovereign-Semiotics` | Lossless round-trip invariance 𝒟(𝒞(S)) ≡ S (`SovereignSemiotics.lean`, Lean 4-verified) | Lean 4 (+ Rust `rytt-core`) |
 
+### Engineering foundations behind the dual-channel variational principle
+
+The mathematical control intuitions that preceded and motivated
+`F_dual = H − L_corr` and the ADCCL loop (registered in the proposal, §11.2;
+none of their numeric content is imported into this runtime):
+
+* **Harmonic potential-well memory kinetics** — coupled-oscillator retrieval
+  with explicit tension, inertia, and resonant frequency; activation-energy
+  barriers ΔE against leaving a verified task basin. Direct predecessor of
+  the ADCCL energy ledger and the measured τ = 0.9539 boundary.
+* **Permutation-lattice context preservation** — non-destructive
+  group-action orthogonal rotations of epistemic state across domain shifts.
+* **Closed-loop differential holonomy tracking** — angular-deficit
+  measurement along closed multi-agent transport loops; the 17.465° critical
+  geometric bound corresponds to τ = 0.9539.
+* **Trophic detritivore error-recycling** — failed passes digested into
+  negative constraints and structural invariants (the CUC organizational
+  analogy, ARCHITECTURE.md §2.7).
+* **Proprietary hardware & IP foundations** — the applicant's
+  patent-pending formal system specifications and physical computing
+  architectures.
+
 ## Constant-by-constant register
 
 | constant | value | class | provenance |
