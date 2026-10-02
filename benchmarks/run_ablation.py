@@ -38,6 +38,7 @@ for _p in (_REPO_ROOT / "core", _REPO_ROOT / "benchmarks"):
         sys.path.insert(0, str(_p))
 
 from sovereign_clipping_gate import (  # type: ignore
+    COLLAPSE_TOLERANCE,
     MEASURED_TAU,
     SovereignClippingGate,
     cosine_similarity,
@@ -66,6 +67,11 @@ PROVENANCE: Dict[str, str] = {
         "Chosen as the measurement date of tau (2026-09-06) for mnemonic value "
         "only; it has no other significance."
     ),
+    "COLLAPSE_TOLERANCE": (
+        "Imported from sovereign_clipping_gate. The gate clips to exactly "
+        "cosine = threshold, but IEEE-754 can produce threshold - epsilon; "
+        "1e-9 absorbs this so clipped states are not spuriously collapsed."
+    ),
 }
 
 
@@ -87,7 +93,8 @@ def _trial_result(state: List[float], anchor: List[float]) -> Dict[str, Any]:
         "final_similarity": sim,
         "min_similarity": sim,
         "final_energy": f_dual(x),
-        "collapsed": sim < MEASURED_TAU,
+        "at_cap": x >= 1e6,
+        "collapsed": sim < MEASURED_TAU - COLLAPSE_TOLERANCE,
     }
 
 
@@ -199,6 +206,18 @@ def _mean(values: Sequence[float]) -> float:
     return sum(values) / len(values) if values else 0.0
 
 
+def _median(values: Sequence[float]) -> float:
+    """Median; 0.0 for an empty sequence."""
+    if not values:
+        return 0.0
+    s = sorted(values)
+    n = len(s)
+    mid = n // 2
+    if n % 2 == 1:
+        return s[mid]
+    return (s[mid - 1] + s[mid]) / 2.0
+
+
 def run_ablation(
     trials: int = DEFAULT_TRIALS,
     steps: int = DEFAULT_STEPS,
@@ -222,12 +241,17 @@ def run_ablation(
             "mean_final_similarity": _mean([r["final_similarity"] for r in records]),
             "collapse_fraction": _mean([1.0 if r["collapsed"] else 0.0 for r in records]),
             "mean_final_energy": _mean([r["final_energy"] for r in records]),
+            "median_final_energy": _median([r["final_energy"] for r in records]),
+            "cap_fraction": _mean([1.0 if r.get("at_cap", False) else 0.0 for r in records]),
         }
 
     return {
         "harness": "nova-conscientia ablation",
-        "protocol": "Ablation: isolating each oversight component with non-zero "
-                    "constraint pressure so the dual channel has something to reject.",
+        "protocol": (
+            "Ablation: isolating each oversight component with non-zero "
+            "constraint pressure so the dual channel has something to reject. "
+            "Seeded deterministic simulation with no LLM calls."
+        ),
         "parameters": {
             "trials": trials,
             "steps": steps,
@@ -235,6 +259,7 @@ def run_ablation(
             "constraint_pressure": pressure,
             "base_seed": base_seed,
             "collapse_boundary": MEASURED_TAU,
+            "collapse_tolerance": COLLAPSE_TOLERANCE,
         },
         "metrics": metrics,
         "per_trial": arms,

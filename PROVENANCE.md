@@ -98,21 +98,25 @@ none of their numeric content is imported into this runtime):
 
 | constant | value | class | provenance |
 |---|---|---|---|
-| `MEASURED_TAU` | 0.9539 | measured [E] | ADCCL collapse boundary, Res-Nova ALIGNMENT_CEILING_ONE_RELATION.md (2026-09-06); single pipeline, not externally validated |
-| band ceiling κ(0.7) | 0.9539392014… | conditional [C] | √(θ(2−θ)) at θ=7/10; historical record (θ provenance failed audit 2026-09-24) |
-| derived ceiling χ_s | 0.9561451575… | conditional [C] | √(√2 − ½) at θ=1/√2; independently derived three ways |
-| equipartition floor θ | 1/√2 = cos 45° | derived [P] | RapidityEquipartition.lean (sinh ψ = 1 ⇒ γ = √2, θ = tanh ψ) |
-| `ν_std`, `L_e`, far-field factor | — | proved/receipted [E] | qumond_pm.py + QUMOND_PM_GATES.json |
-| drift coordinate x = tan α | — | design [D] | Nova Conscientia choice; x = 1 is exactly 45° (ties to equipartition) |
-| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults | — | design [D] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
+| `MEASURED_TAU` | 0.9539 | measured [emp] | ADCCL collapse boundary, Res-Nova ALIGNMENT_CEILING_ONE_RELATION.md (2026-09-06); single pipeline, not externally validated |
+| `COLLAPSE_TOLERANCE` | 1e-9 | design [emp] | Floating-point tolerance for collapse checks; the gate clips to exactly cosine = τ but IEEE-754 can produce τ − ε, spuriously failing a strict < τ test. Engineering choice, not a Res-Nova constant. |
+| band ceiling κ(0.7) | 0.9539392014… | conditional [thm] | √(θ(2−θ)) at θ=7/10; historical record (θ provenance failed audit 2026-09-24) |
+| derived ceiling χ_s | 0.9561451575… | conditional [thm] | √(√2 − ½) at θ=1/√2; independently derived three ways |
+| equipartition floor θ | 1/√2 = cos 45° | derived [thm] | RapidityEquipartition.lean (sinh ψ = 1 ⇒ γ = √2, θ = tanh ψ) |
+| `ν_std`, `L_e`, far-field factor | — | proved/receipted [emp] | qumond_pm.py + QUMOND_PM_GATES.json |
+| drift coordinate x = tan α | — | design [emp] | Nova Conscientia choice; x = 1 is exactly 45° (ties to equipartition) |
+| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults | — | design [emp] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
+| baseline mean final energy ~7.5e10 | — | artifact [open] | Artifact of the 1e6 drift cap in `drift_coordinate_capped`; median energy is 2.75 and only 15% of trials hit the cap. The mean is dominated by the few capped trials. |
+| gate-only collapse fraction (pre-tolerance) | 0.05 | artifact [open] | Was a floating-point rounding artifact, not real drift: the gate clips to exactly cosine = τ, but IEEE-754 produced 0.9538999999999999, failing a strict < 0.9539 check. Fixed with COLLAPSE_TOLERANCE = 1e-9; real collapse fraction is 0.00. |
 
 ## Verification receipts produced by this repository
 
 | artifact | result |
 |---|---|
-| `python -m unittest discover -s tests` | 50 tests, 50 passed |
-| `python verification/ast_invariant_validation.py core verification benchmarks` | 8 modules, 0 violations (Z1–Z5) |
-| `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00; swarm mean final similarity 0.965; 0 HALTs; deterministic receipt committed |
+| `python -m unittest discover -s tests` | 53 tests, 53 passed |
+| `python verification/ast_invariant_validation.py core verification benchmarks` | 9 modules, 0 violations (Z1–Z5) |
+| `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00; swarm mean final similarity 0.965; mean pairwise cosine 0.998; 0 HALTs; deterministic receipt committed |
+| `python benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` | gate-only collapse 0.00; +dual-channel 0.00; +correction 0.00; full 0.00; seeded simulation, no LLM calls |
 
 ## Epistemic caveats carried forward
 
@@ -126,3 +130,14 @@ none of their numeric content is imported into this runtime):
 3. The deterministic benchmark validates the **control mechanism**, not live
    frontier-model behavior. E1 (external drift-collapse calibration) is the
    decisive unperformed experiment.
+4. The baseline mean final energy (~7.5e10) is an **artifact of the 1e6 drift
+   cap** in `drift_coordinate_capped` — a few orthogonal states inflate the mean
+   by orders of magnitude. Median energy (2.75) and cap_fraction (15%) are
+   reported alongside the mean. This artifact is labeled `[open]` in the
+   constant register. `[open]`
+5. The gate-only ablation arm previously showed a 5% collapse fraction. This
+   was a **floating-point rounding artifact**, not real drift: the gate clips
+   to exactly cosine = τ, but IEEE-754 produced 0.9538999999999999, failing a
+   strict < 0.9539 check. Fixed with `COLLAPSE_TOLERANCE = 1e-9`; the real
+   collapse fraction is 0.00. This artifact is labeled `[open]` in the
+   constant register. `[open]`

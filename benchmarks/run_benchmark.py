@@ -57,6 +57,7 @@ for _p in (_REPO_ROOT / "core", _REPO_ROOT / "benchmarks"):
         sys.path.insert(0, str(_p))
 
 from sovereign_clipping_gate import (  # type: ignore
+    COLLAPSE_TOLERANCE,
     MEASURED_TAU,
     SovereignClippingGate,
     cosine_similarity,
@@ -97,6 +98,11 @@ PROVENANCE: Dict[str, str] = {
         "Reproducibility parameter: BASE_SEED + trial index seeds every RNG. "
         "Chosen as the measurement date of tau (2026-09-06) for mnemonic value "
         "only; it has no other significance."
+    ),
+    "COLLAPSE_TOLERANCE": (
+        "Imported from sovereign_clipping_gate. The gate clips to exactly "
+        "cosine = threshold, but IEEE-754 can produce threshold - epsilon; "
+        "1e-9 absorbs this so clipped states are not spuriously collapsed."
     ),
 }
 
@@ -142,7 +148,8 @@ def run_baseline_trial(seed: int, steps: int, dim: int) -> Dict[str, Any]:
         "final_similarity": final_sim,
         "min_similarity": min_sim,
         "final_energy": f_dual(x),
-        "collapsed": final_sim < MEASURED_TAU,
+        "at_cap": x >= 1e6,
+        "collapsed": final_sim < MEASURED_TAU - COLLAPSE_TOLERANCE,
     }
 
 
@@ -214,14 +221,16 @@ def run_swarm_trial(
             mean_pairwise += cosine_similarity(controllers[i].state, controllers[j].state)
             pairs += 1
     diversity = mean_pairwise / pairs if pairs else 0.0
-    energies = [f_dual(drift_coordinate_capped(c.state, anchor)) for c in controllers]
+    drift_coords = [drift_coordinate_capped(c.state, anchor) for c in controllers]
+    energies = [f_dual(dc) for dc in drift_coords]
     return {
         "seed": seed,
         "final_similarity": sum(final_sims) / swarm,
         "min_similarity": min(final_sims),
         "final_energy": sum(energies) / swarm,
+        "at_cap": any(dc >= 1e6 for dc in drift_coords),
         "pairwise_cosine": diversity,
-        "collapsed": sum(1 for s in final_sims if s < MEASURED_TAU) > 0,
+        "collapsed": sum(1 for s in final_sims if s < MEASURED_TAU - COLLAPSE_TOLERANCE) > 0,
         "halts": halts,
     }
 
@@ -229,6 +238,18 @@ def run_swarm_trial(
 def _mean(values: Sequence[float]) -> float:
     """Arithmetic mean; 0.0 for an empty sequence."""
     return sum(values) / len(values) if values else 0.0
+
+
+def _median(values: Sequence[float]) -> float:
+    """Median; 0.0 for an empty sequence."""
+    if not values:
+        return 0.0
+    s = sorted(values)
+    n = len(s)
+    mid = n // 2
+    if n % 2 == 1:
+        return s[mid]
+    return (s[mid - 1] + s[mid]) / 2.0
 
 
 def run_benchmark(
@@ -273,6 +294,8 @@ def run_benchmark(
             "collapse_fraction": _mean([1.0 if r["collapsed"] else 0.0 for r in records]),
             "mean_min_similarity": _mean([r["min_similarity"] for r in records]),
             "mean_final_energy": _mean([r["final_energy"] for r in records]),
+            "median_final_energy": _median([r["final_energy"] for r in records]),
+            "cap_fraction": _mean([1.0 if r.get("at_cap", False) else 0.0 for r in records]),
         }
 
     receipt = {
@@ -288,6 +311,7 @@ def run_benchmark(
             "cohesion_rate": cohesion_rate,
             "base_seed": base_seed,
             "collapse_boundary": MEASURED_TAU,
+            "collapse_tolerance": COLLAPSE_TOLERANCE,
         },
         "metrics": {
             "baseline_unconstrained": arm_metrics(baseline),

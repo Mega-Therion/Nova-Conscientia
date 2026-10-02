@@ -611,7 +611,7 @@ def render_dashboard(receipt: Optional[dict], git_hash: str) -> str:
     </div>
     <div class="metric-card c-sand">
       <div class="mc-label">Mean Pairwise Cosine</div>
-      <div class="mc-value">{_fmt(swarm.get('mean_pairwise_cosine', swarm.get('mean_swarm_diversity')))}</div>
+      <div class="mc-value">{_fmt(swarm.get('mean_pairwise_cosine'))}</div>
       <div class="mc-sub">Near 1.0 = agents nearly identical</div>
     </div>"""
 

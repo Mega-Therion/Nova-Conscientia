@@ -18,6 +18,7 @@ for _p in (_REPO_ROOT / "core", _REPO_ROOT / "verification", _REPO_ROOT / "bench
         sys.path.insert(0, str(_p))
 
 from sovereign_clipping_gate import (  # type: ignore
+    COLLAPSE_TOLERANCE,
     MEASURED_TAU,
     GateLedger,
     SovereignClippingGate,
@@ -40,6 +41,7 @@ from dual_channel_action import (  # type: ignore
 )
 from anti_drift_controller import (  # type: ignore
     ADCCLController,
+    CycleRecord,
     drift_coordinate,
     drift_coordinate_capped,
 )
@@ -184,6 +186,39 @@ class TestCeilingsAndGate(unittest.TestCase):
         self.assertEqual(summary["cycles"], 3.0)
         self.assertEqual(summary["count_CLIP"], 2.0)
 
+    def test_gate_ledger_immutable(self):
+        """GateLedger.entries returns an immutable tuple that cannot be mutated."""
+        gate = SovereignClippingGate([1.0, 0.0, 0.0])
+        ledger = GateLedger()
+        _, decision = gate.evaluate([1.0, 0.05, 0.0])
+        ledger.append(decision, [1.0, 0.05, 0.0])
+        entries = ledger.entries
+        self.assertIsInstance(entries, tuple)
+        with self.assertRaises(AttributeError):
+            entries.append(decision)
+        with self.assertRaises(TypeError):
+            entries[0] = decision
+
+    def test_collapse_tolerance(self):
+        """Collapse checks use a 1e-9 tolerance so gate-clipped states
+        (cosine ≈ τ) are not spuriously counted as collapsed due to
+        floating-point rounding."""
+        gate = SovereignClippingGate([1.0, 0.0, 0.0])
+        clipped, decision = gate.evaluate([1.0, 0.4, 0.0])
+        self.assertEqual(decision.verdict, "CLIP")
+        sim = cosine_similarity(clipped, gate.anchor)
+        # The clipped similarity is within floating-point tolerance of τ.
+        self.assertLess(abs(sim - MEASURED_TAU), COLLAPSE_TOLERANCE)
+        # The controller's collapse_cycles should not count this as collapsed.
+        ctrl = ADCCLController(anchor=[1.0, 0.0, 0.0])
+        ctrl._state = clipped
+        ctrl._ledger.append(CycleRecord(
+            cycle=1, verdict="ACCEPTED+CLIP", similarity_in=0.5,
+            similarity_out=sim, drift=0.1, energy=0.1,
+            net_action=0.1, reason="test",
+        ))
+        self.assertEqual(ctrl.collapse_cycles(), 0)
+
     def test_drift_coordinate_45_degrees(self):
         """x = tan(alpha): x = 1 at exactly 45 degrees; caps when orthogonal."""
         self.assertAlmostEqual(drift_coordinate([1.0, 1.0, 0.0], [1.0, 0.0, 0.0]),
@@ -250,6 +285,16 @@ class TestADCCL(unittest.TestCase):
         self.assertEqual(numbers, [1, 2, 3])
         self.assertTrue(all(r.verdict in ("ACCEPTED", "ACCEPTED+CLIP", "REJECTED")
                             for r in ctrl.ledger))
+
+    def test_controller_ledger_immutable(self):
+        """The controller's ledger is a read-only tuple that cannot be mutated."""
+        ctrl = self._controller()
+        ctrl.step([0.05, 0.0, 0.0, 0.0])
+        self.assertIsInstance(ctrl.ledger, tuple)
+        with self.assertRaises(AttributeError):
+            ctrl.ledger.append(None)
+        with self.assertRaises(TypeError):
+            ctrl.ledger[0] = None
 
 
 class TestTopologyGraph(unittest.TestCase):

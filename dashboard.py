@@ -11,6 +11,7 @@ HTTP server and the read-only receipt endpoint.
 from __future__ import annotations
 
 import json
+import os
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlparse
@@ -105,8 +106,9 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
-    server = HTTPServer(("0.0.0.0", PORT), Handler)
-    print(f"Nova Conscientia dashboard serving on http://0.0.0.0:{PORT}")
+    host = os.environ.get("NOVA_HOST", "127.0.0.1")
+    server = HTTPServer((host, PORT), Handler)
+    print(f"Nova Conscientia dashboard serving on http://{host}:{PORT}")
     server.serve_forever()
 
 
