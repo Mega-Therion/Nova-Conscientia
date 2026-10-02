@@ -119,7 +119,7 @@ callable.
 repository enforces the Contingent Box Protocol at parse time: zero stubs,
 zero ungrounded numerology (every numeric constant must be registered in a
 PROVENANCE mapping naming its source), no `eval`/`exec`/bare `except`, every
-public callable documented. 9 modules, 0 violations, exit 0.
+public callable documented. 10 modules, 0 violations, exit 0.
 
 
 ### The Bioactive Ecology Paradigm (§2.7 of ARCHITECTURE.md)
@@ -346,10 +346,14 @@ question with receipts.
 * `verification/` — adversarial consensus runner and the AST Contingent Box
   gate.
 * `benchmarks/` — deterministic harness, committed receipt, ablation sweep over
-  constraint pressures, pluggable live-model backend contract.
+  constraint pressures, a goal-directed task benchmark with a simulated
+  per-proposal constraint signal and an uninformative-signal control,
+  pluggable live-model backend contract.  The task benchmark shows the dual
+  channel helps only when its signal is informative, and exposes a scale bias
+  in its credit term (see PROVENANCE.md caveats 6–7).
 * `PROVENANCE.md` — every source file hash, Lean theorem, constant, and
   caveat, pinned to Res-Nova commit `c3ff5f3`.
-* 59/59 tests passing; compile gate 9 modules / 0 violations.
+* 72/72 tests passing; compile gate 10 modules / 0 violations.
 
 ### 11.1 Provenance of Engineering: The Chyren Ecosystem & Prior Formal Tooling
 

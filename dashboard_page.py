@@ -492,7 +492,9 @@ _LEDGER = [
     ("thm", "SHA-256 ledger receipts are deterministic — identical inputs produce identical hashes."),
     ("emp", "Baseline (unconstrained) mean final similarity: 0.3280. Collapse fraction: 100%."),
     ("emp", "Dual-channel swarm mean final similarity: 0.9654. Collapse fraction: 0%."),
-    ("emp", "The gate clips 1,697 of 2,000 proposals. The correction force never fires."),
+    ("emp", "The gate clips 1,697 of 2,000 proposals. In the ADCCL controller the correction "
+            "force fires only when the dual channel rejects a proposal, so at zero constraint "
+            "pressure it never fires."),
     ("emp", "Swarm mean pairwise cosine: 0.9978 — agents are nearly identical. "
             "Max angular spread inside the cone is ~35°."),
     ("emp", "Baseline energy 7.5×10¹⁰ is dominated by the 1×10⁶ drift cap, not a meaningful quantity."),
@@ -505,8 +507,15 @@ _LEDGER = [
              "clipped at the same \u03c4 that defines collapse, so of course it does not collapse. "
              "It is not evidence that dual-channel oversight reduces drift."),
     ("conj", "The four-pillar framing (ethics, civic work, charter) maps to the machine code."),
-    ("open", "Does dual-channel oversight reduce drift under real constraint pressure? "
-             "The benchmark applies none."),
+    ("conj", "Task benchmark, simulated informative signal (σ = 0): the dual channel rejects "
+             "every drift proposal and reaches task error 0.0038 vs 0.0354 for gate-only "
+             "(frozen agent: 0.0152). Shows the mechanism can use a good signal, not that real "
+             "invariant checkers produce one."),
+    ("open", "Scale bias: the credit H(x) = x²/2 rewards large moves regardless of usefulness. "
+             "With an uninformative signal (σ = 0.1) the dual channel admits 98% of drift vs "
+             "57% of on-task proposals and does worse than the gate alone."),
+    ("open", "Does a real invariant checker on a live model produce a signal informative "
+             "enough for the dual channel to help?"),
     ("open", "How does the system behave with a live model and an independent drift metric?"),
 ]
 
@@ -671,7 +680,7 @@ def render_dashboard(receipt: Optional[dict], git_hash: str) -> str:
     <p class="hero-desc">Fail-closed hallucination clipping at τ = 0.9539. Dual-channel
        oversight, anti-drift control, and swarm topology for AI alignment research.</p>
     <div class="hero-badges">
-      <span class="hero-badge teal">59/59 PASS</span>
+      <span class="hero-badge teal">72/72 PASS</span>
       <span class="hero-badge teal">0 Violations</span>
       <span class="hero-badge">git:{git_hash}</span>
     </div>

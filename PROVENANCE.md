@@ -105,7 +105,7 @@ none of their numeric content is imported into this runtime):
 | equipartition floor θ | 1/√2 = cos 45° | derived [P] | RapidityEquipartition.lean (sinh ψ = 1 ⇒ γ = √2, θ = tanh ψ) |
 | `ν_std`, `L_e`, far-field factor | — | proved/receipted [E] | qumond_pm.py + QUMOND_PM_GATES.json |
 | drift coordinate x = tan α | — | design [D] | Nova Conscientia choice; x = 1 is exactly 45° (ties to equipartition) |
-| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults | — | design [D] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
+| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults, task-benchmark goal angle / on-task mix / signal sensitivity / noise sweep | — | design [D] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
 | baseline mean final energy ~7.5e10 | — | artifact [open] | Artifact of the 1e6 drift cap in `drift_coordinate_capped`; median energy is 2.75 and only 15% of trials hit the cap. The mean is dominated by the few capped trials. |
 | gate-only collapse fraction (pre-tolerance) | 0.05 | artifact [open] | Was a floating-point rounding artifact, not real drift: the gate clips to exactly cosine = τ, but IEEE-754 produced 0.9538999999999999, failing a strict < 0.9539 check. Fixed with COLLAPSE_TOLERANCE = 1e-9; real collapse fraction is 0.00. |
 
@@ -113,10 +113,11 @@ none of their numeric content is imported into this runtime):
 
 | artifact | result |
 |---|---|
-| `python -m unittest discover -s tests` | 59 tests, 59 passed |
-| `python verification/ast_invariant_validation.py core verification benchmarks` | 9 modules, 0 violations (Z1–Z5) |
+| `python -m unittest discover -s tests` | 72 tests, 72 passed |
+| `python verification/ast_invariant_validation.py core verification benchmarks` | 10 modules, 0 violations (Z1–Z5) |
 | `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00; swarm mean final similarity 0.965; mean pairwise cosine 0.998; 0 HALTs; deterministic receipt committed |
 | `python benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` | sweep over pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]; acceptance rates decline from 1.0 to 0.0; at 0.5 dual channel rejects all proposals; seeded simulation, no LLM calls |
+| `python benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` | goal 10° inside the cone, 50% drift proposals, simulated per-proposal constraint signal. Informative signal (σ = 0): dual channel accepts 0% of drift and 12% of on-task proposals; final task error 0.0038 vs gate-only 0.0354 vs frozen 0.0152. Uninformative control (σ = 0.1): dual channel accepts 98% of drift vs 57% of on-task; task error 0.0426, worse than gate-only. Seeded simulation, no LLM calls |
 
 ## Reproducibility caveat
 
@@ -151,3 +152,24 @@ pass/fail verdicts, but per-trial energy and similarity values may differ in the
    strict < 0.9539 check. Fixed with `COLLAPSE_TOLERANCE = 1e-9`; the real
    collapse fraction is 0.00. This artifact is labeled `[open]` in the
    constant register. `[open]`
+6. The task benchmark (`benchmarks/run_task_benchmark.py`) is the first
+   harness with a task to make progress on and metrics that do not reuse τ
+   (task error to a goal, off-task fraction, per-kind acceptance). With an
+   **informative** simulated constraint signal the dual channel helps: it
+   rejects every drift proposal and reaches task error 0.0038 against 0.0354
+   for gate-only. The signal is simulated and informative by construction, so
+   this shows the mechanism *can use* a good signal, not that real invariant
+   checkers produce one. `[conj]`
+7. The same harness exposes a **scale bias** in the dual channel. Its credit
+   H(x) = x²/2 grows with move size regardless of usefulness, so small useful
+   moves earn almost no credit: even with a perfect signal only 12% of on-task
+   proposals are admitted, and with σ ≥ 0.05 fewer than 5%. With an
+   **uninformative** signal it admits large drift moves (98%) far more often
+   than small useful ones (57%) and does worse than the gate alone. Making the
+   credit scale-free (e.g. normalizing by expected move size) is an open design
+   question. `[open]`
+8. In the ADCCL controller the correction force fires only when the dual
+   channel **rejects** a proposal; at zero constraint pressure nothing is
+   rejected, so it never fires there. The ablation's `gate_correction` arm
+   instead applies the same step whenever the gate clips, which is why that
+   arm differs slightly (similarity 0.9593 vs 0.9556).
