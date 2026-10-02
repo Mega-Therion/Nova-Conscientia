@@ -177,7 +177,7 @@ tagged `[O]` until it is.
 
 | Ethica source | Axiom | Machine module |
 |---|---|---|
-| D3 sovereignty; Gentle Authority lifecycle (Orchard, `foundry-and-governance.md`) | I | Trinity wiring, three human controls (ARCHITECTURE.md §3) |
+| D3 sovereignty; Gentle Authority lifecycle (Orchard, `foundry-and-governance.md`) | I | Trinity wiring, three human controls (ARCHITECTURE.md §3); run in the field in CIVIC_IMPACT.md §3 |
 | D6 the fail-closed gate; A3/A5 verdicts & downgrades; Peacepipe council | II | `verification/adversarial_auditor.py` |
 | D10 continuity; P5–P7 memory & self-knowledge | III | ledgers + diversity metric (§2.6) |
 | D9 memory; A6 boundary sovereignty; Phylactery canon | IV | SHA-256 receipts across all ledgers; constellation health-receipt contract |

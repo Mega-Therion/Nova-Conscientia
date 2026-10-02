@@ -18,6 +18,15 @@ convention:
 | **[E]** | empirical — measured, with the measurement pipeline and its limits stated |
 | **[C]** | conditional — exact algebra conditional on an adopted premise |
 | **[D]** | design — an engineering decision of this translation, not a fact |
+| **[O]** | open — an explicitly recorded gap or conjecture, stated so it can be closed or refuted |
+| **[X]** | excluded / retracted — a preserved contradiction record; never silently deleted |
+
+Two disciplines from the canonical glossary bind every table above. The
+**Zero-Orphan Invariant**: every constant must carry a PROVENANCE.md
+registration — an unregistered constant is a build violation, and the
+compile gate (§2.5) enforces exactly that. The **Non-Vacuity Discipline**: a
+declared check must be capable of failing — a check that cannot fail is not a
+check, and claiming it is one is a stub.
 
 This architecture exists because a physics research program (Res-Nova)
 accidentally produced a working anti-drift engineering threshold while watching
@@ -202,6 +211,62 @@ seeded simulation, not a Res-Nova constant; live-model backends attach through
 drift and the swarm doesn't" is exactly the external experiment that remains to
 be run (§6) — the τ threshold was tuned on one pipeline and has never been
 validated on agent systems other than the one that produced it.
+
+### 2.7 The Bioactive Ecology Paradigm — the swarm as a living soil ecology
+
+The components above are usually drawn as a corporate hierarchy: proposal
+generators at the bottom, auditors in the middle, a human approver at the
+top. That drawing is wrong, and the canonical glossary (Notion hub,
+2026-10-02) says why: **the swarm is a living soil ecology, not an
+organization chart.** In an org chart, agents are employees — fixed roles,
+a boss, and failure is punished and discarded. In a soil ecology, agents hold
+*trophic* roles — producers, decomposers, connectors — and failure is
+*metabolized*: a dead reasoning branch is digested into nutrients that feed
+the next iteration. Nothing is wasted; nothing is silently discarded; memory
+persists or decays by kinetics, not by management policy.
+
+The canonical formulation is the seven-layer organic computing model of the
+RYTT Bioactive Autonomous Ecology Engine
+(`Codebase/chyren_core/rytt_bioactive_ecology.py`, `Mega-Therion/Chyren`
+commit `fb6691de`, 2026-09-29). The seven layers, with an honest account of
+what this repository implements:
+
+| # | Layer (canonical name) | Ecological role | Status in this repository |
+|---|---|---|---|
+| 1 | **Bioactive Substrate — 5D Voxel Memory & Living Humus** | Memory crystals at (x, y, z, retardance Δφ ∈ [0,1] as epistemic certainty, chirality phase θ ∈ [0, 2π) as ternary verdict); Arrhenius-governed persistence (deeper verified structure decays slower); decayed claims decompose into a humus pool recycled into future work | `[O]` not implemented here. The in-repo shadow is the append-only receipt ledgers (persistence *without* decay — the Phylactery invariant, PHILOSOPHY.md Axiom IV). Note the correspondence: the voxel's ternary chirality lattice (ALIGN_CANON / SUPERPOSITION / DRIFT_REJECTED) is the clipping gate's verdict lattice (PASS / CLIP / REJECT, §2.2) embedded as a phase coordinate. |
+| 2 | **Clean-Up Crew (CUC) — Springtail ALU linters, Isopod shredders, Mycorrhizal connectors** | The detritivore trophic level: lightweight background agents that audit scratch artifacts (Springtail), digest failed solver passes and tracebacks into repair nutrients (Isopod), and inoculate the digested nutrients into the knowledge graph as bidirectional links with topological PageRank (Mycorrhizal) | `[D]` runtime-scope analogues exist: the AST compile gate (§2.5) is the Springtail role for source (zero stubs, zero orphan constants); the fail-closed receipt of every CLIP/REJECT is the Isopod role (a failed pass leaves a digestible record, never silent waste); the PROVENANCE.md cross-reference chain is the Mycorrhizal role. Full background-subagent CUC sweeps: `[O]`. |
+| 3 | **Carry-Lookahead Dependency Folding — O(log N) agent workflow engine** | Transforms sequential O(N) agent pipelines into O(log N) parallel prefix trees over Generate/Propagate operators: G_i = agent i can independently produce verified ground truth; P_i = agent i can propagate a valid upstream invariant without mutation | `[P]`/`[D]` **implemented here**: `core/topology_graph.py`'s `carry_lookahead_scan` (§2.4b) is the Blelloch up-sweep/down-sweep over the agent roster. The G/P discipline is the heterogeneous critic contract of §2.5: a critic that cannot generate its own verdict must propagate the invariant, and one that can do neither is a fatal reject. |
+| 4 | **Systolic In-Memory Agent Stream — TPU-style ring pipeline** | Activations and invariant proofs stream horizontally across agent buffers while partial products accumulate vertically, with zero intermediate disk I/O | `[D]` single-node shadow: this runtime's ledgers are in-memory, append-only, deterministic-digest structures with no intermediate disk I/O within a cycle. The multi-node ring stream: `[O]`. |
+| 5 | **Neuromanifold Information Geometry — Amari natural gradient** | Descent along the geodesic of the belief manifold (Fisher metric) instead of flat Euclidean gradient steps | `[D]` first-order shadow: ADCCL (§2.3) is a bounded first-order dissipation controller on the drift state — the coarse geometric envelope that a full natural-gradient method refines. Fisher-metric descent itself: `[O]`. |
+| 6 | **Latent State Reconstruction — Dempster-Laird-Rubin EM** | Reconstructing latent consensus state from partial, censored agent observations | `[O]` — not in this runtime; the recorded growth path for partial-observation quorums (auditors that see only slices of a proposal). |
+| 7 | **Quantum-Entangled Consensus Gate — Bell-state non-factorizable voting** | Consensus that cannot be decomposed into independent local votes | `[D]` classical shadow only: the fail-closed quorum (§2.5) *is* non-factorizable in the operational sense — no set of partial passes composes into a pass without every critic sitting. Any physical entanglement layer is `[O]` and is doctrine only: **no quantum hardware is claimed or used.** |
+
+Three operational payoffs, stated as engineering claims rather than poetry:
+
+* **Failure is compost.** Every rejected or clipped pass yields nutrients —
+  a receipt, a provenance entry, a test case — instead of silent waste. The
+  benchmark harness is the exhibit: the baseline collapse it measured
+  (1.00 drift) is itself composted into the empirical receipt that motivates
+  the gate.
+* **Memory has kinetics, not policy.** In the canonical model persistence is
+  governed by Arrhenius decay over measured certainty; in the flat shadow
+  this runtime implements, receipts simply do not decay within a session.
+  Both stand against the third option — the context-window amnesia of
+  stateless agents — which Axiom IV (PHILOSOPHY.md) names the root of
+  alignment failure.
+* **Roles are trophic, not hierarchical.** No middle management: auditors are
+  peers holding vetoes, not bosses holding workflows; the navigator holds
+  writs, not tickets. This is Axiom II's segmented power (PHILOSOPHY.md) at
+  the level of system design, and the Peacepipe circle at the level of
+  protocol design.
+
+*Provenance: canonical source `rytt_bioactive_ecology.py` (author R.W. Yett
+with the Chyren swarm; `Mega-Therion/Chyren` commit `fb6691de`,
+2026-09-29); glossary cross-checked on the Notion hub (2026-10-02). The
+constants of that engine (χ = 1/√2, κ = 0.9539, the 240-dimensional
+embedding) carry their own provenance in their home repository and are not
+imported numerically into this stdlib runtime — nothing in this section adds
+an unregistered constant.*
 
 ## 3. The Trinity wiring
 

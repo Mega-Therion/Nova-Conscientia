@@ -42,10 +42,16 @@ The Arkansas Orchard is an integrated portfolio with two faces of one body:
 a commercial tree (foundRY; ONE Natural Energy; six operating branches) and
 a civic fruit layer that hands the yield back to the people the tree grows
 among (ARMAWS, the Driver's License Public Access Guarantee Act, the
-Entergy ratepayer plan, Project RENEW). Every branch must pass the Diamond
-Foundation test — legible, inspectable from any side, beneficial to
-everyone, not just shareholders — named for the only public diamond mine in
-the world, in Murfreesboro, Arkansas. The civic layer is staged
+Entergy ratepayer plan, Project RENEW). Every branch must pass the
+**Diamond Foundation Test**, named for the only public diamond mine in the
+world, in Murfreesboro, Arkansas — the standard is the mineral's own
+canonical attributes: *not fragile, not see-through, perfect clarity, and
+you can inspect it from any side.* In practice: an initiative must be
+legible to a non-expert (a bill you can read on one page), inspectable from
+any stakeholder's angle (ratepayer, retailer, legislator, officer), and
+beneficial to everyone it touches — not just shareholders. The civic layer is staged
+deliberately: small, cheap, legible bills first (air, test vehicles), the
+harder utility fight once the philosophy has a track record. `[D]` The civic layer is staged
 deliberately: small, cheap, legible bills first (air, test vehicles), the
 harder utility fight once the philosophy has a track record. `[D]`
 
@@ -116,11 +122,16 @@ treating them as committed. `[E]`
 
 Arkansas households cannot choose their power provider; the bill jumps
 regardless; the state approved every charge that produced the jump. The
-plan — the Rate Stabilization Fund — has the state surplus stand in front
-of the ratepayer: a rollover fund absorbs the increase first; unused
-margin is eaten before the citizen is. Funded from general-revenue
-surplus, no new tax — the same "state pays first" principle as ARMAWS and
-the License Fleet. The same research pass that produced this plan also
+plan — the Rate Stabilization Fund — instantiates the Orchard's **"State
+Pays First" doctrine**: the state surplus stands in front of the
+ratepayer, absorbing the increase first; unused margin is eaten before
+the citizen is. The same doctrine runs through all three civic pillars —
+ARMAWS (the state absorbs the retrofit cost through the existing
+tire-fee surplus rather than compelling unfunded private machines), the
+License Fleet (the state supplies the test vehicle rather than demanding
+the citizen produce one), and here (the state cushion stands between the
+utility and the household bill). Its uniform funding signature:
+reallocation of revenue the state already collects — never a new tax. The same research pass that produced this plan also
 traced how Arkansas Nuclear One's fuel costs reach residential bills via
 the fuel-adjustment clause and plant upgrades via the GAJA rider — which
 is the civic-side mirror of the commercial trunk (§2.4).

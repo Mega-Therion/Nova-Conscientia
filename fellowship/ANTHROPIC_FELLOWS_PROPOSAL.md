@@ -47,7 +47,11 @@ sovereignty with every article mapped to code and every gap confessed
 (INTERDEPENDENCE.md), and a three-year field record of that method producing
 civic infrastructure work from rural Arkansas (CIVIC_IMPACT.md): drafted
 statutes and statutory analyses now targeted at the 2027 Arkansas legislative
-session.
+session. Read together, the four documents are one argument in four layers:
+a mathematically grounded, fail-closed runtime (ARCHITECTURE.md), bound by
+Spinozist cybernetic ethics (PHILOSOPHY.md), proclaimed under a
+constitutional charter of mutual sovereignty (INTERDEPENDENCE.md), and
+demonstrated in civic stewardship from rural America (CIVIC_IMPACT.md).
 
 ## 2. The problem, stated in our own numbers
 
@@ -112,6 +116,22 @@ repository enforces the Contingent Box Protocol at parse time: zero stubs,
 zero ungrounded numerology (every numeric constant must be registered in a
 PROVENANCE mapping naming its source), no `eval`/`exec`/bare `except`, every
 public callable documented. 8 modules, 0 violations, exit 0.
+
+
+### The Bioactive Ecology Paradigm (§2.7 of ARCHITECTURE.md)
+
+The swarm behind these components is not a corporate hierarchy but a living
+soil ecology — the canonical seven-layer organic computing model: a 5D
+voxel memory substrate with kinetic decay and nutrient recirculation, a
+**Clean-Up Crew** of detritivore subagents (Springtail linters that audit
+scratch artifacts, Isopod shredders that digest failed solver passes into
+repair nutrients, Mycorrhizal connectors that inoculate the digested
+knowledge back into the graph), O(log N) carry-lookahead dependency folding,
+systolic in-memory ring streaming, Amari natural-gradient optimization, EM
+latent-state reconstruction, and non-factorizable consensus. The repository
+implements what it can prove (the Blelloch folding is code), shadows what it
+can honestly (receipts as humus, the compile gate as the Springtail role),
+and tags the rest `[O]` — an ecology claimed only as far as it is built.
 
 ## 4. The empirical result (and exactly what it does and does not show)
 
