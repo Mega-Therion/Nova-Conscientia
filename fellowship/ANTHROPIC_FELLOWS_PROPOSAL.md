@@ -337,6 +337,35 @@ question with receipts.
   caveat, pinned to Res-Nova commit `c3ff5f3`.
 * 50/50 tests passing; compile gate 8 modules / 0 violations.
 
+### 11.1 The Chyren Polyglot Production Architecture — the three-year living testbed
+
+Nova Conscientia was not designed on paper; it was **distilled from a working
+production system**. Chyren (private; `Mega-Therion/Chyren` commit `fb6691de`,
+registered in PROVENANCE.md) is the applicant's polyglot knowledge-and-agency
+engine — a living testbed in continuous operation for roughly three years, from
+which the dual-channel oversight loop, the fail-closed discipline, and the
+swarm topology were abstracted into this repository. Its five-layer production
+stack:
+
+| Layer | Role | Components |
+|---|---|---|
+| 1 — Formal Kernel | Mathematical proof mechanization | **Lean 4** (Res-Nova: the Hamilgrangian identities, ADCCL trajectory boundedness, and the ceiling algebra this repository translates) |
+| 2 — Systems & Orchestration | Asynchronous engine and deterministic execution pipelines | **Rust** |
+| 3 — Persistent Cognitive Memory | Neural vector stores, structured knowledge engine, graph topology | **Qdrant**, **SQLite**, and a **3,200+ node Obsidian** graph topology |
+| 4 — Agent Runtime & AST Verification | Multi-agent swarm orchestration and fail-closed invariant gates | **Python** (the direct ancestor of `core/` and `verification/` here) |
+| 5 — Delivery & Interface | Web application and civic research interface | **TypeScript / Next.js** |
+
+Scale and discipline, stated as engineering facts rather than claims: multi-year
+continuous operation; zero-stub enforcement across the codebase; monotonic,
+append-only ledger receipts on every decision. The Arkansas civic record (§7)
+runs on this same stack. This is the demonstration behind every architecture
+claim above: **the applicant builds and maintains real-world, polyglot software
+engines at scale**, and the runtime in this repository is the audited
+distillation of that practice — not a first prototype. Per the Contingent Box
+discipline, no numeric constants from Chyren are imported into this runtime;
+they remain in their home repo with their own provenance (PROVENANCE.md,
+Prior Art & Engineering Foundations).
+
 ## 12. The ask
 
 A fellowship placement with the scalable oversight team to run E1 on your

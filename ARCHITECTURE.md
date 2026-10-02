@@ -225,6 +225,15 @@ a boss, and failure is punished and discarded. In a soil ecology, agents hold
 the next iteration. Nothing is wasted; nothing is silently discarded; memory
 persists or decays by kinetics, not by management policy.
 
+**Freeze discipline (2026-10-02).** The ecological vocabulary is an
+*organizational analogy* for the subagent roles — auditors, shredders,
+linters — and for nothing more: no biological mechanics, and none of the
+speculative layers (the 5D voxel substrate, Arrhenius decay, entangled
+consensus) are implemented in this codebase; they remain doctrine `[O]` in
+their home repo, entering here only as the labeled classical shadows in the
+table below. The module set of this repository is **frozen**: no new modules
+and no speculative biological creep beyond what the table maps.
+
 The canonical formulation is the seven-layer organic computing model of the
 RYTT Bioactive Autonomous Ecology Engine
 (`Codebase/chyren_core/rytt_bioactive_ecology.py`, `Mega-Therion/Chyren`

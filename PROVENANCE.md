@@ -44,6 +44,22 @@ every source fact the translation depends on.
 | AINSA / the Infant Nutrition Bridge (CIVIC_IMPACT.md §2.5; figures: WIC MMA 9 cans ≈ 806 fl oz per 7 CFR 246.10 and USDA FNA MMA tables; AAP feeding guidance ~2.5 oz/lb/day capped ~32 oz/day; WIC ≈ half of US formula purchases per USDA ERS; rebates ~85% of wholesale (2008) exceeding wholesale (2023) per USDA ERS; winning-brand retail spillover ~1.7% per GAO-25-106503; 71–80% state market share per Cicero Institute) | `civic/infant-nutrition-security-act.md`, `Mega-Therion/arkansas-orchard` commit `f757543` (2026-10-02); figures carried as cited, unaudited estimates |
 | Canonical Glossary & Reinforcement Dossier for Nova Conscientia (governance cluster, bioactive ecology cluster, civic cluster, epistemic labels incl. [O]/[X], Zero-Orphan Invariant, Non-Vacuity Discipline) | Notion hub page `3db77b95-a965-81f3-8a3d-cc3728dfd427`, section posted 2026-10-02; fact-checked against Qdrant/knowledge.db/SOVEREIGN_CANONICAL_DIRECTIVES.md per its own header |
 
+## Prior Art & Engineering Foundations — the Chyren Aeon polyglot stack
+
+The runtime in this repository is distilled from the applicant's production
+system, Chyren (Phase 2 sources above: commit `fb6691de`). Its five-layer
+polyglot stack is registered here as prior art, grounding each layer to its
+language ecosystem. No numeric constants from Chyren are imported into this
+runtime — they stay in their home repo with their own provenance.
+
+| Chyren layer | Language ecosystem | Component | What it grounds in this repository |
+|---|---|---|---|
+| 1 — Formal Kernel | Lean 4 (+ Mathlib) | Res-Nova proof mechanization: `Hamilgrangian.lean`, `YettParadigm.lean`, ceiling theorems | the machine-checked identities translated into `core/dual_channel_action.py` and the gate/controller algebra |
+| 2 — Systems & Orchestration | Rust | asynchronous engine; deterministic execution pipelines | the deterministic, fail-closed control-loop discipline of ADCCL (`core/anti_drift_controller.py`) |
+| 3 — Persistent Cognitive Memory | Qdrant (neural vector store); SQLite (structured knowledge engine); Obsidian (3,200+ node graph topology) | `Chyren_Second_Brain` knowledge engine | the Phylactery invariant's production precedent (PHILOSOPHY.md Axiom IV; append-only ledgers here) |
+| 4 — Agent Runtime & AST Verification | Python | multi-agent swarm orchestration; fail-closed AST invariant gates | the direct ancestor of `core/` and `verification/` (adversarial consensus, Contingent Box gate) |
+| 5 — Delivery & Interface | TypeScript / Next.js | web application; civic research interface | the delivery layer for the civic record (CIVIC_IMPACT.md) |
+
 ## Constant-by-constant register
 
 | constant | value | class | provenance |
