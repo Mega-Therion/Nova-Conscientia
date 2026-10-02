@@ -366,6 +366,12 @@ discipline, no numeric constants from Chyren are imported into this runtime;
 they remain in their home repo with their own provenance (PROVENANCE.md,
 Prior Art & Engineering Foundations).
 
+Scale and velocity are demonstrated through empirical telemetry rather than
+assertion: over **2,880+ commits** across **129+ active research and deployment
+days** in 2026 alone, maintaining continuous zero-stub test enforcement and
+verified AST gates across the entire polyglot stack without institutional
+backing.
+
 Two further artifacts of the same production track — the 3-year testbed built
 in Story, Arkansas (Montgomery County) — are registered in PROVENANCE.md as
 predecessor systems:
@@ -462,6 +468,14 @@ not yet earned. The architecture is built; the measurement is cheap; the result 
 convergence or scatter — advances the field's understanding of whether
 drift-collapse is a structural property of agentic systems. We would rather
 hand you the falsifier than the pitch.
+
+This work was not undertaken to manufacture an application; it was built
+because the problem of humane, fail-closed cybernetic alignment demanded
+solving. This research was happening long before this fellowship was
+announced, and it will continue regardless of the outcome. The proposal to
+Anthropic is simple: connect this solo, bottom-up rural research velocity
+with your frontier compute stacks, and let us measure what we have built
+together.
 
 ---
 

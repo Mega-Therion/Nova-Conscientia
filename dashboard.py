@@ -238,6 +238,35 @@ body::after {
   padding: 0.15rem 0.5rem;
   white-space: nowrap;
 }
+/* ---- Telemetry badge bar ---- */
+.telemetry-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+.telemetry-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  letter-spacing: 0.04em;
+  transition: border-color 0.2s;
+}
+.telemetry-badge:hover { border-color: var(--border-hi); }
+.telemetry-badge .tb-key { color: var(--text-faint); text-transform: uppercase; }
+.telemetry-badge .tb-val { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.telemetry-badge .tb-val.cyan    { color: var(--cyan); }
+.telemetry-badge .tb-val.emerald { color: var(--emerald); }
+.telemetry-badge .tb-val.amber   { color: var(--amber); }
+.telemetry-badge .tb-val.magenta { color: var(--magenta); }
+
 @keyframes pulse {
   0%,100% { opacity: 1; }
   50% { opacity: 0.4; }
@@ -701,6 +730,12 @@ def _dashboard_html() -> str:
   <div class="coord-bar">
     <span class="coord-marker"><span class="dot"></span>STORY, AR &nbsp;[34.7° N, 93.5° W]</span>
     <span class="commit-pill">git:{git_hash}</span>
+  </div>
+  <div class="telemetry-bar">
+    <span class="telemetry-badge"><span class="tb-key">Commits (2026)</span><span class="tb-val cyan">2,880+</span></span>
+    <span class="telemetry-badge"><span class="tb-key">Active Days</span><span class="tb-val amber">129+</span></span>
+    <span class="telemetry-badge"><span class="tb-key">Test Integrity</span><span class="tb-val emerald">50/50 PASS</span></span>
+    <span class="telemetry-badge"><span class="tb-key">Compile Gate</span><span class="tb-val emerald">0 Violations</span></span>
   </div>
 </header>
 
