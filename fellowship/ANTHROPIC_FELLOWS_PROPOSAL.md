@@ -31,7 +31,10 @@ architecture with an unusual origin and an exact content:
   deterministic benchmark: unconstrained agents collapse in 100% of seeded
   trials; the dual-channel swarm holds the anchor in 100% of them, with
   mean pairwise cosine 0.998 (agents nearly agree — the gate holds them
-  inside the cone but does not force convergence to the anchor).
+  inside the cone but does not force convergence to the anchor). **This 100%
+  vs 0% result is a mechanism sanity check, not evidence that dual-channel
+  oversight reduces drift: the swarm arm is clipped at the same τ that
+  defines collapse, so of course it does not collapse.**
 
 The proposal's core honesty: the measured threshold came from one pipeline. Our
 first fellowship experiment is to hand you the falsification test — measure the
@@ -156,8 +159,11 @@ and cap_fraction (15%) are reported alongside. This artifact is labeled
 
 **What it shows:** the control mechanism works mechanically, is reproducible to
 the bit, and preserves exploration inside its certified envelope. **What it does
-not show:** anything about live frontier models. The stimulus is a seeded drift
-model, and we say so in the receipt itself.
+not show:** anything about live frontier models, or that dual-channel oversight
+reduces drift — the swarm arm is clipped at the same τ that defines collapse,
+so the 0% collapse rate is a mechanism sanity check, not evidence of oversight
+effectiveness. The stimulus is a seeded drift model, and we say so in the
+receipt itself.
 
 ## 5. Why this fits scalable oversight
 
@@ -339,11 +345,11 @@ question with receipts.
   topology graph (all stdlib-only, zero stubs, tested).
 * `verification/` — adversarial consensus runner and the AST Contingent Box
   gate.
-* `benchmarks/` — deterministic harness, committed receipt, pluggable live-model
-  backend contract.
+* `benchmarks/` — deterministic harness, committed receipt, ablation sweep over
+  constraint pressures, pluggable live-model backend contract.
 * `PROVENANCE.md` — every source file hash, Lean theorem, constant, and
   caveat, pinned to Res-Nova commit `c3ff5f3`.
-* 53/53 tests passing; compile gate 9 modules / 0 violations.
+* 59/59 tests passing; compile gate 9 modules / 0 violations.
 
 ### 11.1 Provenance of Engineering: The Chyren Ecosystem & Prior Formal Tooling
 

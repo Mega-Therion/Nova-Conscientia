@@ -496,18 +496,17 @@ _LEDGER = [
     ("emp", "Swarm mean pairwise cosine: 0.9978 — agents are nearly identical. "
             "Max angular spread inside the cone is ~35°."),
     ("emp", "Baseline energy 7.5×10¹⁰ is dominated by the 1×10⁶ drift cap, not a meaningful quantity."),
-    ("emp", "Ablation (constraint_pressure = 0.5): gate-only collapses 5% of trials; "
-            "gate+dual-channel, gate+correction, and full all collapse 0%. "
-            "The dual channel does work when it has something to reject."),
-    ("conj", "Dual-channel oversight reduces drift. The 100% vs 0% result shows that a cone clip "
-             "clips, not that dual-channel oversight reduces drift."),
+    ("open", "Ablation sweep over constraint pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]: "
+             "acceptance rates decline from 1.0 at low pressure to 0.0 at 0.5, where the "
+             "dual channel rejects all proposals and the dual-channel arms never move. "
+             "No non-frozen regime yet shows a difference between arms. Tagged [open] "
+             "until a non-frozen regime shows a difference."),
+    ("conj", "The 100% vs 0% collapse result is a mechanism sanity check: the swarm arm is "
+             "clipped at the same \u03c4 that defines collapse, so of course it does not collapse. "
+             "It is not evidence that dual-channel oversight reduces drift."),
     ("conj", "The four-pillar framing (ethics, civic work, charter) maps to the machine code."),
     ("open", "Does dual-channel oversight reduce drift under real constraint pressure? "
              "The benchmark applies none."),
-    ("open", "How does gate-only compare to gate + dual-channel, or gate + correction? "
-             "No ablation has been run."),
-    ("open", "Is the ledger tamper-resistant? GateLedger.entries is a plain public list — "
-             "the “rejects attempts to rewrite history” claim is not enforced."),
     ("open", "How does the system behave with a live model and an independent drift metric?"),
 ]
 
@@ -672,7 +671,7 @@ def render_dashboard(receipt: Optional[dict], git_hash: str) -> str:
     <p class="hero-desc">Fail-closed hallucination clipping at τ = 0.9539. Dual-channel
        oversight, anti-drift control, and swarm topology for AI alignment research.</p>
     <div class="hero-badges">
-      <span class="hero-badge teal">50/50 PASS</span>
+      <span class="hero-badge teal">59/59 PASS</span>
       <span class="hero-badge teal">0 Violations</span>
       <span class="hero-badge">git:{git_hash}</span>
     </div>
