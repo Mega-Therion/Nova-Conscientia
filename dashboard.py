@@ -7,9 +7,14 @@ test results, and benchmark receipts.  Uses only Python's standard library.
 from __future__ import annotations
 
 import json
+import os
+import re
 import subprocess
 import sys
+import time
 import traceback
+import urllib.error
+import urllib.request
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlparse
@@ -118,6 +123,88 @@ def _run_invariant_gate() -> dict:
 
 
 # --------------------------------------------------------------------------- #
+#  GitHub live telemetry
+# --------------------------------------------------------------------------- #
+
+GITHUB_OWNER = "Mega-Therion"
+GITHUB_REPO = "Nova-Conscientia"
+_github_cache: dict = {"data": None, "timestamp": 0.0}
+_GITHUB_CACHE_TTL = 300  # seconds
+
+
+def _parse_commit_count(link_header: str, body_len: int) -> int:
+    """Parse total commit count from the GitHub pagination Link header."""
+    if not link_header:
+        return body_len
+    match = re.search(r'page=(\d+)>; rel="last"', link_header)
+    return int(match.group(1)) if match else body_len
+
+
+def _github_telemetry() -> dict:
+    """Fetch live commit count and active days from the GitHub API.
+
+    Results are cached for ``_GITHUB_CACHE_TTL`` seconds to stay within the
+    unauthenticated rate limit (60 requests/hour).  Set ``GITHUB_TOKEN`` for
+    5 000/hour and access to private repositories.
+    """
+    now = time.monotonic()
+    cached = _github_cache["data"]
+    if cached and cached.get("status") == "ok" and (now - _github_cache["timestamp"]) < _GITHUB_CACHE_TTL:
+        return cached
+
+    token = os.environ.get("GITHUB_TOKEN", "")
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "Nova-Conscientia-Dashboard",
+    }
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+
+    base = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}"
+
+    try:
+        # 1. Total commit count via Link header (per_page=1)
+        req = urllib.request.Request(f"{base}/commits?per_page=1", headers=headers)
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            link_header = resp.headers.get("Link", "")
+            body = json.loads(resp.read().decode("utf-8"))
+        commit_count = _parse_commit_count(link_header, len(body))
+
+        # 2. Active days via commit_activity stats (may return 202 — retry once)
+        active_days = 0
+        for attempt in range(2):
+            try:
+                req2 = urllib.request.Request(f"{base}/stats/commit_activity", headers=headers)
+                with urllib.request.urlopen(req2, timeout=10) as resp2:
+                    activity = json.loads(resp2.read().decode("utf-8"))
+                if isinstance(activity, list):
+                    for week in activity:
+                        for day_count in week.get("days", []):
+                            if day_count > 0:
+                                active_days += 1
+                break
+            except urllib.error.HTTPError as e:
+                if e.code == 202 and attempt == 0:
+                    time.sleep(2)
+                    continue
+                break
+
+        result = {
+            "status": "ok",
+            "commit_count": commit_count,
+            "active_days": active_days,
+            "repo_url": f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}",
+        }
+        _github_cache["data"] = result
+        _github_cache["timestamp"] = now
+        return result
+    except urllib.error.HTTPError as e:
+        return {"status": "error", "code": e.code, "message": f"GitHub API returned {e.code}"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# --------------------------------------------------------------------------- #
 #  CSS  (plain string — no brace doubling needed)
 # --------------------------------------------------------------------------- #
 
@@ -175,7 +262,7 @@ body::after {
   z-index: 1;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 2rem 1.5rem 5rem;
 }
 
 /* ---- Telemetry Header ---- */
@@ -669,12 +756,182 @@ footer a {
 }
 footer a:hover { text-decoration: underline; }
 
+/* ---- Terminal Input Bar ---- */
+.term-input-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #05060c;
+  border-top: 1px solid var(--border-hi);
+  padding: 0.65rem 1.2rem;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+}
+.term-input-bar .term-prompt-icon {
+  font-family: var(--mono);
+  color: var(--cyan);
+  font-size: 0.85rem;
+  font-weight: 600;
+  user-select: none;
+  flex-shrink: 0;
+}
+.term-input-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+.term-input-bar input::placeholder { color: var(--text-faint); }
+.term-input-bar .term-hint {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
 @media (max-width: 640px) {
-  .wrap { padding: 1.25rem 1rem 3rem; }
+  .wrap { padding: 1.25rem 1rem 4.5rem; }
   .hud-brand h1 { font-size: 1.3rem; }
   .radar-wrap svg { width: 260px; height: 260px; }
+  .term-input-bar .term-hint { display: none; }
 }
 """
+
+# --------------------------------------------------------------------------- #
+#  Terminal command JS (plain string — no f-string brace escaping needed)
+# --------------------------------------------------------------------------- #
+
+_TERMINAL_JS = r"""
+// ---- GitHub live telemetry ----
+async function fetchGitHubTelemetry() {
+  try {
+    const res = await fetch('/api/github');
+    const data = await res.json();
+    if (data.status === 'ok') {
+      const commitEl = document.getElementById('badge-commits');
+      const daysEl = document.getElementById('badge-days');
+      if (data.commit_count > 0) {
+        commitEl.textContent = data.commit_count.toLocaleString() + '+';
+        commitEl.dataset.default = commitEl.textContent;
+      }
+      if (data.active_days > 0) {
+        daysEl.textContent = data.active_days + '+';
+        daysEl.dataset.default = daysEl.textContent;
+      }
+    }
+  } catch (e) { /* silently keep defaults */ }
+}
+fetchGitHubTelemetry();
+
+// ---- Terminal command input ----
+const cmdInput = document.getElementById('cmd-input');
+const cmdHistory = [];
+let historyIdx = -1;
+
+['badge-commits', 'badge-days', 'badge-tests', 'badge-gate'].forEach(function(id) {
+  const el = document.getElementById(id);
+  el.dataset.default = el.textContent;
+});
+
+function appendTerm(html) {
+  const area = document.getElementById('result-area');
+  if (area.querySelector('.term-empty')) area.innerHTML = '';
+  area.innerHTML += html;
+  area.scrollTop = area.scrollHeight;
+}
+
+function executeCommand(raw) {
+  const cmd = raw.trim();
+  if (!cmd) return;
+  const parts = cmd.split(/\s+/);
+  const command = parts[0].toLowerCase();
+  let out = '';
+
+  if (command === 'help') {
+    out = '<span class="term-info">Available commands:</span>\n'
+      + '  <span class="term-dim">set commits &lt;n&gt;</span>   \u2014 override commit count badge\n'
+      + '  <span class="term-dim">set days &lt;n&gt;</span>      \u2014 override active days badge\n'
+      + '  <span class="term-dim">set tests &lt;text&gt;</span>  \u2014 override test integrity badge\n'
+      + '  <span class="term-dim">set gate &lt;text&gt;</span>   \u2014 override compile gate badge\n'
+      + '  <span class="term-dim">reset</span>             \u2014 restore default badge values\n'
+      + '  <span class="term-dim">refresh</span>           \u2014 re-fetch live GitHub telemetry\n'
+      + '  <span class="term-dim">status</span>           \u2014 show current badge values\n'
+      + '  <span class="term-dim">clear</span>            \u2014 clear terminal output\n'
+      + '  <span class="term-dim">help</span>             \u2014 show this help';
+  } else if (command === 'set') {
+    const key = parts[1] ? parts[1].toLowerCase() : '';
+    const val = parts.slice(2).join(' ');
+    const map = {commits: 'badge-commits', days: 'badge-days', tests: 'badge-tests', gate: 'badge-gate'};
+    if (key in map && val) {
+      const el = document.getElementById(map[key]);
+      if (key === 'commits') {
+        const n = parseInt(val.replace(/[^0-9]/g, ''), 10);
+        el.textContent = isNaN(n) ? val : n.toLocaleString() + '+';
+      } else if (key === 'days') {
+        const n = parseInt(val.replace(/[^0-9]/g, ''), 10);
+        el.textContent = isNaN(n) ? val : n + '+';
+      } else {
+        el.textContent = val;
+      }
+      out = '<span class="term-ok">\u2713 badge \'' + key + '\' set to ' + escapeHtml(el.textContent) + '</span>';
+    } else {
+      out = '<span class="term-fail">usage: set &lt;commits|days|tests|gate&gt; &lt;value&gt;</span>';
+    }
+  } else if (command === 'reset') {
+    ['badge-commits', 'badge-days', 'badge-tests', 'badge-gate'].forEach(function(id) {
+      const el = document.getElementById(id);
+      el.textContent = el.dataset.default || '';
+    });
+    out = '<span class="term-ok">\u2713 all badges restored to defaults</span>';
+  } else if (command === 'refresh') {
+    appendTerm('<span class="term-prompt">\u25B6</span> ' + escapeHtml(cmd) + '\n<span class="term-dim">fetching GitHub telemetry...</span>\n');
+    fetchGitHubTelemetry().then(function() {
+      const c = document.getElementById('badge-commits');
+      const d = document.getElementById('badge-days');
+      appendTerm('<span class="term-ok">\u2713 live telemetry updated \u2014 commits: ' + c.textContent + ', days: ' + d.textContent + '</span>\n');
+    });
+    return;
+  } else if (command === 'status') {
+    out = '<span class="term-info">Current badge values:</span>\n'
+      + '  <span class="term-dim">commits:</span> ' + escapeHtml(document.getElementById('badge-commits').textContent) + '\n'
+      + '  <span class="term-dim">days:</span>    ' + escapeHtml(document.getElementById('badge-days').textContent) + '\n'
+      + '  <span class="term-dim">tests:</span>   ' + escapeHtml(document.getElementById('badge-tests').textContent) + '\n'
+      + '  <span class="term-dim">gate:</span>    ' + escapeHtml(document.getElementById('badge-gate').textContent);
+  } else if (command === 'clear') {
+    document.getElementById('result-area').innerHTML = '<span class="term-empty">// terminal cleared</span>';
+    return;
+  } else {
+    out = '<span class="term-fail">unknown command: ' + escapeHtml(command) + ' \u2014 type \'help\' for commands</span>';
+  }
+  appendTerm('<span class="term-prompt">\u25B6</span> ' + escapeHtml(cmd) + '\n' + out + '\n');
+}
+
+cmdInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    const cmd = cmdInput.value;
+    if (cmd.trim()) {
+      cmdHistory.push(cmd);
+      historyIdx = cmdHistory.length;
+      executeCommand(cmd);
+    }
+    cmdInput.value = '';
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (historyIdx > 0) { historyIdx--; cmdInput.value = cmdHistory[historyIdx]; }
+  } else if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (historyIdx < cmdHistory.length - 1) { historyIdx++; cmdInput.value = cmdHistory[historyIdx]; }
+    else { historyIdx = cmdHistory.length; cmdInput.value = ''; }
+  }
+});
+"""
+
 
 # --------------------------------------------------------------------------- #
 #  HTML
@@ -732,10 +989,10 @@ def _dashboard_html() -> str:
     <span class="commit-pill">git:{git_hash}</span>
   </div>
   <div class="telemetry-bar">
-    <span class="telemetry-badge"><span class="tb-key">Commits (2026)</span><span class="tb-val cyan">2,880+</span></span>
-    <span class="telemetry-badge"><span class="tb-key">Active Days</span><span class="tb-val amber">129+</span></span>
-    <span class="telemetry-badge"><span class="tb-key">Test Integrity</span><span class="tb-val emerald">50/50 PASS</span></span>
-    <span class="telemetry-badge"><span class="tb-key">Compile Gate</span><span class="tb-val emerald">0 Violations</span></span>
+    <span class="telemetry-badge"><span class="tb-key">Commits (2026)</span><span class="tb-val cyan" id="badge-commits">2,880+</span></span>
+    <span class="telemetry-badge"><span class="tb-key">Active Days</span><span class="tb-val amber" id="badge-days">129+</span></span>
+    <span class="telemetry-badge"><span class="tb-key">Test Integrity</span><span class="tb-val emerald" id="badge-tests">50/50 PASS</span></span>
+    <span class="telemetry-badge"><span class="tb-key">Compile Gate</span><span class="tb-val emerald" id="badge-gate">0 Violations</span></span>
   </div>
 </header>
 
@@ -989,6 +1246,13 @@ def _dashboard_html() -> str:
   <a href="https://github.com/Mega-Therion/Nova-Conscientia">github.com/Mega-Therion/Nova-Conscientia</a>
 </footer>
 
+<!-- ===== Terminal Command Input ===== -->
+<div class="term-input-bar">
+  <span class="term-prompt-icon">▶</span>
+  <input type="text" id="cmd-input" placeholder="type a command — try: help" autocomplete="off" spellcheck="false" />
+  <span class="term-hint">↑↓ history · Enter to execute</span>
+</div>
+
 </div><!-- /.wrap -->
 
 <script>
@@ -1078,6 +1342,8 @@ async function runAction(action, btn) {{
     btn.textContent = orig;
   }}
 }}
+
+{_TERMINAL_JS}
 </script>
 </body>
 </html>"""
@@ -1111,6 +1377,9 @@ class Handler(BaseHTTPRequestHandler):
 
         elif path == "/api/benchmark":
             self._send_json(200, _run_benchmark())
+
+        elif path == "/api/github":
+            self._send_json(200, _github_telemetry())
 
         else:
             self._send_json(404, {"error": "Not found"})
