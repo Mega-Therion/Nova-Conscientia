@@ -516,6 +516,11 @@ _LEDGER = [
              "57% of on-task proposals and does worse than the gate alone. Candidate fix: "
              "running_reference credit removes the bias in simulation (equal acceptance, "
              "task error equal to gate-only) while keeping the informative-signal gain."),
+    ("conj", "Auditor as signal: the repo's adversarial consensus with three rubric critics "
+             "freezes the agent when unanimity is required (an anchor-only critic rejects every "
+             "move). Fed into the dual channel with running_reference credit, the same votes beat "
+             "gate-only and a frozen agent (task error 0.0050), within a window of the "
+             "votes-to-pressure mapping."),
     ("open", "Does a real invariant checker on a live model produce a signal informative "
              "enough for the dual channel to help?"),
     ("open", "How does the system behave with a live model and an independent drift metric?"),
@@ -682,7 +687,7 @@ def render_dashboard(receipt: Optional[dict], git_hash: str) -> str:
     <p class="hero-desc">Fail-closed hallucination clipping at τ = 0.9539. Dual-channel
        oversight, anti-drift control, and swarm topology for AI alignment research.</p>
     <div class="hero-badges">
-      <span class="hero-badge teal">83/83 PASS</span>
+      <span class="hero-badge teal">93/93 PASS</span>
       <span class="hero-badge teal">0 Violations</span>
       <span class="hero-badge">git:{git_hash}</span>
     </div>
