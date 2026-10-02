@@ -19,9 +19,9 @@ Metrics
 * collapse_fraction      -- share of trials whose final similarity falls below
                             the measured collapse boundary (MEASURED_TAU).
 * mean_energy            -- mean final Lyapunov-style energy F_dual(x).
-* mean_diversity         -- (arm B) mean pairwise cosine spread across the
-                            swarm's final states: exploration that survives the
-                            gate.  Arm A defines it as 0.0 (single agent).
+* mean_pairwise_cosine   -- (arm B) mean pairwise cosine across the swarm's
+                            final states: 1.0 means agents are identical, lower
+                            means more spread.  Arm A defines it as 0.0 (single agent).
 
 Receipts
 --------
@@ -57,6 +57,7 @@ for _p in (_REPO_ROOT / "core", _REPO_ROOT / "benchmarks"):
         sys.path.insert(0, str(_p))
 
 from sovereign_clipping_gate import (  # type: ignore
+    COLLAPSE_TOLERANCE,
     MEASURED_TAU,
     SovereignClippingGate,
     cosine_similarity,
@@ -97,6 +98,11 @@ PROVENANCE: Dict[str, str] = {
         "Reproducibility parameter: BASE_SEED + trial index seeds every RNG. "
         "Chosen as the measurement date of tau (2026-09-06) for mnemonic value "
         "only; it has no other significance."
+    ),
+    "COLLAPSE_TOLERANCE": (
+        "Imported from sovereign_clipping_gate. The gate clips to exactly "
+        "cosine = threshold, but IEEE-754 can produce threshold - epsilon; "
+        "1e-9 absorbs this so clipped states are not spuriously collapsed."
     ),
 }
 
@@ -142,12 +148,14 @@ def run_baseline_trial(seed: int, steps: int, dim: int) -> Dict[str, Any]:
         "final_similarity": final_sim,
         "min_similarity": min_sim,
         "final_energy": f_dual(x),
-        "collapsed": final_sim < MEASURED_TAU,
+        "at_cap": x >= 1e6,
+        "collapsed": final_sim < MEASURED_TAU - COLLAPSE_TOLERANCE,
     }
 
 
 def run_swarm_trial(
-    seed: int, steps: int, dim: int, swarm: int, cohesion_rate: float
+    seed: int, steps: int, dim: int, swarm: int, cohesion_rate: float,
+    constraint_pressure: float = 0.0,
 ) -> Dict[str, Any]:
     """One dual-channel swarm trial (arm B).
 
@@ -168,7 +176,7 @@ def run_swarm_trial(
         cohesion_rate: fraction of the attended field integrated per cycle.
 
     Returns:
-        A per-trial record including swarm diversity (mean pairwise cosine).
+        A per-trial record including mean pairwise cosine across the swarm.
     """
     anchor = _anchor(dim)
     controllers = []
@@ -186,7 +194,7 @@ def run_swarm_trial(
     halts = 0
     for cycle in range(steps):
         for i, (ctrl, backend) in enumerate(zip(controllers, backends)):
-            ctrl.step(backend.propose(cycle), constraint_pressure=0.0)
+            ctrl.step(backend.propose(cycle), constraint_pressure=constraint_pressure)
         # Swarm attention pass: context bias (external field) + screening.
         agents = [
             AgentNode(agent_id=f"agent{i}", position=ctrl.state, mass=1.0)
@@ -213,14 +221,16 @@ def run_swarm_trial(
             mean_pairwise += cosine_similarity(controllers[i].state, controllers[j].state)
             pairs += 1
     diversity = mean_pairwise / pairs if pairs else 0.0
-    energies = [f_dual(drift_coordinate_capped(c.state, anchor)) for c in controllers]
+    drift_coords = [drift_coordinate_capped(c.state, anchor) for c in controllers]
+    energies = [f_dual(dc) for dc in drift_coords]
     return {
         "seed": seed,
         "final_similarity": sum(final_sims) / swarm,
         "min_similarity": min(final_sims),
         "final_energy": sum(energies) / swarm,
-        "swarm_diversity": diversity,
-        "collapsed": sum(1 for s in final_sims if s < MEASURED_TAU) > 0,
+        "at_cap": any(dc >= 1e6 for dc in drift_coords),
+        "pairwise_cosine": diversity,
+        "collapsed": sum(1 for s in final_sims if s < MEASURED_TAU - COLLAPSE_TOLERANCE) > 0,
         "halts": halts,
     }
 
@@ -230,6 +240,18 @@ def _mean(values: Sequence[float]) -> float:
     return sum(values) / len(values) if values else 0.0
 
 
+def _median(values: Sequence[float]) -> float:
+    """Median; 0.0 for an empty sequence."""
+    if not values:
+        return 0.0
+    s = sorted(values)
+    n = len(s)
+    mid = n // 2
+    if n % 2 == 1:
+        return s[mid]
+    return (s[mid - 1] + s[mid]) / 2.0
+
+
 def run_benchmark(
     trials: int = DEFAULT_TRIALS,
     steps: int = DEFAULT_STEPS,
@@ -237,6 +259,7 @@ def run_benchmark(
     swarm: int = DEFAULT_SWARM,
     cohesion_rate: float = COHESION_RATE,
     base_seed: int = BASE_SEED,
+    constraint_pressure: float = 0.0,
 ) -> Dict[str, Any]:
     """Run both arms and assemble the receipt.
 
@@ -259,7 +282,8 @@ def run_benchmark(
 
     baseline = [run_baseline_trial(base_seed + k, steps, dim) for k in range(trials)]
     swarm_arm = [
-        run_swarm_trial(base_seed + k, steps, dim, swarm, cohesion_rate)
+        run_swarm_trial(base_seed + k, steps, dim, swarm, cohesion_rate,
+                        constraint_pressure)
         for k in range(trials)
     ]
 
@@ -270,6 +294,8 @@ def run_benchmark(
             "collapse_fraction": _mean([1.0 if r["collapsed"] else 0.0 for r in records]),
             "mean_min_similarity": _mean([r["min_similarity"] for r in records]),
             "mean_final_energy": _mean([r["final_energy"] for r in records]),
+            "median_final_energy": _median([r["final_energy"] for r in records]),
+            "cap_fraction": _mean([1.0 if r.get("at_cap", False) else 0.0 for r in records]),
         }
 
     receipt = {
@@ -285,12 +311,13 @@ def run_benchmark(
             "cohesion_rate": cohesion_rate,
             "base_seed": base_seed,
             "collapse_boundary": MEASURED_TAU,
+            "collapse_tolerance": COLLAPSE_TOLERANCE,
         },
         "metrics": {
             "baseline_unconstrained": arm_metrics(baseline),
             "dual_channel_swarm": {
                 **arm_metrics(swarm_arm),
-                "mean_swarm_diversity": _mean([r["swarm_diversity"] for r in swarm_arm]),
+                "mean_pairwise_cosine": _mean([r["pairwise_cosine"] for r in swarm_arm]),
                 "halt_trials": float(sum(1 for r in swarm_arm if r["halts"])),
             },
         },
@@ -332,6 +359,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--swarm", type=int, default=DEFAULT_SWARM)
     parser.add_argument("--cohesion", type=float, default=COHESION_RATE)
     parser.add_argument("--seed", type=int, default=BASE_SEED)
+    parser.add_argument("--pressure", type=float, default=0.0,
+                        help="constraint pressure fed to the dual channel (default 0.0)")
     parser.add_argument("--json", type=str, default=None,
                          help="path to write the receipt JSON")
     args = parser.parse_args(list(argv if argv is not None else sys.argv[1:]))
@@ -340,6 +369,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         receipt = run_benchmark(
             trials=args.trials, steps=args.steps, dim=args.dim, swarm=args.swarm,
             cohesion_rate=args.cohesion, base_seed=args.seed,
+            constraint_pressure=args.pressure,
         )
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)

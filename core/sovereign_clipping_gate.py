@@ -43,6 +43,14 @@ from typing import Dict, List, Optional, Sequence, Tuple
 #: Measured collapse boundary on ADCCL reasoning loops (engineering threshold).
 MEASURED_TAU = 0.9539
 
+#: Tolerance for floating-point collapse checks.  The gate clips states to
+#: exactly cosine = threshold, but floating-point arithmetic can yield values
+#: like 0.9538999999999999, which would spuriously fail a strict ``< threshold``
+#: check.  This tolerance absorbs that rounding artifact so that a clipped
+#: state (cosine within ``COLLAPSE_TOLERANCE`` of the threshold) is NOT counted
+#: as collapsed.  See PROVENANCE for full justification.
+COLLAPSE_TOLERANCE = 1e-9
+
 #: theta = 1/sqrt(2): the equipartition floor, cos 45 deg, derived three ways.
 FLOOR_THETA_EQUIPARTITION = 1.0 / math.sqrt(2.0)
 
@@ -51,6 +59,13 @@ PROVENANCE: Dict[str, str] = {
         "Measured ADCCL reasoning-loop collapse boundary, Res-Nova "
         "ALIGNMENT_CEILING_ONE_RELATION.md (measured 2026-09-06). Single-pipeline "
         "engineering threshold; NOT validated on external agent systems."
+    ),
+    "COLLAPSE_TOLERANCE": (
+        "Floating-point tolerance for collapse checks. The gate clips to "
+        "exactly cosine = threshold, but IEEE-754 arithmetic can produce "
+        "0.9538999999999999, spuriously failing a strict < 0.9539 test. "
+        "1e-9 absorbs this rounding artifact. Engineering choice, not a "
+        "Res-Nova constant."
     ),
     "FLOOR_THETA_EQUIPARTITION": (
         "theta = 1/sqrt(2) = cos 45 deg, the equipartition floor. Res-Nova "
@@ -349,27 +364,34 @@ class SovereignClippingGate:
         return clipped, _norm(removed)
 
 
-@dataclass
 class GateLedger:
     """Monotonic append-only ledger of gate decisions (audit log).
 
     The ledger survives context flushes in the full architecture (Chyren
-    persistent-memory plane); here it is the in-process audit trail.  Entries are
-    appended, never mutated, and the ledger rejects attempts to rewrite history.
+    persistent-memory plane); here it is the in-process audit trail.  Entries
+    are appended via ``append`` and cannot be mutated or reassigned: the
+    ``entries`` property returns an immutable tuple, so the "rejects attempts
+    to rewrite history" claim is enforced by construction.
     """
 
-    entries: List[GateDecision] = field(default_factory=list)
-    _cycle: int = 0
+    def __init__(self) -> None:
+        self._entries: List[GateDecision] = []
+        self._cycle: int = 0
 
-    def append(self, decision: GateDecision, state: Sequence[float]) -> int:
-        """Append a decision; returns the assigned cycle number (monotonic)."""
-        self._cycle += 1
-        self.entries.append(decision)
-        return self._cycle
+    @property
+    def entries(self) -> Tuple[GateDecision, ...]:
+        """Immutable snapshot of all recorded decisions (cannot be mutated)."""
+        return tuple(self._entries)
 
     @property
     def cycle(self) -> int:
         """Current cycle count (number of decisions recorded)."""
+        return self._cycle
+
+    def append(self, decision: GateDecision, state: Sequence[float]) -> int:
+        """Append a decision; returns the assigned cycle number (monotonic)."""
+        self._cycle += 1
+        self._entries.append(decision)
         return self._cycle
 
     def collapse_events(self, threshold: Optional[float] = None) -> int:
@@ -379,13 +401,13 @@ class GateLedger:
             threshold: collapse boundary; defaults to MEASURED_TAU.
         """
         th = MEASURED_TAU if threshold is None else threshold
-        return sum(1 for e in self.entries if e.similarity_in < th)
+        return sum(1 for e in self._entries if e.similarity_in < th - COLLAPSE_TOLERANCE)
 
     def summary(self) -> Dict[str, float]:
         """Aggregate ledger statistics: counts by verdict and mean input similarity."""
         by_verdict: Dict[str, int] = {}
         sims: List[float] = []
-        for e in self.entries:
+        for e in self._entries:
             by_verdict[e.verdict] = by_verdict.get(e.verdict, 0) + 1
             sims.append(e.similarity_in)
         mean_sim = sum(sims) / len(sims) if sims else 0.0

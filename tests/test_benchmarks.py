@@ -87,8 +87,8 @@ class TestBenchmarkArms(unittest.TestCase):
         self.assertFalse(record["collapsed"])
         self.assertEqual(record["halts"], 0)
         # The gate holds exploration inside the cone: agents are not identical.
-        self.assertLess(record["swarm_diversity"], 1.0)
-        self.assertGreater(record["swarm_diversity"], -1.0)
+        self.assertLess(record["pairwise_cosine"], 1.0)
+        self.assertGreater(record["pairwise_cosine"], -1.0)
 
     def test_full_harness_receipt(self):
         """The receipt is deterministic, well-formed, and shows the mechanism."""

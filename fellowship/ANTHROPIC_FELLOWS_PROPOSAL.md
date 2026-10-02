@@ -30,7 +30,11 @@ architecture with an unusual origin and an exact content:
 * **A working, tested, zero-stub implementation** (this repository) with a
   deterministic benchmark: unconstrained agents collapse in 100% of seeded
   trials; the dual-channel swarm holds the anchor in 100% of them, with
-  exploration diversity intact.
+  mean pairwise cosine 0.998 (agents nearly agree — the gate holds them
+  inside the cone but does not force convergence to the anchor). **This 100%
+  vs 0% result is a mechanism sanity check, not evidence that dual-channel
+  oversight reduces drift: the swarm arm is clipped at the same τ that
+  defines collapse, so of course it does not collapse.**
 
 The proposal's core honesty: the measured threshold came from one pipeline. Our
 first fellowship experiment is to hand you the falsification test — measure the
@@ -115,7 +119,7 @@ callable.
 repository enforces the Contingent Box Protocol at parse time: zero stubs,
 zero ungrounded numerology (every numeric constant must be registered in a
 PROVENANCE mapping naming its source), no `eval`/`exec`/bare `except`, every
-public callable documented. 8 modules, 0 violations, exit 0.
+public callable documented. 9 modules, 0 violations, exit 0.
 
 
 ### The Bioactive Ecology Paradigm (§2.7 of ARCHITECTURE.md)
@@ -142,14 +146,24 @@ swarm of 4 (`benchmarks/results/benchmark_receipt.json`):
 |---|---|---|
 | mean final anchor similarity | 0.328 | **0.965** |
 | collapse fraction (below 0.9539) | 1.00 | **0.00** |
-| mean final drift energy | 7.5×10¹⁰ | **0.0055** |
-| intra-swarm diversity | n/a | 0.998 (the cone, not the cemetery) |
+| mean final drift energy | 7.5×10¹⁰ [open] | **0.0055** |
+| median final drift energy | 2.75 | **0.0056** |
+| cap fraction (trials at 1e6 drift cap) | 0.15 | **0.00** |
+| mean pairwise cosine | n/a | 0.998 (agents nearly agree) |
 | controller HALTs | n/a | 0 |
+
+The baseline mean energy (~7.5e10) is an artifact of the 1e6 drift cap — a few
+orthogonal states inflate the mean by orders of magnitude. Median energy (2.75)
+and cap_fraction (15%) are reported alongside. This artifact is labeled
+`[open]` per the Contingent Box reporting protocol.
 
 **What it shows:** the control mechanism works mechanically, is reproducible to
 the bit, and preserves exploration inside its certified envelope. **What it does
-not show:** anything about live frontier models. The stimulus is a seeded drift
-model, and we say so in the receipt itself.
+not show:** anything about live frontier models, or that dual-channel oversight
+reduces drift — the swarm arm is clipped at the same τ that defines collapse,
+so the 0% collapse rate is a mechanism sanity check, not evidence of oversight
+effectiveness. The stimulus is a seeded drift model, and we say so in the
+receipt itself.
 
 ## 5. Why this fits scalable oversight
 
@@ -331,11 +345,11 @@ question with receipts.
   topology graph (all stdlib-only, zero stubs, tested).
 * `verification/` — adversarial consensus runner and the AST Contingent Box
   gate.
-* `benchmarks/` — deterministic harness, committed receipt, pluggable live-model
-  backend contract.
+* `benchmarks/` — deterministic harness, committed receipt, ablation sweep over
+  constraint pressures, pluggable live-model backend contract.
 * `PROVENANCE.md` — every source file hash, Lean theorem, constant, and
   caveat, pinned to Res-Nova commit `c3ff5f3`.
-* 50/50 tests passing; compile gate 8 modules / 0 violations.
+* 59/59 tests passing; compile gate 9 modules / 0 violations.
 
 ### 11.1 Provenance of Engineering: The Chyren Ecosystem & Prior Formal Tooling
 

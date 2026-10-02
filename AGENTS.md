@@ -13,20 +13,25 @@ Serves a web dashboard on port 3000 using Python's built-in `http.server`.
 
 ## Architecture
 - `dashboard.py` — stdlib-only web server serving the project dashboard on :3000
+- `dashboard_page.py` — HTML/CSS/JS rendering for the dashboard (imported by dashboard.py)
 - `core/` — dual-channel action, anti-drift controller, sovereign clipping gate, topology graph
 - `verification/` — adversarial auditor, AST invariant validation (Contingent Box gate)
-- `benchmarks/` — drift model + benchmark harness with JSON receipts
-- `tests/` — 50 unittest tests (all pass, stdlib only)
+- `benchmarks/` — drift model + benchmark harness + ablation harness with JSON receipts
+- `tests/` — 59 unittest tests (all pass, stdlib only)
 
 ## Verification
-- **Tests:** `python3 -m unittest discover -s tests -v` (50 tests, ~1.5s)
-- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 8 modules, 0 violations)
+- **Tests:** `python3 -m unittest discover -s tests -v` (59 tests, ~1.5s)
+- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 9 modules, 0 violations)
 - **Benchmark:** `python3 benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json`
-- **Dashboard API:** `/api/tests`, `/api/gate`, `/api/benchmark`, `/api/receipt`
+- **Ablation:** `python3 benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` (sweep over constraint pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5])
+- **Dashboard API:** `/api/receipt` (read-only; subprocess-spawning endpoints removed)
 
 ## Key Facts
 - Python 3.12 (slim Docker image)
 - No external secrets or credentials needed
 - No database, no cache, no external services
-- The dashboard runs tests/benchmarks as subprocesses on demand
+- The dashboard is a static page; only `/api/receipt` is served (read-only)
 - Benchmark receipt is committed at `benchmarks/results/benchmark_receipt.json`
+- Ablation receipt is at `benchmarks/results/ablation_receipt.json`
+- The diversity metric is renamed `mean_pairwise_cosine` (was `mean_swarm_diversity`)
+- GateLedger.entries is now an immutable tuple property (append-only enforced)

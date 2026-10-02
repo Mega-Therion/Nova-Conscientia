@@ -44,6 +44,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
 
 from sovereign_clipping_gate import (  # type: ignore
+    COLLAPSE_TOLERANCE,
     MEASURED_TAU,
     GateDecision,
     GateLedger,
@@ -63,6 +64,12 @@ PROVENANCE: Dict[str, str] = {
         "Nova Conscientia engineering choice for this runtime, mirroring the "
         "shape of YettParadigm.lean adccl_non_singular (bounded-energy HALT); "
         "the specific value is configurable, not a Res-Nova constant."
+    ),
+    "COLLAPSE_TOLERANCE": (
+        "Imported from sovereign_clipping_gate. Floating-point tolerance for "
+        "collapse_cycles: a post-gate similarity within 1e-9 of the threshold "
+        "is NOT collapsed (the gate clips to exactly threshold, but IEEE-754 "
+        "can produce threshold - epsilon)."
     ),
 }
 
@@ -163,7 +170,8 @@ class ADCCLController:
         action: the dual-channel action evaluator.
         gate: the sovereign clipping gate.
         halt_energy: energy ceiling; exceeding it HALTs the loop (fail closed).
-        ledger: append-only cycle records (the audit trail).
+        ledger: read-only tuple of cycle records (the audit trail; cannot
+            be mutated — use ``step`` to append).
         gate_ledger: the gate's own decision ledger.
         halted: True once the loop has HALTed; a halted controller accepts
             nothing further until explicitly reset by the owner.
@@ -173,7 +181,7 @@ class ADCCLController:
     action: DualChannelAction = field(default_factory=DualChannelAction)
     gate: Optional[SovereignClippingGate] = None
     halt_energy: float = 1.0
-    ledger: List[CycleRecord] = field(default_factory=list)
+    _ledger: List[CycleRecord] = field(default_factory=list)
     gate_ledger: GateLedger = field(default_factory=GateLedger)
     halted: bool = False
     _cycle: int = 0
@@ -195,6 +203,11 @@ class ADCCLController:
             self._state = list(self.anchor)
 
     # -- state access -------------------------------------------------------
+
+    @property
+    def ledger(self) -> Tuple[CycleRecord, ...]:
+        """Immutable snapshot of all cycle records (cannot be mutated)."""
+        return tuple(self._ledger)
 
     @property
     def state(self) -> List[float]:
@@ -368,7 +381,7 @@ class ADCCLController:
                 net_action=net_action,
                 reason=reason,
             )
-        self.ledger.append(record)
+        self._ledger.append(record)
         return record
 
     # -- audit --------------------------------------------------------------
@@ -380,20 +393,20 @@ class ADCCLController:
             threshold: collapse boundary; defaults to MEASURED_TAU.
         """
         th = MEASURED_TAU if threshold is None else threshold
-        return sum(1 for r in self.ledger if r.similarity_out < th)
+        return sum(1 for r in self._ledger if r.similarity_out < th - COLLAPSE_TOLERANCE)
 
     def summary(self) -> Dict[str, float]:
         """Aggregate statistics over the ledger (counts, means, collapses)."""
-        n = len(self.ledger)
+        n = len(self._ledger)
         if n == 0:
             return {"cycles": 0.0, "halted": float(self.halted)}
-        accepted = sum(1 for r in self.ledger if r.verdict.startswith("ACCEPTED"))
-        rejected = sum(1 for r in self.ledger if r.verdict == "REJECTED")
+        accepted = sum(1 for r in self._ledger if r.verdict.startswith("ACCEPTED"))
+        rejected = sum(1 for r in self._ledger if r.verdict == "REJECTED")
         return {
             "cycles": float(n),
             "accepted": float(accepted),
             "rejected": float(rejected),
             "halted": float(self.halted),
-            "mean_similarity_out": sum(r.similarity_out for r in self.ledger) / n,
-            "mean_energy": sum(r.energy for r in self.ledger) / n,
+            "mean_similarity_out": sum(r.similarity_out for r in self._ledger) / n,
+            "mean_energy": sum(r.energy for r in self._ledger) / n,
         }
