@@ -12,17 +12,17 @@
   },
   "metrics": {
     "baseline_unconstrained": {
-      "mean_final_similarity": 0.3279819804511828,
+      "mean_final_similarity": 0.32798198045118276,
       "collapse_fraction": 1.0,
-      "mean_min_similarity": 0.27393860361975564,
+      "mean_min_similarity": 0.2739386036197556,
       "mean_final_energy": 74999850011.67769
     },
     "dual_channel_swarm": {
-      "mean_final_similarity": 0.9654454086259955,
+      "mean_final_similarity": 0.9654453277779848,
       "collapse_fraction": 0.0,
-      "mean_min_similarity": 0.9632219728172154,
-      "mean_final_energy": 0.005529857574047897,
-      "mean_swarm_diversity": 0.997798051244488,
+      "mean_min_similarity": 0.9632219361843442,
+      "mean_final_energy": 0.0055298793445558115,
+      "mean_pairwise_cosine": 0.997798086310981,
       "halt_trials": 0.0
     }
   },
@@ -30,8 +30,8 @@
     "baseline": [
       {
         "seed": 20260906,
-        "final_similarity": 0.12239427517775264,
-        "min_similarity": 0.12239427517775264,
+        "final_similarity": 0.12239427517775263,
+        "min_similarity": 0.12239427517775263,
         "final_energy": 26.977400125809602,
         "collapsed": true
       },
@@ -44,9 +44,9 @@
       },
       {
         "seed": 20260908,
-        "final_similarity": 0.21820848564910986,
-        "min_similarity": 0.21132595681687402,
-        "final_energy": 7.228272772355849,
+        "final_similarity": 0.2182084856491099,
+        "min_similarity": 0.21132595681687394,
+        "final_energy": 7.228272772355833,
         "collapsed": true
       },
       {
@@ -58,8 +58,8 @@
       },
       {
         "seed": 20260910,
-        "final_similarity": 0.04235514346126519,
-        "min_similarity": -0.03728018423730165,
+        "final_similarity": 0.04235514346126515,
+        "min_similarity": -0.0372801842373017,
         "final_energy": 257.8268883936197,
         "collapsed": true
       },
@@ -86,14 +86,14 @@
       },
       {
         "seed": 20260914,
-        "final_similarity": 0.22383606871748443,
-        "min_similarity": 0.2199149291560951,
+        "final_similarity": 0.22383606871748446,
+        "min_similarity": 0.21991492915609506,
         "final_energy": 6.803206913323619,
         "collapsed": true
       },
       {
         "seed": 20260915,
-        "final_similarity": -0.056452086391196574,
+        "final_similarity": -0.05645208639119658,
         "min_similarity": -0.07161569591166175,
         "final_energy": 499999000013.8155,
         "collapsed": true
@@ -107,23 +107,23 @@
       },
       {
         "seed": 20260917,
-        "final_similarity": 0.6786916503529288,
-        "min_similarity": 0.6786916503529288,
-        "final_energy": 0.23675640773841666,
+        "final_similarity": 0.678691650352929,
+        "min_similarity": 0.678691650352929,
+        "final_energy": 0.23675640773841622,
         "collapsed": true
       },
       {
         "seed": 20260918,
-        "final_similarity": 0.27333806052346493,
-        "min_similarity": 0.27333806052346493,
+        "final_similarity": 0.2733380605234649,
+        "min_similarity": 0.2733380605234649,
         "final_energy": 4.181386280462556,
         "collapsed": true
       },
       {
         "seed": 20260919,
-        "final_similarity": 0.5828488058379929,
+        "final_similarity": 0.582848805837993,
         "min_similarity": 0.2415357997637554,
-        "final_energy": 0.4507081041406683,
+        "final_energy": 0.45070810414066775,
         "collapsed": true
       },
       {
@@ -149,7 +149,7 @@
       },
       {
         "seed": 20260923,
-        "final_similarity": -0.11985417087050494,
+        "final_similarity": -0.1198541708705049,
         "min_similarity": -0.12631045366489027,
         "final_energy": 499999000013.8155,
         "collapsed": true
@@ -157,42 +157,42 @@
       {
         "seed": 20260924,
         "final_similarity": 0.42232454583002904,
-        "min_similarity": 0.2710424281999004,
+        "min_similarity": 0.27104242819990043,
         "final_energy": 1.303262003202778,
         "collapsed": true
       },
       {
         "seed": 20260925,
         "final_similarity": 0.5779584463968152,
-        "min_similarity": 0.49059261330058224,
+        "min_similarity": 0.49059261330058235,
         "final_energy": 0.46531235872749843,
         "collapsed": true
       },
       {
         "seed": 20260926,
-        "final_similarity": 0.5700215606570508,
+        "final_similarity": 0.5700215606570507,
         "min_similarity": 0.5625222328413976,
-        "final_energy": 0.48998960585376394,
+        "final_energy": 0.4899896058537644,
         "collapsed": true
       },
       {
         "seed": 20260927,
         "final_similarity": 0.24137517750933327,
-        "min_similarity": 0.21928093330804208,
+        "min_similarity": 0.21928093330804202,
         "final_energy": 5.675012544688899,
         "collapsed": true
       },
       {
         "seed": 20260928,
         "final_similarity": 0.6437881419391438,
-        "min_similarity": 0.48562056323544467,
+        "min_similarity": 0.48562056323544456,
         "final_energy": 0.3010442391932219,
         "collapsed": true
       },
       {
         "seed": 20260929,
-        "final_similarity": 0.27104943047854746,
-        "min_similarity": 0.27104943047854746,
+        "final_similarity": 0.2710494304785474,
+        "min_similarity": 0.2710494304785474,
         "final_energy": 4.269851852036513,
         "collapsed": true
       },
@@ -234,13 +234,13 @@
       {
         "seed": 20260935,
         "final_similarity": 0.42626111085183144,
-        "min_similarity": 0.2245660228386948,
+        "min_similarity": 0.22456602283869478,
         "final_energy": 1.2681665336689194,
         "collapsed": true
       },
       {
         "seed": 20260936,
-        "final_similarity": 0.3966382499286795,
+        "final_similarity": 0.3966382499286796,
         "min_similarity": 0.2854104078628065,
         "final_energy": 1.56208168474646,
         "collapsed": true
@@ -254,7 +254,7 @@
       },
       {
         "seed": 20260938,
-        "final_similarity": 0.3496438839039878,
+        "final_similarity": 0.3496438839039877,
         "min_similarity": 0.3386332042376436,
         "final_energy": 2.2132033663837256,
         "collapsed": true
@@ -262,27 +262,27 @@
       {
         "seed": 20260939,
         "final_similarity": 0.3135475242904977,
-        "min_similarity": 0.24597959694146096,
+        "min_similarity": 0.2459795969414609,
         "final_energy": 2.950755434677623,
         "collapsed": true
       },
       {
         "seed": 20260940,
         "final_similarity": 0.6157639975057044,
-        "min_similarity": 0.6005145839336115,
+        "min_similarity": 0.6005145839336113,
         "final_energy": 0.36308694047503787,
         "collapsed": true
       },
       {
         "seed": 20260941,
-        "final_similarity": -0.44650846260438726,
-        "min_similarity": -0.44650846260438726,
+        "final_similarity": -0.44650846260438715,
+        "min_similarity": -0.44650846260438715,
         "final_energy": 499999000013.8155,
         "collapsed": true
       },
       {
         "seed": 20260942,
-        "final_similarity": 0.12372381286555655,
+        "final_similarity": 0.12372381286555656,
         "min_similarity": 0.029229589199082133,
         "final_energy": 26.342624932890523,
         "collapsed": true
@@ -296,385 +296,385 @@
       },
       {
         "seed": 20260944,
-        "final_similarity": -0.018716711153436365,
-        "min_similarity": -0.018716711153436365,
+        "final_similarity": -0.018716711153436393,
+        "min_similarity": -0.018716711153436393,
         "final_energy": 499999000013.8155,
         "collapsed": true
       },
       {
         "seed": 20260945,
-        "final_similarity": 0.5645521606830166,
-        "min_similarity": 0.47743046828660124,
-        "final_energy": 0.5077300678058003,
+        "final_similarity": 0.5645521606830165,
+        "min_similarity": 0.4774304682866012,
+        "final_energy": 0.5077300678058007,
         "collapsed": true
       }
     ],
     "swarm": [
       {
         "seed": 20260906,
-        "final_similarity": 0.9645233880488389,
-        "min_similarity": 0.9628987567094555,
-        "final_energy": 0.005686411662940639,
-        "swarm_diversity": 0.9993753679501022,
+        "final_similarity": 0.964523387966197,
+        "min_similarity": 0.9628987569820908,
+        "final_energy": 0.005686411682051645,
+        "pairwise_cosine": 0.9993753679713638,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260907,
-        "final_similarity": 0.968762395259919,
-        "min_similarity": 0.9662860957317676,
-        "final_energy": 0.004703190580593044,
-        "swarm_diversity": 0.9982541698883999,
+        "final_similarity": 0.9687624050865453,
+        "min_similarity": 0.9662861741580956,
+        "final_energy": 0.004703188163721277,
+        "pairwise_cosine": 0.9982541958786119,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260908,
-        "final_similarity": 0.9674288921955301,
-        "min_similarity": 0.9606641719458312,
-        "final_energy": 0.005032284189148407,
-        "swarm_diversity": 0.9907202980487771,
+        "final_similarity": 0.9674288921956072,
+        "min_similarity": 0.9606641719459068,
+        "final_energy": 0.005032284189130741,
+        "pairwise_cosine": 0.9907202980487888,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260909,
-        "final_similarity": 0.9564030883248232,
-        "min_similarity": 0.9553105573512675,
-        "final_energy": 0.007742313324452429,
-        "swarm_diversity": 0.9994966442477698,
+        "final_similarity": 0.9564030879406759,
+        "min_similarity": 0.9553105558868517,
+        "final_energy": 0.007742313428934652,
+        "pairwise_cosine": 0.9994966431041874,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260910,
-        "final_similarity": 0.9629763779078129,
-        "min_similarity": 0.9604559839666699,
-        "final_energy": 0.00606471472112631,
-        "swarm_diversity": 0.9983087067429831,
+        "final_similarity": 0.9629763378798494,
+        "min_similarity": 0.960455546814885,
+        "final_energy": 0.006064725999454712,
+        "pairwise_cosine": 0.9983086094153696,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260911,
-        "final_similarity": 0.968383435816263,
-        "min_similarity": 0.9663686977281761,
-        "final_energy": 0.004788070679775214,
-        "swarm_diversity": 0.9973003545872897,
+        "final_similarity": 0.9683834357016018,
+        "min_similarity": 0.9663686976937207,
+        "final_energy": 0.0047880707056810546,
+        "pairwise_cosine": 0.9973003542450121,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260912,
-        "final_similarity": 0.9656339940041483,
-        "min_similarity": 0.9632563595703402,
-        "final_energy": 0.005424884841758728,
-        "swarm_diversity": 0.9991477870916806,
+        "final_similarity": 0.9656339979018416,
+        "min_similarity": 0.9632564418250106,
+        "final_energy": 0.005424883634498839,
+        "pairwise_cosine": 0.9991478049734094,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260913,
-        "final_similarity": 0.9669251945189674,
-        "min_similarity": 0.9645489264872728,
-        "final_energy": 0.005124066187579575,
-        "swarm_diversity": 0.9994280045603913,
+        "final_similarity": 0.9669250965533924,
+        "min_similarity": 0.9645482620480839,
+        "final_energy": 0.005124090982249576,
+        "pairwise_cosine": 0.9994277744135722,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260914,
-        "final_similarity": 0.9601482802652915,
+        "final_similarity": 0.9601482802655568,
         "min_similarity": 0.9539,
-        "final_energy": 0.006813283401749968,
-        "swarm_diversity": 0.9987830860246613,
+        "final_energy": 0.006813283401680994,
+        "pairwise_cosine": 0.9987830860246448,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260915,
-        "final_similarity": 0.9782337067949781,
-        "min_similarity": 0.9772800052957639,
-        "final_energy": 0.002749194990993382,
-        "swarm_diversity": 0.9998869002101466,
+        "final_similarity": 0.9782337067937612,
+        "min_similarity": 0.9772800053003557,
+        "final_energy": 0.002749194991219967,
+        "pairwise_cosine": 0.9998869002080988,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260916,
-        "final_similarity": 0.9643819064021446,
-        "min_similarity": 0.9624462417506078,
-        "final_energy": 0.005724025822083978,
-        "swarm_diversity": 0.9970622517253912,
+        "final_similarity": 0.9643819060806116,
+        "min_similarity": 0.9624462416564566,
+        "final_energy": 0.005724025901559725,
+        "pairwise_cosine": 0.997062250781919,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260917,
-        "final_similarity": 0.9744373338215817,
-        "min_similarity": 0.9728217300012042,
-        "final_energy": 0.0034906003332471746,
-        "swarm_diversity": 0.9973350918248004,
+        "final_similarity": 0.9744373336576807,
+        "min_similarity": 0.9728217299871462,
+        "final_energy": 0.0034906003678958596,
+        "pairwise_cosine": 0.9973350913917058,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260918,
-        "final_similarity": 0.969982733837325,
-        "min_similarity": 0.9689508137706505,
-        "final_energy": 0.004429743842109074,
-        "swarm_diversity": 0.9987245122252087,
+        "final_similarity": 0.9699827406704364,
+        "min_similarity": 0.9689508513795231,
+        "final_energy": 0.004429742288163406,
+        "pairwise_cosine": 0.9987245376067194,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260919,
-        "final_similarity": 0.9645336687730376,
-        "min_similarity": 0.9634984626478876,
-        "final_energy": 0.005681356331757701,
-        "swarm_diversity": 0.9952542863844759,
+        "final_similarity": 0.964533668768012,
+        "min_similarity": 0.9634984626338262,
+        "final_energy": 0.005681356332949292,
+        "pairwise_cosine": 0.9952542865539046,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260920,
-        "final_similarity": 0.9693891774266729,
-        "min_similarity": 0.9681379440242778,
-        "final_energy": 0.004560687603714784,
-        "swarm_diversity": 0.9999085323411098,
+        "final_similarity": 0.9693891769335898,
+        "min_similarity": 0.9681379437205379,
+        "final_energy": 0.004560687715178204,
+        "pairwise_cosine": 0.9999085321417388,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260921,
-        "final_similarity": 0.9661597370949611,
-        "min_similarity": 0.9641611007392781,
-        "final_energy": 0.005297821358441333,
-        "swarm_diversity": 0.9979298118590428,
+        "final_similarity": 0.966159737311131,
+        "min_similarity": 0.964161100130739,
+        "final_energy": 0.005297821309312584,
+        "pairwise_cosine": 0.9979298124443973,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260922,
-        "final_similarity": 0.9628027748701753,
-        "min_similarity": 0.9556974431120272,
-        "final_energy": 0.006139798047643613,
-        "swarm_diversity": 0.9946629137096391,
+        "final_similarity": 0.9628030612721472,
+        "min_similarity": 0.9556974587508771,
+        "final_energy": 0.006139732240157627,
+        "pairwise_cosine": 0.9946624386609632,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260923,
-        "final_similarity": 0.9672301332468196,
-        "min_similarity": 0.9663683336543293,
-        "final_energy": 0.00504775685850869,
-        "swarm_diversity": 0.9966632206102375,
+        "final_similarity": 0.9672301395706372,
+        "min_similarity": 0.9663683449818865,
+        "final_energy": 0.005047755397831342,
+        "pairwise_cosine": 0.9966632352484227,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260924,
-        "final_similarity": 0.9596188316824077,
-        "min_similarity": 0.9563388365168519,
-        "final_energy": 0.00691159164411974,
-        "swarm_diversity": 0.997500718143301,
+        "final_similarity": 0.9596188316625209,
+        "min_similarity": 0.9563388360531343,
+        "final_energy": 0.00691159164662861,
+        "pairwise_cosine": 0.9975007190027657,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260925,
-        "final_similarity": 0.9675505538710025,
-        "min_similarity": 0.9666128349070663,
-        "final_energy": 0.0049743976185609735,
-        "swarm_diversity": 0.9999411313786496,
+        "final_similarity": 0.9675505539251777,
+        "min_similarity": 0.9666128378370914,
+        "final_energy": 0.004974397601651371,
+        "pairwise_cosine": 0.999941131880392,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260926,
-        "final_similarity": 0.9555563341735241,
-        "min_similarity": 0.9545978858398527,
-        "final_energy": 0.007970766063588356,
-        "swarm_diversity": 0.999759954681552,
+        "final_similarity": 0.9555528609261422,
+        "min_similarity": 0.9545971147097564,
+        "final_energy": 0.007971687505848426,
+        "pairwise_cosine": 0.9997618551649321,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260927,
-        "final_similarity": 0.96756337300152,
-        "min_similarity": 0.9659181446963035,
-        "final_energy": 0.004982312951278157,
-        "swarm_diversity": 0.9931662253963792,
+        "final_similarity": 0.9675633730015166,
+        "min_similarity": 0.9659181446961388,
+        "final_energy": 0.00498231295127883,
+        "pairwise_cosine": 0.9931662253958962,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260928,
-        "final_similarity": 0.9608774198209853,
-        "min_similarity": 0.9604567695251381,
-        "final_energy": 0.006579002808517732,
-        "swarm_diversity": 0.9999243988624018,
+        "final_similarity": 0.9608774224953006,
+        "min_similarity": 0.9604567310504838,
+        "final_energy": 0.006579002088696403,
+        "pairwise_cosine": 0.9999244065039187,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260929,
-        "final_similarity": 0.9635097206488137,
-        "min_similarity": 0.9600250547858383,
-        "final_energy": 0.0059341681148896725,
-        "swarm_diversity": 0.9964416364011588,
+        "final_similarity": 0.9635097207398104,
+        "min_similarity": 0.9600250548325885,
+        "final_energy": 0.0059341680931399455,
+        "pairwise_cosine": 0.9964416366694416,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260930,
-        "final_similarity": 0.9582136355783802,
-        "min_similarity": 0.9556458872960985,
-        "final_energy": 0.007267442616990888,
-        "swarm_diversity": 0.9904896082418109,
+        "final_similarity": 0.9582136355822194,
+        "min_similarity": 0.9556458872989547,
+        "final_energy": 0.007267442615994015,
+        "pairwise_cosine": 0.990489608257819,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260931,
-        "final_similarity": 0.9596264208500982,
-        "min_similarity": 0.9576061943154027,
-        "final_energy": 0.006900618246500642,
-        "swarm_diversity": 0.9993920403473563,
+        "final_similarity": 0.9596264212047872,
+        "min_similarity": 0.9576061951470323,
+        "final_energy": 0.006900618150670583,
+        "pairwise_cosine": 0.9993920410987224,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260932,
-        "final_similarity": 0.9627094762803104,
-        "min_similarity": 0.9616953960512976,
-        "final_energy": 0.006126510720851684,
-        "swarm_diversity": 0.9987430754748837,
+        "final_similarity": 0.9627094749975575,
+        "min_similarity": 0.9616955340296933,
+        "final_energy": 0.006126511108636597,
+        "pairwise_cosine": 0.9987430991361514,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260933,
         "final_similarity": 0.9703863926164811,
-        "min_similarity": 0.9660985713445464,
-        "final_energy": 0.004379828764410879,
-        "swarm_diversity": 0.9958454374514091,
+        "min_similarity": 0.9660985713446146,
+        "final_energy": 0.0043798287644104174,
+        "pairwise_cosine": 0.9958454374514852,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260934,
-        "final_similarity": 0.9620058842233947,
-        "min_similarity": 0.9607535786835308,
-        "final_energy": 0.006297487744740369,
-        "swarm_diversity": 0.9998435956008772,
+        "final_similarity": 0.9620058840813162,
+        "min_similarity": 0.9607535787428749,
+        "final_energy": 0.006297487779693281,
+        "pairwise_cosine": 0.9998435955840753,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260935,
-        "final_similarity": 0.9718472136038084,
-        "min_similarity": 0.9702259894432597,
-        "final_energy": 0.0040287209212853566,
-        "swarm_diversity": 0.9984195410623552,
+        "final_similarity": 0.9718472704130879,
+        "min_similarity": 0.970226018593431,
+        "final_energy": 0.0040287085772275,
+        "pairwise_cosine": 0.998419711911104,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260936,
-        "final_similarity": 0.9592766573152341,
-        "min_similarity": 0.9582196116755727,
-        "final_energy": 0.006987601294245648,
-        "swarm_diversity": 0.9995661083650789,
+        "final_similarity": 0.9592766570545512,
+        "min_similarity": 0.9582196119611994,
+        "final_energy": 0.006987601360741847,
+        "pairwise_cosine": 0.9995661075104875,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260937,
-        "final_similarity": 0.9576647201381615,
-        "min_similarity": 0.95685444679424,
-        "final_energy": 0.007408112335230003,
-        "swarm_diversity": 0.9985166316884828,
+        "final_similarity": 0.9576647196701067,
+        "min_similarity": 0.9568544482888843,
+        "final_energy": 0.00740811245907908,
+        "pairwise_cosine": 0.9985166305001436,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260938,
-        "final_similarity": 0.9578050055013351,
-        "min_similarity": 0.9559750064077736,
-        "final_energy": 0.0073806250283818195,
-        "swarm_diversity": 0.9980046966060386,
+        "final_similarity": 0.9578050065705559,
+        "min_similarity": 0.9559750201720736,
+        "final_energy": 0.007380624695863968,
+        "pairwise_cosine": 0.9980046986951375,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260939,
-        "final_similarity": 0.9727759088873202,
-        "min_similarity": 0.9703048279378873,
-        "final_energy": 0.003835206626828334,
-        "swarm_diversity": 0.998848224286403,
+        "final_similarity": 0.9727759086939296,
+        "min_similarity": 0.9703048271047462,
+        "final_energy": 0.0038352066694123327,
+        "pairwise_cosine": 0.998848223753666,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260940,
-        "final_similarity": 0.9747984959093097,
-        "min_similarity": 0.9722228933705734,
-        "final_energy": 0.0034200581510689327,
-        "swarm_diversity": 0.9997464477389153,
+        "final_similarity": 0.9747984958408487,
+        "min_similarity": 0.972222892542398,
+        "final_energy": 0.0034200581659015496,
+        "pairwise_cosine": 0.9997464479281449,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260941,
-        "final_similarity": 0.9694390105043709,
-        "min_similarity": 0.966500096722884,
-        "final_energy": 0.004562249264007699,
-        "swarm_diversity": 0.9961937181835694,
+        "final_similarity": 0.9694390105046998,
+        "min_similarity": 0.9665000967277761,
+        "final_energy": 0.004562249263918031,
+        "pairwise_cosine": 0.9961937181842918,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260942,
-        "final_similarity": 0.9704363298276488,
-        "min_similarity": 0.9680439984616058,
-        "final_energy": 0.004336168305835624,
-        "swarm_diversity": 0.9993710157870375,
+        "final_similarity": 0.9704363371208211,
+        "min_similarity": 0.9680440378626062,
+        "final_energy": 0.004336166465682487,
+        "pairwise_cosine": 0.9993710360996931,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260943,
-        "final_similarity": 0.9571026052649219,
-        "min_similarity": 0.954508025479206,
-        "final_energy": 0.007560782519583432,
-        "swarm_diversity": 0.9980207110769671,
+        "final_similarity": 0.9571026052641814,
+        "min_similarity": 0.9545080254794673,
+        "final_energy": 0.007560782519766522,
+        "pairwise_cosine": 0.9980207110778537,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260944,
-        "final_similarity": 0.9640798355938572,
-        "min_similarity": 0.9616342140079621,
-        "final_energy": 0.0057970626547454735,
-        "swarm_diversity": 0.9966976625299063,
+        "final_similarity": 0.9640798351955365,
+        "min_similarity": 0.9616342148393922,
+        "final_energy": 0.00579706275004835,
+        "pairwise_cosine": 0.996697661435233,
         "collapsed": false,
         "halts": 0
       },
       {
         "seed": 20260945,
-        "final_similarity": 0.9766363011376394,
-        "min_similarity": 0.9755890239389257,
-        "final_energy": 0.0030533837886303683,
-        "swarm_diversity": 0.9992475304428857,
+        "final_similarity": 0.9766363010089685,
+        "min_similarity": 0.9755890221634332,
+        "final_energy": 0.0030533838162708146,
+        "pairwise_cosine": 0.9992475300850541,
         "collapsed": false,
         "halts": 0
       }
     ]
   },
   "environment": {
-    "python": "3.11.15",
-    "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36"
+    "python": "3.12.3",
+    "platform": "Linux-6.1.158+-x86_64-with-glibc2.39"
   },
   "provenance": {
     "MEASURED_TAU": "measured ADCCL threshold (Res-Nova ALIGNMENT_CEILING_ONE_RELATION.md, 2026-09-06)",
