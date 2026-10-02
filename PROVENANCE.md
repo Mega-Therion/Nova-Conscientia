@@ -124,7 +124,8 @@ none of their numeric content is imported into this runtime):
 
 ## Reproducibility caveat
 
-The committed benchmark and ablation receipts are deterministic for a given
+The committed receipts (benchmark, ablation, task, bootstrap, credit-mode and
+auditor-signal) are deterministic for a given
 seed set on a single platform, but are **not bit-reproducible across platforms**:
 7th-decimal floating-point drift arises from differences in math library
 implementations (e.g. glibc vs musl, x87 vs SSE/AVX transcendental functions).

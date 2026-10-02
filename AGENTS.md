@@ -16,7 +16,7 @@ Serves a web dashboard on port 3000 using Python's built-in `http.server`.
 - `dashboard_page.py` — HTML/CSS/JS rendering for the dashboard (imported by dashboard.py)
 - `core/` — dual-channel action, anti-drift controller, sovereign clipping gate, topology graph
 - `verification/` — adversarial auditor, AST invariant validation (Contingent Box gate)
-- `benchmarks/` — drift model + benchmark harness + ablation harness + task benchmark with JSON receipts
+- `benchmarks/` — drift model, benchmark, ablation, task benchmark, auditor-signal benchmark and the live-model bridge, with JSON receipts
 - `tests/` — 103 unittest tests (all pass, stdlib only)
 
 ## Verification
@@ -30,11 +30,11 @@ Serves a web dashboard on port 3000 using Python's built-in `http.server`.
 - **Dashboard API:** `/api/receipt` (read-only; subprocess-spawning endpoints removed)
 
 ## Key Facts
-- Python 3.12 (slim Docker image)
-- No external secrets or credentials needed
+- Python 3.12 (slim Docker image); CI (`.github/workflows/ci.yml`) runs the tests, the gate and the benchmark-receipt check on every PR
+- No secrets needed for anything except an optional live-model run (`NOVA_EMBED_API_KEY`, see README)
 - No database, no cache, no external services
 - The dashboard is a static page; only `/api/receipt` is served (read-only)
-- Benchmark receipt is committed at `benchmarks/results/benchmark_receipt.json`
-- Ablation receipt is at `benchmarks/results/ablation_receipt.json`
-- The diversity metric is renamed `mean_pairwise_cosine` (was `mean_swarm_diversity`)
-- GateLedger.entries is now an immutable tuple property (append-only enforced)
+- Committed receipts in `benchmarks/results/`: `benchmark_receipt.json`, `ablation_receipt.json`, `task_benchmark_receipt.json`, `task_bootstrap_receipt.json`, `task_credit_modes_receipt.json`, `auditor_signal_receipt.json`
+- Swarm agreement metric: `mean_pairwise_cosine` in receipts (`pairwise_cosine` per trial); it was `mean_swarm_diversity`, which misdescribed it
+- `GateLedger.entries` and `ADCCLController.ledger` are read-only tuples (append-only enforced)
+- Epistemic tags: PROVENANCE.md's constant register uses `[E]/[C]/[D]/[P]`; claims elsewhere use `[thm]/[emp]/[conj]/[open]`. Never upgrade a tag; simulated results are at most `[conj]`
