@@ -1,0 +1,54 @@
+name: CI
+
+# Runs the same checks the repo documents in AGENTS.md: the stdlib unittest suite, the Contingent Box compile gate,
+# and the benchmark, whose committed receipt must reproduce exactly apart from the machine-specific `environment`
+# block. Stdlib only: no dependencies to install.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Syntax check (every tracked .py file)
+        run: git ls-files -z '*.py' | xargs -0 python -m py_compile
+
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Contingent Box compile gate
+        run: python verification/ast_invariant_validation.py
+
+      - name: Benchmark receipt reproduces
+        run: |
+          python benchmarks/run_benchmark.py --json "$RUNNER_TEMP/receipt.json"
+          python - "$RUNNER_TEMP/receipt.json" benchmarks/results/benchmark_receipt.json <<'PY'
+          import json, sys
+          fresh, committed = (json.load(open(p)) for p in sys.argv[1:3])
+          for d in (fresh, committed):
+              d.pop("environment", None)   # python version and platform differ by machine
+          if fresh != committed:
+              diff = [k for k in sorted(set(fresh) | set(committed)) if fresh.get(k) != committed.get(k)]
+              sys.exit(f"benchmark receipt does not reproduce; differing sections: {diff}. "
+                       "Rerun benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json "
+                       "and commit the result if the change is intended.")
+          print("benchmark receipt reproduces (environment block excluded)")
+          PY
