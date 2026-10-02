@@ -337,7 +337,7 @@ question with receipts.
   caveat, pinned to Res-Nova commit `c3ff5f3`.
 * 50/50 tests passing; compile gate 8 modules / 0 violations.
 
-### 11.1 The Chyren Polyglot Production Architecture — the three-year living testbed
+### 11.1 Provenance of Engineering: The Chyren Ecosystem & Prior Formal Tooling
 
 Nova Conscientia was not designed on paper; it was **distilled from a working
 production system**. Chyren (private; `Mega-Therion/Chyren` commit `fb6691de`,
@@ -365,6 +365,31 @@ distillation of that practice — not a first prototype. Per the Contingent Box
 discipline, no numeric constants from Chyren are imported into this runtime;
 they remain in their home repo with their own provenance (PROVENANCE.md,
 Prior Art & Engineering Foundations).
+
+Two further artifacts of the same production track — the 3-year testbed built
+in Story, Arkansas (Montgomery County) — are registered in PROVENANCE.md as
+predecessor systems:
+
+**MVPC-X (Minimum Viable Proof Checker — Extended).** A standalone formal
+proof-checking engine and claim-consistency verifier across JSON fixture
+manifests: an independently versioned public verifier (`mvpc.cli verify
+artifact`) wired directly into GitHub Actions (`verify.yml`) as the CI gate
+keeper across Res-Nova, 4Leibniz, and the wider constellation. It replays
+rendered claim bundles (`evidence/v1/claim-ledger.json`) against formal
+judges — catching defects, enforcing cryptographic consistency against frozen
+JSON, and auditing status inflation. It is the **direct architectural
+predecessor of Nova C's AST invariant validation**
+(`verification/ast_invariant_validation.py`): the same fail-closed gate
+discipline, productized first in MVPC-X and then compiled into this
+repository's compile gate.
+
+**RYTT-Sovereign-Semiotics** (`github.com/Mega-Therion/RYTT-Sovereign-Semiotics`).
+A formal lossless semiotic grammar with a Lean 4-verified round-trip
+invariance theorem — **𝒟(𝒞(S)) ≡ S** (`SovereignSemiotics.lean`;
+`lake build +SovereignSemiotics` passes with 0 errors) — a mathematical
+guarantee against semantic drift across multi-agent boundaries. Its Dual-Plane
+Allocation (U+E000 ground / U+E800 elevated) provides a formal, human-readable
+semiotic geometry, alongside the Rust `rytt-core` crate.
 
 ## 12. The ask
 

@@ -60,6 +60,18 @@ runtime — they stay in their home repo with their own provenance.
 | 4 — Agent Runtime & AST Verification | Python | multi-agent swarm orchestration; fail-closed AST invariant gates | the direct ancestor of `core/` and `verification/` (adversarial consensus, Contingent Box gate) |
 | 5 — Delivery & Interface | TypeScript / Next.js | web application; civic research interface | the delivery layer for the civic record (CIVIC_IMPACT.md) |
 
+## Predecessor Systems & Ecosystem Lineage
+
+Prior production systems on the Engineering Provenance track (things built by
+R.W. Yett, Story, Arkansas). None of their numeric constants are imported into
+this runtime.
+
+| System | Repository | Core Mechanism / Formal Invariant | Language Ecosystem |
+|---|---|---|---|
+| Chyren Aeon | `Mega-Therion/chyren-aeon` | 7-layer polyglot cognition & memory topology | Rust, Python, TS, Qdrant |
+| MVPC-X | `Mega-Therion/Chyren` (MVPC) | Standalone formal proof-checking harness (CI claim-verifier: `mvpc.cli verify artifact` over JSON fixture manifests) | Python, JSON fixtures |
+| Sovereign Semiotics | `Mega-Therion/RYTT-Sovereign-Semiotics` | Lossless round-trip invariance 𝒟(𝒞(S)) ≡ S (`SovereignSemiotics.lean`, Lean 4-verified) | Lean 4 (+ Rust `rytt-core`) |
+
 ## Constant-by-constant register
 
 | constant | value | class | provenance |
