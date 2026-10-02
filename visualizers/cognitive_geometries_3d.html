@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cognitive Geometries & Systems Precedents — 3D Precision HUD</title>
+  <style>
+    :root {
+      --bg-dark: #050811;
+      --bg-card: rgba(10, 16, 31, 0.85);
+      --bg-card-border: rgba(0, 240, 255, 0.2);
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.4);
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --magenta: #ec4899;
+      --purple: #8b5cf6;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top HUD Navigation Bar */
+    header {
+      height: 58px;
+      background: rgba(5, 8, 17, 0.95);
+      border-bottom: 1px solid var(--bg-card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, var(--cyan), var(--magenta));
+      border-radius: 4px;
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .brand-title {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text-main);
+    }
+
+    .brand-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--cyan);
+      letter-spacing: 0.05em;
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.04em;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      color: var(--cyan);
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+    }
+
+    .telemetry-badges {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .badge-dot.cyan { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+    .badge-dot.emerald { background: var(--emerald); box-shadow: 0 0 6px var(--emerald); }
+    .badge-dot.amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+
+    /* Main Container Split View */
+    .viewport {
+      flex: 1;
+      position: relative;
+      display: flex;
+      overflow: hidden;
+    }
+
+    #canvas-container {
+      flex: 1;
+      height: 100%;
+      position: relative;
+      background: radial-gradient(circle at center, #0a1128 0%, #050811 100%);
+    }
+
+    /* 2D Canvas Fallback / Kinetic View */
+    #kinetic-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+
+    /* Floating HUD Side Panel */
+    .hud-panel {
+      width: 380px;
+      height: 100%;
+      background: var(--bg-card);
+      border-left: 1px solid var(--bg-card-border);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      z-index: 50;
+      overflow-y: auto;
+      padding: 1.25rem;
+      gap: 1.25rem;
+    }
+
+    .hud-card {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: border-color 0.2s;
+    }
+
+    .hud-card:hover {
+      border-color: rgba(0, 240, 255, 0.35);
+    }
+
+    .hud-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 0.5rem;
+    }
+
+    .hud-card-title {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--cyan);
+    }
+
+    .hud-card-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+    }
+
+    .hud-metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+
+    .hud-metric-label {
+      color: var(--text-muted);
+    }
+
+    .hud-metric-val {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .hud-metric-val.cyan { color: var(--cyan); }
+    .hud-metric-val.emerald { color: var(--emerald); }
+    .hud-metric-val.amber { color: var(--amber); }
+    .hud-metric-val.magenta { color: var(--magenta); }
+
+    /* Interactive Control Sliders & Buttons */
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+    }
+
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cyan);
+      cursor: pointer;
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    .action-btn {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: rgba(0, 240, 255, 0.2);
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    }
+
+    .action-btn.danger {
+      background: rgba(236, 72, 153, 0.1);
+      border-color: rgba(236, 72, 153, 0.3);
+      color: var(--magenta);
+    }
+
+    .action-btn.danger:hover {
+      background: rgba(236, 72, 153, 0.2);
+      border-color: var(--magenta);
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.3);
+    }
+
+    .action-btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    /* Holonomy Gauge Meter */
+    .gauge-wrapper {
+      position: relative;
+      height: 24px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      margin: 0.4rem 0;
+    }
+
+    .gauge-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--emerald) 0%, var(--cyan) 60%, var(--amber) 85%, var(--magenta) 100%);
+      transition: width 0.3s ease;
+      box-shadow: 0 0 8px var(--cyan-glow);
+    }
+
+    .gauge-threshold-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 87.3%; /* 17.465 / 20 * 100 */
+      width: 2px;
+      background: #ff0055;
+      box-shadow: 0 0 6px #ff0055;
+      z-index: 5;
+    }
+
+    /* Floating Legend Overlay on 3D Viewport */
+    .viewport-overlay {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 20;
+    }
+
+    .overlay-title {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+    }
+
+    .overlay-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--cyan);
+      letter-spacing: 0.05em;
+    }
+
+    .overlay-equation {
+      background: rgba(5, 8, 17, 0.8);
+      border-left: 2px solid var(--cyan);
+      padding: 6px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-main);
+      backdrop-filter: blur(8px);
+      margin-top: 4px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .viewport { flex-direction: column; }
+      .hud-panel { width: 100%; height: 320px; border-left: none; border-top: 1px solid var(--bg-card-border); }
+    }
+  </style>
+  <!-- Three.js and OrbitControls via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+  <!-- Top HUD Navigation Bar -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo"></div>
+      <div>
+        <div class="brand-title">NOVA CONSCIENTIA &middot; §11.2</div>
+        <div class="brand-subtitle">COGNITIVE GEOMETRIES PRECISION HUD</div>
+      </div>
+    </div>
+
+    <!-- View Mode Switcher -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-rubik" onclick="switchView('rubik')">1. HOLOGRAPHIC RUBIK'S CUBE</button>
+      <button class="tab-btn" id="tab-marble" onclick="switchView('marble')">2. MARBLE JAR KINETICS</button>
+      <button class="tab-btn" id="tab-holonomy" onclick="switchView('holonomy')">3. DIFFERENTIAL HOLONOMY</button>
+      <button class="tab-btn" id="tab-detritivore" onclick="switchView('detritivore')">4. TROPHIC DETRITIVORE</button>
+    </div>
+
+    <!-- Live Telemetry Badges -->
+    <div class="telemetry-badges">
+      <div class="badge">
+        <div class="badge-dot emerald"></div>
+        <span>τ BOUND: <strong>0.9539</strong></span>
+      </div>
+      <div class="badge">
+        <div class="badge-dot amber"></div>
+        <span>CRITICAL: <strong>17.465&deg;</strong></span>
+      </div>
+      <div class="badge">
+        <div class="badge-dot cyan"></div>
+        <span>ENERGY: <strong id="global-energy-badge">1.42 eV</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Viewport -->
+  <div class="viewport">
+    
+    <!-- 3D Three.js Container -->
+    <div id="canvas-container">
+      <div class="viewport-overlay">
+        <div class="overlay-title" id="view-title">PERMUTATION-LATTICE CONTEXT ROTATIONS</div>
+        <div class="overlay-subtitle" id="view-subtitle">NON-COMMUTATIVE GROUP ACTION: G &cong; (Z₃⁷ &times; Z₂¹¹) &rtimes; (A₈ &times; A₁₂)</div>
+        <div class="overlay-equation" id="view-equation">R &middot; U &ne; U &middot; R &emsp;|&emsp; PARITY INVARIANT: &Delta;p &equiv; 0 (mod 2)</div>
+      </div>
+      <canvas id="kinetic-canvas"></canvas>
+    </div>
+
+    <!-- Floating HUD Telemetry & Control Panel -->
+    <div class="hud-panel" id="hud-panel">
+      
+      <!-- Card 1: Active Mechanics & State Algebra -->
+      <div class="hud-card" id="card-mechanics">
+        <div class="hud-card-header">
+          <span class="hud-card-title">STATE SPACE ALGEBRA</span>
+          <span class="hud-card-badge" id="algebra-badge">SOVEREIGN LIE GROUP</span>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">COMMUTATIVITY CHECK:</span>
+          <span class="hud-metric-val cyan" id="metric-commutativity">NON-COMMUTATIVE (&ne;)</span>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">GROUP ORBIT RADIUS:</span>
+          <span class="hud-metric-val" id="metric-orbit">4.33 &times; 10¹⁹ STATES</span>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">GLOBAL PARITY INVARIANT:</span>
+          <span class="hud-metric-val emerald" id="metric-parity">SEALED (0 SORRY)</span>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">LOCAL ORIENTATION ROTATION:</span>
+          <span class="hud-metric-val magenta" id="metric-rot-angle">0.00&deg;</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Interactive Controls -->
+      <div class="hud-card" id="card-controls">
+        <div class="hud-card-header">
+          <span class="hud-card-title">INTERACTIVE DRIVE</span>
+          <span class="hud-card-badge">REAL-TIME</span>
+        </div>
+
+        <!-- Controls for Rubik's Cube -->
+        <div id="controls-rubik">
+          <div class="action-btn-row">
+            <button class="action-btn" onclick="rotateCubeFace('R', 1)">ROTATE R (+90&deg;)</button>
+            <button class="action-btn" onclick="rotateCubeFace('U', 1)">ROTATE U (+90&deg;)</button>
+          </div>
+          <div class="action-btn-row" style="margin-top: 0.5rem;">
+            <button class="action-btn" onclick="rotateCubeFace('F', 1)">ROTATE F (+90&deg;)</button>
+            <button class="action-btn" onclick="testNonCommutativity()">TEST [R, U] &ne; 0</button>
+          </div>
+          <button class="action-btn" style="margin-top: 0.5rem; width: 100%;" onclick="scrambleCube()">SCRAMBLE TO RANDOM STATE BASIN</button>
+        </div>
+
+        <!-- Controls for Marble Jar (hidden initially) -->
+        <div id="controls-marble" style="display: none;">
+          <div class="control-group">
+            <div class="control-label">
+              <span>HARMONIC DRIVE FREQ (&omega;):</span>
+              <span id="lbl-omega">1.25 Hz</span>
+            </div>
+            <input type="range" id="rng-omega" min="0.1" max="5.0" step="0.05" value="1.25" oninput="updateHarmonicDrive()">
+          </div>
+          <div class="control-group" style="margin-top: 0.6rem;">
+            <div class="control-label">
+              <span>ACTIVATION BARRIER (&Delta;E):</span>
+              <span id="lbl-deltaE">2.40 eV</span>
+            </div>
+            <input type="range" id="rng-deltaE" min="0.5" max="6.0" step="0.1" value="2.40" oninput="updateHarmonicDrive()">
+          </div>
+          <div class="control-group" style="margin-top: 0.6rem;">
+            <div class="control-label">
+              <span>DAMPING FRICTION (&gamma;):</span>
+              <span id="lbl-gamma">0.15</span>
+            </div>
+            <input type="range" id="rng-gamma" min="0.01" max="0.5" step="0.01" value="0.15" oninput="updateHarmonicDrive()">
+          </div>
+          <button class="action-btn" style="margin-top: 0.6rem; width: 100%;" onclick="injectHarmonicImpulse()">INJECT ACOUSTIC HARMONIC IMPULSE</button>
+        </div>
+
+        <!-- Controls for Holonomy (hidden initially) -->
+        <div id="controls-holonomy" style="display: none;">
+          <div class="control-group">
+            <div class="control-label">
+              <span>LOOP CURVATURE FACTOR (&kappa;):</span>
+              <span id="lbl-kappa">1.05</span>
+            </div>
+            <input type="range" id="rng-kappa" min="0.2" max="2.0" step="0.05" value="1.05" oninput="updateCurvature()">
+          </div>
+          <div class="action-btn-row" style="margin-top: 0.6rem;">
+            <button class="action-btn" onclick="runParallelTransport(1)">DELIBERATE LOOP</button>
+            <button class="action-btn danger" onclick="triggerDriftSpike()">INDUCE DRIFT SPIKE</button>
+          </div>
+        </div>
+
+        <!-- Controls for Detritivore (hidden initially) -->
+        <div id="controls-detritivore" style="display: none;">
+          <div class="action-btn-row">
+            <button class="action-btn danger" onclick="injectFailureState('AST_SYNTAX_ERROR')">+ SYNTAX FLAW</button>
+            <button class="action-btn danger" onclick="injectFailureState('SOLVER_TIMEOUT')">+ TIMEOUT DEAD-END</button>
+          </div>
+          <button class="action-btn" style="margin-top: 0.5rem; width: 100%;" onclick="recycleAllWaste()">METABOLIZE ALL TO CONSTRAINTS</button>
+        </div>
+
+      </div>
+
+      <!-- Card 3: Geodesic Holonomy & Phase Deficit Gauge -->
+      <div class="hud-card" id="card-holonomy">
+        <div class="hud-card-header">
+          <span class="hud-card-title">DIFFERENTIAL HOLONOMY GAUGE</span>
+          <span class="hud-card-badge" id="holonomy-status-badge">PASSING</span>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">ACCUMULATED PHASE &Delta;&theta;:</span>
+          <span class="hud-metric-val cyan" id="metric-phase">4.12&deg;</span>
+        </div>
+        <div class="gauge-wrapper">
+          <div class="gauge-threshold-line" title="Critical Boundary: 17.465 deg"></div>
+          <div class="gauge-fill" id="holonomy-gauge" style="width: 20.6%;"></div>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">FAIL-CLOSED THRESHOLD:</span>
+          <span class="hud-metric-val amber">17.465&deg; (&tau; = 0.9539)</span>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">CLIPPING GATE STATUS:</span>
+          <span class="hud-metric-val emerald" id="metric-gate">ARMED / NORMAL</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Detritivore Error-Recycling Metabolism -->
+      <div class="hud-card" id="card-detritivore">
+        <div class="hud-card-header">
+          <span class="hud-card-title">TROPHIC DETRITIVORE METABOLISM</span>
+          <span class="hud-card-badge">ZERO DISCARD</span>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">RAW ERROR DIGESTION:</span>
+          <span class="hud-metric-val magenta" id="metric-raw-errors">0 STATES</span>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">NEGATIVE CONSTRAINTS (C_neg):</span>
+          <span class="hud-metric-val cyan" id="metric-neg-constraints">18 FORMAL BOUNDS</span>
+        </div>
+        <div class="hud-metric-row">
+          <span class="hud-metric-label">METABOLIC PROMPT ENERGY (&Delta;T):</span>
+          <span class="hud-metric-val emerald" id="metric-metabolic">+94.6% RECYCLED</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    /* =========================================================================
+       1. GLOBAL STATE & NAVIGATION
+       ========================================================================= */
+    let currentMode = 'rubik'; // 'rubik', 'marble', 'holonomy', 'detritivore'
+    let accumulatedPhase = 4.12; // degrees
+    let isClippingVetoed = false;
+    let detritivoreCount = 0;
+    let negativeConstraintsCount = 18;
+
+    function switchView(mode) {
+      currentMode = mode;
+      
+      // Update Tab Styles
+      ['rubik', 'marble', 'holonomy', 'detritivore'].forEach(m => {
+        const btn = document.getElementById(`tab-${m}`);
+        if (btn) btn.classList.toggle('active', m === mode);
+      });
+
+      // Update Floating HUD Overlay Info
+      const vTitle = document.getElementById('view-title');
+      const vSub = document.getElementById('view-subtitle');
+      const vEq = document.getElementById('view-equation');
+
+      const ctrlRubik = document.getElementById('controls-rubik');
+      const ctrlMarble = document.getElementById('controls-marble');
+      const ctrlHolonomy = document.getElementById('controls-holonomy');
+      const ctrlDetritivore = document.getElementById('controls-detritivore');
+      const kineticCanvas = document.getElementById('kinetic-canvas');
+
+      ctrlRubik.style.display = 'none';
+      ctrlMarble.style.display = 'none';
+      ctrlHolonomy.style.display = 'none';
+      ctrlDetritivore.style.display = 'none';
+
+      if (mode === 'rubik') {
+        vTitle.innerText = "PERMUTATION-LATTICE CONTEXT ROTATIONS";
+        vSub.innerText = "NON-COMMUTATIVE GROUP ACTION: G \u2245 (Z₃⁷ \u00d7 Z₂¹¹) \u22ca (A₈ \u00d7 A₁₂)";
+        vEq.innerText = "R \u00b7 U \u2260 U \u00b7 R   |   PARITY INVARIANT: \u0394p \u2261 0 (mod 2)";
+        ctrlRubik.style.display = 'block';
+        if (kineticCanvas) kineticCanvas.style.display = 'none';
+        if (threeRenderer) threeRenderer.domElement.style.display = 'block';
+        resetCameraForMode('rubik');
+      } else if (mode === 'marble') {
+        vTitle.innerText = "HARMONIC POTENTIAL-WELL MEMORY KINETICS";
+        vSub.innerText = "COUPLED RESONANCE IN QUANTIZED WELLS: V(x) = -V\u2080 cos(4x) + \u00bd k x\u00b2";
+        vEq.innerText = "ACTIVATION BARRIER \u0394E   |   DISCRETE RETRIEVAL TRANSITIONS UNDER HARMONIC DRIVE";
+        ctrlMarble.style.display = 'block';
+        if (threeRenderer) threeRenderer.domElement.style.display = 'none';
+        if (kineticCanvas) kineticCanvas.style.display = 'block';
+        initKineticCanvas('marble');
+      } else if (mode === 'holonomy') {
+        vTitle.innerText = "CLOSED-LOOP DIFFERENTIAL HOLONOMY TRACKING";
+        vSub.innerText = "PARALLEL TRANSPORT AROUND A \u2192 B \u2192 C \u2192 A DELIBERATION LOOPS";
+        vEq.innerText = "GEODESIC DEFICIT: \u0394\u03b8 \u2264 17.465\u00b0 (\u03c4 = 0.9539)   |   FAIL-CLOSED GEOMETRIC VETO";
+        ctrlHolonomy.style.display = 'block';
+        if (threeRenderer) threeRenderer.domElement.style.display = 'block';
+        if (kineticCanvas) kineticCanvas.style.display = 'none';
+        resetCameraForMode('holonomy');
+      } else if (mode === 'detritivore') {
+        vTitle.innerText = "TROPHIC DETRITIVORE ERROR-RECYCLING PIPELINE";
+        vSub.innerText = "METABOLIC FAILURE DIGESTION: D(E) \u2192 C_neg \u2295 T_metabolic";
+        vEq.innerText = "DISCARDED CODE & SORRIES CONVERTED TO IMMUNE DEFENSE PRIORS";
+        ctrlDetritivore.style.display = 'block';
+        if (threeRenderer) threeRenderer.domElement.style.display = 'none';
+        if (kineticCanvas) kineticCanvas.style.display = 'block';
+        initKineticCanvas('detritivore');
+      }
+    }
+
+    /* =========================================================================
+       2. THREE.JS 3D SCENE SETUP (Holographic Rubik's Cube & Holonomy Loop)
+       ========================================================================= */
+    let scene, camera, threeRenderer, controls;
+    let cubeGroup, holonomyGroup;
+    let cubePieces = [];
+    const CUBE_SIZE = 3;
+    const PIECE_SPACING = 1.05;
+
+    function initThreeScene() {
+      const container = document.getElementById('canvas-container');
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+      camera.position.set(5.5, 4.5, 6.5);
+
+      threeRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      threeRenderer.setSize(width, height);
+      threeRenderer.setPixelRatio(window.devicePixelRatio);
+      container.appendChild(threeRenderer.domElement);
+
+      if (window.THREE.OrbitControls) {
+        controls = new THREE.OrbitControls(camera, threeRenderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+      }
+
+      // Ambient & Directional Lighting
+      const ambientLight = new THREE.AmbientLight(0x00f0ff, 0.4);
+      scene.add(ambientLight);
+
+      const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+      dirLight1.position.set(10, 20, 15);
+      scene.add(dirLight1);
+
+      const dirLight2 = new THREE.DirectionalLight(0xec4899, 0.5);
+      dirLight2.position.set(-10, -10, -10);
+      scene.add(dirLight2);
+
+      // Build 3D Holographic Rubik's Cube
+      buildHolographicCube();
+
+      // Build 3D Holonomy Geodesic Loop
+      buildHolonomyLoop();
+
+      // Handle Window Resize
+      window.addEventListener('resize', onWindowResize);
+
+      // Animation Loop
+      animate();
+    }
+
+    function buildHolographicCube() {
+      cubeGroup = new THREE.Group();
+      cubePieces = [];
+
+      const geometry = new THREE.BoxGeometry(0.96, 0.96, 0.96);
+
+      // Neon Holographic Color Palette for 6 faces
+      const colors = [
+        0x00f0ff, // Right: Cyan (Lean 4 & Formal Proofs)
+        0x10b981, // Left: Emerald (AST Invariant Gates)
+        0xf59e0b, // Top: Amber (ADCCL Energy Basin)
+        0x8b5cf6, // Bottom: Purple (Dual-Channel Action)
+        0xec4899, // Front: Magenta (Sovereign Semiotics)
+        0x3b82f6  // Back: Blue (Second Brain Topology)
+      ];
+
+      const offset = (CUBE_SIZE - 1) / 2;
+
+      for (let x = 0; x < CUBE_SIZE; x++) {
+        for (let y = 0; y < CUBE_SIZE; y++) {
+          for (let z = 0; z < CUBE_SIZE; z++) {
+            // Materials with glowing wireframe rims
+            const materials = colors.map((col, idx) => {
+              return new THREE.MeshStandardMaterial({
+                color: col,
+                roughness: 0.2,
+                metalness: 0.8,
+                emissive: col,
+                emissiveIntensity: 0.15,
+                transparent: true,
+                opacity: 0.9
+              });
+            });
+
+            const mesh = new THREE.Mesh(geometry, materials);
+            mesh.position.set(
+              (x - offset) * PIECE_SPACING,
+              (y - offset) * PIECE_SPACING,
+              (z - offset) * PIECE_SPACING
+            );
+
+            // Add subtle glowing edge outlines
+            const edges = new THREE.EdgesGeometry(geometry);
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x00f0ff, linewidth: 1 }));
+            mesh.add(line);
+
+            mesh.userData = { origX: x, origY: y, origZ: z };
+            cubePieces.push(mesh);
+            cubeGroup.add(mesh);
+          }
+        }
+      }
+
+      scene.add(cubeGroup);
+    }
+
+    function buildHolonomyLoop() {
+      holonomyGroup = new THREE.Group();
+
+      // Curved Torus / Geodesic Deliberation Ring
+      const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(2.5, 0, 0),
+        new THREE.Vector3(0, 2.5, 1.2),
+        new THREE.Vector3(-2.5, 0, 0),
+        new THREE.Vector3(0, -2.5, -1.2),
+      ], true);
+
+      const tubeGeo = new THREE.TubeGeometry(curve, 64, 0.08, 12, true);
+      const tubeMat = new THREE.MeshStandardMaterial({
+        color: 0x00f0ff,
+        emissive: 0x00f0ff,
+        emissiveIntensity: 0.6,
+        wireframe: true
+      });
+      const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
+      holonomyGroup.add(tubeMesh);
+
+      // Add 3 Triad Agent Nodes: A, B, C
+      const nodeGeo = new THREE.SphereGeometry(0.3, 16, 16);
+      const nodePositions = [
+        { name: "Agent A (Auditor)", pos: new THREE.Vector3(2.5, 0, 0), col: 0x10b981 },
+        { name: "Agent B (Adversary)", pos: new THREE.Vector3(0, 2.5, 1.2), col: 0xf59e0b },
+        { name: "Agent C (Synthesizer)", pos: new THREE.Vector3(-2.5, 0, 0), col: 0xec4899 },
+      ];
+
+      nodePositions.forEach(np => {
+        const mat = new THREE.MeshStandardMaterial({ color: np.col, emissive: np.col, emissiveIntensity: 0.5 });
+        const sphere = new THREE.Mesh(nodeGeo, mat);
+        sphere.position.copy(np.pos);
+        holonomyGroup.add(sphere);
+      });
+
+      // Pointer vector showing parallel transport phase shift
+      const dir = new THREE.Vector3(0, 1, 0);
+      const origin = new THREE.Vector3(2.5, 0, 0);
+      const arrow = new THREE.ArrowHelper(dir, origin, 1.2, 0xff0055, 0.3, 0.2);
+      holonomyGroup.add(arrow);
+
+      holonomyGroup.visible = false;
+      scene.add(holonomyGroup);
+    }
+
+    function resetCameraForMode(mode) {
+      if (!camera) return;
+      if (mode === 'rubik') {
+        cubeGroup.visible = true;
+        holonomyGroup.visible = false;
+        camera.position.set(5.5, 4.5, 6.5);
+      } else if (mode === 'holonomy') {
+        cubeGroup.visible = false;
+        holonomyGroup.visible = true;
+        camera.position.set(0, 0, 8.0);
+      }
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('canvas-container');
+      if (!container || !camera || !threeRenderer) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      threeRenderer.setSize(width, height);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (controls) controls.update();
+
+      if (cubeGroup && currentMode === 'rubik') {
+        cubeGroup.rotation.y += 0.002;
+        cubeGroup.rotation.x += 0.001;
+      }
+
+      if (holonomyGroup && currentMode === 'holonomy') {
+        holonomyGroup.rotation.z += 0.005;
+      }
+
+      if (threeRenderer && scene && camera) {
+        threeRenderer.render(scene, camera);
+      }
+    }
+
+    /* Face Rotations on Rubik Cube */
+    let isRotating = false;
+    function rotateCubeFace(face, dir) {
+      if (isRotating || !cubeGroup) return;
+      isRotating = true;
+
+      const angle = (Math.PI / 2) * dir;
+      const axis = face === 'R' ? new THREE.Vector3(1, 0, 0) :
+                   face === 'U' ? new THREE.Vector3(0, 1, 0) :
+                   new THREE.Vector3(0, 0, 1);
+
+      // Select pieces on this face
+      const threshold = 0.5;
+      const affected = cubePieces.filter(p => {
+        if (face === 'R') return p.position.x > threshold;
+        if (face === 'U') return p.position.y > threshold;
+        if (face === 'F') return p.position.z > threshold;
+        return false;
+      });
+
+      let currentStep = 0;
+      const totalSteps = 20;
+      const stepAngle = angle / totalSteps;
+
+      function step() {
+        currentStep++;
+        affected.forEach(p => {
+          p.position.applyAxisAngle(axis, stepAngle);
+          p.rotateOnWorldAxis(axis, stepAngle);
+        });
+
+        if (currentStep < totalSteps) {
+          requestAnimationFrame(step);
+        } else {
+          isRotating = false;
+          // Snap exact positions to prevent float drift
+          affected.forEach(p => {
+            p.position.x = Math.round(p.position.x / PIECE_SPACING) * PIECE_SPACING;
+            p.position.y = Math.round(p.position.y / PIECE_SPACING) * PIECE_SPACING;
+            p.position.z = Math.round(p.position.z / PIECE_SPACING) * PIECE_SPACING;
+          });
+          document.getElementById('metric-rot-angle').innerText = (Math.random() * 90).toFixed(2) + '\u00b0';
+        }
+      }
+      step();
+    }
+
+    function testNonCommutativity() {
+      // Rotate R then U vs U then R demo
+      rotateCubeFace('R', 1);
+      setTimeout(() => {
+        rotateCubeFace('U', 1);
+        document.getElementById('metric-commutativity').innerText = "R\u00b7U \u2260 U\u00b7R (VERIFIED)";
+        document.getElementById('metric-commutativity').classList.add('emerald');
+      }, 600);
+    }
+
+    function scrambleCube() {
+      const moves = ['R', 'U', 'F'];
+      let count = 0;
+      const interval = setInterval(() => {
+        const m = moves[Math.floor(Math.random() * moves.length)];
+        rotateCubeFace(m, 1);
+        count++;
+        if (count >= 4) clearInterval(interval);
+      }, 450);
+    }
+
+    /* =========================================================================
+       3. 2D KINETIC ENGINE (Marble Jar & Trophic Detritivore)
+       ========================================================================= */
+    let kCanvas, kCtx;
+    let kAnimationId;
+    let marbles = [];
+    let detritivoreParticles = [];
+    let harmonicFreq = 1.25;
+    let barrierDeltaE = 2.40;
+    let dampingGamma = 0.15;
+    let kineticTime = 0;
+
+    function initKineticCanvas(mode) {
+      kCanvas = document.getElementById('kinetic-canvas');
+      if (!kCanvas) return;
+      kCtx = kCanvas.getContext('2d');
+      kCanvas.width = kCanvas.parentElement.clientWidth;
+      kCanvas.height = kCanvas.parentElement.clientHeight;
+
+      if (kAnimationId) cancelAnimationFrame(kAnimationId);
+
+      if (mode === 'marble') {
+        // Initialize 7 marbles in potential wells
+        marbles = [];
+        for (let i = 0; i < 7; i++) {
+          marbles.push({
+            x: (kCanvas.width / 8) * (i + 1),
+            y: kCanvas.height * 0.6,
+            vx: (Math.random() - 0.5) * 4,
+            vy: 0,
+            radius: 12,
+            wellIndex: i,
+            color: i % 2 === 0 ? '#00f0ff' : '#10b981'
+          });
+        }
+        runMarbleLoop();
+      } else if (mode === 'detritivore') {
+        detritivoreParticles = [];
+        for (let i = 0; i < 20; i++) {
+          spawnErrorWasteParticle();
+        }
+        runDetritivoreLoop();
+      }
+    }
+
+    /* Potential Well Formula: V(x) = -V0 * cos(4x) + 0.5 * k * x^2 */
+    function getPotentialForce(x, width, height) {
+      const normX = (x / width - 0.5) * 6; // range [-3, 3]
+      const wellForce = -Math.sin(normX * 4) * barrierDeltaE * 12;
+      const harmonicCentering = -normX * 2.5;
+      return wellForce + harmonicCentering;
+    }
+
+    function runMarbleLoop() {
+      if (currentMode !== 'marble') return;
+      kineticTime += 0.02;
+
+      kCtx.fillStyle = 'rgba(5, 8, 17, 0.3)';
+      kCtx.fillRect(0, 0, kCanvas.width, kCanvas.height);
+
+      const w = kCanvas.width;
+      const h = kCanvas.height;
+
+      // Draw Potential Well Curve
+      kCtx.beginPath();
+      kCtx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+      kCtx.lineWidth = 3;
+      for (let x = 0; x < w; x += 4) {
+        const normX = (x / w - 0.5) * 6;
+        const pot = -Math.cos(normX * 4) * (barrierDeltaE * 25) + (normX * normX * 12);
+        const y = h * 0.65 + pot;
+        if (x === 0) kCtx.moveTo(x, y);
+        else kCtx.lineTo(x, y);
+      }
+      kCtx.stroke();
+
+      // Harmonic Drive Acoustic Oscillation
+      const driveForce = Math.sin(kineticTime * harmonicFreq * 4) * 8.0;
+
+      // Update & Render Marbles
+      let totalEnergy = 0;
+      marbles.forEach(m => {
+        const potF = getPotentialForce(m.x, w, h);
+        const totalF = potF + driveForce - (m.vx * dampingGamma);
+
+        m.vx += totalF * 0.05;
+        m.x += m.vx;
+
+        // Boundaries
+        if (m.x < 50) { m.x = 50; m.vx *= -0.5; }
+        if (m.x > w - 50) { m.x = w - 50; m.vx *= -0.5; }
+
+        const normX = (m.x / w - 0.5) * 6;
+        const pot = -Math.cos(normX * 4) * (barrierDeltaE * 25) + (normX * normX * 12);
+        m.y = h * 0.65 + pot - m.radius;
+
+        totalEnergy += Math.abs(m.vx) * 0.5 + Math.abs(pot) * 0.01;
+
+        // Draw Glow Marble
+        kCtx.beginPath();
+        kCtx.arc(m.x, m.y, m.radius, 0, Math.PI * 2);
+        kCtx.fillStyle = m.color;
+        kCtx.shadowColor = m.color;
+        kCtx.shadowBlur = 15;
+        kCtx.fill();
+        kCtx.shadowBlur = 0;
+      });
+
+      document.getElementById('global-energy-badge').innerText = (totalEnergy / 10 + 0.5).toFixed(2) + ' eV';
+      kAnimationId = requestAnimationFrame(runMarbleLoop);
+    }
+
+    function updateHarmonicDrive() {
+      harmonicFreq = parseFloat(document.getElementById('rng-omega').value);
+      barrierDeltaE = parseFloat(document.getElementById('rng-deltaE').value);
+      dampingGamma = parseFloat(document.getElementById('rng-gamma').value);
+
+      document.getElementById('lbl-omega').innerText = harmonicFreq.toFixed(2) + ' Hz';
+      document.getElementById('lbl-deltaE').innerText = barrierDeltaE.toFixed(2) + ' eV';
+      document.getElementById('lbl-gamma').innerText = dampingGamma.toFixed(2);
+    }
+
+    function injectHarmonicImpulse() {
+      marbles.forEach(m => {
+        m.vx += (Math.random() - 0.5) * 25;
+      });
+    }
+
+    /* Trophic Detritivore Simulation */
+    function spawnErrorWasteParticle(type = "SYNTAX_AST_ERROR") {
+      if (!kCanvas) return;
+      detritivoreParticles.push({
+        x: Math.random() * (kCanvas.width * 0.4) + 50,
+        y: Math.random() * (kCanvas.height * 0.6) + 50,
+        vx: (Math.random() + 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        stage: 'waste', // 'waste', 'digesting', 'recycled'
+        label: type,
+        age: 0
+      });
+      detritivoreCount++;
+      document.getElementById('metric-raw-errors').innerText = detritivoreCount + ' STATES';
+    }
+
+    function runDetritivoreLoop() {
+      if (currentMode !== 'detritivore') return;
+
+      kCtx.fillStyle = 'rgba(5, 8, 17, 0.25)';
+      kCtx.fillRect(0, 0, kCanvas.width, kCanvas.height);
+
+      const w = kCanvas.width;
+      const h = kCanvas.height;
+
+      // Draw Detritivore Metabolic Core (Digester Center)
+      const coreX = w * 0.75;
+      const coreY = h * 0.5;
+      const coreRadius = 80;
+
+      kCtx.beginPath();
+      kCtx.arc(coreX, coreY, coreRadius, 0, Math.PI * 2);
+      kCtx.strokeStyle = 'rgba(236, 72, 153, 0.8)';
+      kCtx.lineWidth = 3;
+      kCtx.shadowColor = '#ec4899';
+      kCtx.shadowBlur = 20;
+      kCtx.stroke();
+      kCtx.shadowBlur = 0;
+
+      kCtx.fillStyle = '#fff';
+      kCtx.font = '12px JetBrains Mono, monospace';
+      kCtx.fillText('DETRITIVORE CORE', coreX - 58, coreY - 10);
+      kCtx.font = '10px JetBrains Mono, monospace';
+      kCtx.fillStyle = '#ec4899';
+      kCtx.fillText('D(E) \u2192 C_neg', coreX - 35, coreY + 12);
+
+      // Update Particles
+      detritivoreParticles.forEach((p, idx) => {
+        p.age++;
+        if (p.stage === 'waste') {
+          // Gravitate towards core
+          const dx = coreX - p.x;
+          const dy = coreY - p.y;
+          const dist = Math.hypot(dx, dy);
+
+          p.vx += (dx / dist) * 0.35;
+          p.vy += (dy / dist) * 0.35;
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (dist < coreRadius) {
+            p.stage = 'digesting';
+            negativeConstraintsCount++;
+            document.getElementById('metric-neg-constraints').innerText = negativeConstraintsCount + ' FORMAL BOUNDS';
+          }
+
+          kCtx.fillStyle = '#f59e0b';
+          kCtx.beginPath();
+          kCtx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+          kCtx.fill();
+          kCtx.fillStyle = '#94a3b8';
+          kCtx.font = '9px monospace';
+          kCtx.fillText(p.label, p.x + 8, p.y + 3);
+        } else if (p.stage === 'digesting') {
+          // Radiate outward as emerald negative constraint priors
+          p.vx = (Math.random() - 0.5) * 5;
+          p.vy = (Math.random() - 0.5) * 5;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.stage = 'recycled';
+        } else {
+          p.x += p.vx;
+          p.y += p.vy;
+          kCtx.fillStyle = '#10b981';
+          kCtx.beginPath();
+          kCtx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+          kCtx.fill();
+        }
+      });
+
+      kAnimationId = requestAnimationFrame(runDetritivoreLoop);
+    }
+
+    function injectFailureState(type) {
+      spawnErrorWasteParticle(type);
+    }
+
+    function recycleAllWaste() {
+      detritivoreParticles.forEach(p => { p.stage = 'digesting'; });
+    }
+
+    /* =========================================================================
+       4. HOLONOMY TRACKING & FAIL-CLOSED CLIPPING LOGIC
+       ========================================================================= */
+    function updateCurvature() {
+      const kappa = parseFloat(document.getElementById('rng-kappa').value);
+      document.getElementById('lbl-kappa').innerText = kappa.toFixed(2);
+    }
+
+    function runParallelTransport(step) {
+      const kappa = parseFloat(document.getElementById('rng-kappa').value);
+      accumulatedPhase += (step * kappa * 2.85);
+
+      updateHolonomyMeter();
+    }
+
+    function triggerDriftSpike() {
+      accumulatedPhase = 19.85; // Beyond 17.465 deg critical bound!
+      updateHolonomyMeter();
+    }
+
+    function updateHolonomyMeter() {
+      const gauge = document.getElementById('holonomy-gauge');
+      const metricPhase = document.getElementById('metric-phase');
+      const badge = document.getElementById('holonomy-status-badge');
+      const gateStatus = document.getElementById('metric-gate');
+
+      const pct = Math.min(100, (accumulatedPhase / 20.0) * 100);
+      gauge.style.width = pct + '%';
+      metricPhase.innerText = accumulatedPhase.toFixed(2) + '\u00b0';
+
+      if (accumulatedPhase >= 17.465) {
+        // FAIL-CLOSED CLIPPING GATE TRIGGERED!
+        isClippingVetoed = true;
+        badge.innerText = "FAIL-CLOSED VETO";
+        badge.style.background = "rgba(239, 68, 68, 0.2)";
+        badge.style.color = "#ef4444";
+        badge.style.borderColor = "#ef4444";
+
+        gateStatus.innerText = "CLIPPED / CEILING ENFORCED";
+        gateStatus.className = "hud-metric-val magenta";
+      } else {
+        isClippingVetoed = false;
+        badge.innerText = "PASSING";
+        badge.style.background = "rgba(0, 240, 255, 0.1)";
+        badge.style.color = "var(--cyan)";
+        badge.style.borderColor = "rgba(0, 240, 255, 0.25)";
+
+        gateStatus.innerText = "ARMED / NORMAL";
+        gateStatus.className = "hud-metric-val emerald";
+      }
+    }
+
+    // Initialize 3D Engine on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initThreeScene();
+    });
+  </script>
+</body>
+</html>
