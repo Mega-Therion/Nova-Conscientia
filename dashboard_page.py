@@ -680,7 +680,7 @@ def render_dashboard(receipt: Optional[dict], git_hash: str) -> str:
     <p class="hero-desc">Fail-closed hallucination clipping at τ = 0.9539. Dual-channel
        oversight, anti-drift control, and swarm topology for AI alignment research.</p>
     <div class="hero-badges">
-      <span class="hero-badge teal">72/72 PASS</span>
+      <span class="hero-badge teal">76/76 PASS</span>
       <span class="hero-badge teal">0 Violations</span>
       <span class="hero-badge">git:{git_hash}</span>
     </div>

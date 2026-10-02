@@ -332,16 +332,29 @@ def run_trial(arm: str, seed: int, steps: int, dim: int, sigma: float,
               sensitivity: float = SIGNAL_SENSITIVITY) -> Dict[str, Any]:
     """Run one arm for one trial and return its per-trial metrics.
 
+    Arms:
+        unconstrained      every proposal applied, no gate.
+        gate_only          every proposal applied, then gated.
+        gate_dual_channel  proposals scored with the constraint signal;
+                           rejected ones are skipped; accepted ones gated.
+        gate_correction    every proposal applied and gated; on CLIP the
+                           correction step pulls toward the anchor.
+        full               ADCCLController, fed the constraint signal.
+
     Args:
-        arm: arm name.
+        arm: one of the names above.
         seed: trial seed.
         steps: cycles.
         dim: state-space dimension.
         sigma: constraint-signal noise.
-        sensitivity: checker gain on off-plane move norm.
+        sensitivity: checker gain on the off-plane move norm; 0 makes the
+            signal pure noise (the uninformative control).
 
     Returns:
-        Per-trial metrics dictionary.
+        Per-trial metrics (see module docstring).
+
+    Raises:
+        ValueError: on an unknown arm.
     """
     if arm not in ARMS:
         raise ValueError(f"unknown arm {arm!r}; expected one of {ARMS}")
@@ -430,13 +443,18 @@ def run_task_benchmark(
     Args:
         trials: trials per arm per noise level.
         steps: cycles per trial.
-        dim: state-space dimension, >= 3.
+        dim: state-space dimension, >= 3 (the drift needs off-plane room).
         sigmas: noise levels (defaults to NOISE_SWEEP).
         base_seed: trial k uses base_seed + k.
 
     Returns:
-        The receipt: parameters, per-noise per-arm means with 95% bootstrap CIs,
-        and frozen-agent reference error.
+        The receipt: parameters, per-noise per-arm means with 95% bootstrap
+        CIs, and the frozen-agent reference error.  Per-trial records are
+        omitted to keep it small; the run is deterministic, so they can be
+        regenerated.
+
+    Raises:
+        ValueError: on non-positive sizes, dim < 3, or a negative / empty sweep.
     """
     sigmas = list(NOISE_SWEEP if sigmas is None else sigmas)
     if trials < 1 or steps < 1:
@@ -511,6 +529,54 @@ def run_task_benchmark(
     }
 
 
+def paired_difference(
+    arm_a: str,
+    arm_b: str,
+    metric: str,
+    sigma: float,
+    sensitivity: float,
+    base_seed: int,
+    trials: int = DEFAULT_TRIALS,
+    steps: int = DEFAULT_STEPS,
+    dim: int = DEFAULT_DIM,
+    metric_b: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Paired bootstrap of the per-trial difference ``arm_a.metric - arm_b.metric_b``.
+
+    Every arm sees the same seeds and the same proposal stream, so trial k of
+    one arm is paired with trial k of the other.  Bootstrapping the per-trial
+    differences is the right test for that design; checking whether two
+    independent confidence intervals overlap ignores the pairing and is far
+    too conservative.
+
+    Args:
+        arm_a: first arm.
+        arm_b: second arm (may equal ``arm_a`` when comparing two metrics).
+        metric: per-trial metric of ``arm_a``.
+        sigma: constraint-signal noise.
+        sensitivity: checker gain (0 for the uninformative control).
+        base_seed: trial k uses base_seed + k.
+        trials: number of paired trials.
+        steps: cycles per trial.
+        dim: state-space dimension.
+        metric_b: per-trial metric of ``arm_b``; defaults to ``metric``.
+
+    Returns:
+        ``{"mean": d, "ci95": [lo, hi], "a_greater_in": n, "trials": trials}``,
+        where ``a_greater_in`` counts trials with a positive difference.
+    """
+    metric_b = metric if metric_b is None else metric_b
+    diffs: List[float] = []
+    for k in range(trials):
+        rec_a = run_trial(arm_a, base_seed + k, steps, dim, sigma, sensitivity)
+        rec_b = rec_a if arm_b == arm_a else run_trial(arm_b, base_seed + k, steps, dim, sigma, sensitivity)
+        diffs.append(float(rec_a[metric]) - float(rec_b[metric_b]))
+    key = f"paired-{arm_a}-{metric}-{arm_b}-{metric_b}"
+    mean, lo, hi = bootstrap_ci(diffs, seed=_seed_for_metric(base_seed, key, sigma, "diff", sensitivity))
+    return {"mean": mean, "ci95": [lo, hi], "a_greater_in": sum(1 for d in diffs if d > 0.0),
+            "trials": trials}
+
+
 def run_multi_seed_robustness(
     trials: int = DEFAULT_TRIALS,
     steps: int = DEFAULT_STEPS,
@@ -555,6 +621,13 @@ def run_multi_seed_robustness(
         ctrl_rate_overlap = max(ctrl_dual_on_ci[0], ctrl_dual_off_ci[0]) <= min(ctrl_dual_on_ci[1], ctrl_dual_off_ci[1])
         ctrl_bias_held = (not ctrl_rate_overlap) and (ctrl_dual_off_ci[0] > ctrl_dual_on_ci[1])
 
+        inf_paired = paired_difference("gate_dual_channel", "gate_only", "final_task_error",
+                                       0.0, SIGNAL_SENSITIVITY, seed, trials, steps, dim)
+        ctrl_paired = paired_difference("gate_dual_channel", "gate_only", "final_task_error",
+                                        0.1, 0.0, seed, trials, steps, dim)
+        bias_paired = paired_difference("gate_dual_channel", "gate_dual_channel", "accept_off",
+                                        0.1, 0.0, seed, trials, steps, dim, metric_b="accept_on")
+
         results[str(seed)] = {
             "seed": seed,
             "parameters": receipt["parameters"],
@@ -567,8 +640,10 @@ def run_multi_seed_robustness(
                     "dual_ci95": inf_dual_ci,
                     "gate_only_task_error": inf_gate_err,
                     "gate_only_ci95": inf_gate_ci,
-                    "overlap": inf_overlap,
-                    "held": inf_held,
+                    "independent_ci_overlap": inf_overlap,
+                    "independent_ci_held": inf_held,
+                    "paired_diff_dual_minus_gate": inf_paired,
+                    "held": inf_paired["ci95"][1] < 0.0,
                     "tag": "[conj]",
                 },
                 "control_sigma01_uninformative": {
@@ -576,14 +651,17 @@ def run_multi_seed_robustness(
                     "dual_task_error_ci95": ctrl_dual_err_ci,
                     "gate_only_task_error": ctrl_gate_err,
                     "gate_only_ci95": ctrl_gate_err_ci,
-                    "task_error_overlap": ctrl_err_overlap,
+                    "independent_ci_task_error_overlap": ctrl_err_overlap,
+                    "paired_diff_dual_minus_gate": ctrl_paired,
+                    "dual_worse_held": ctrl_paired["ci95"][0] > 0.0,
                     "dual_accept_on": ctrl_dual_on,
                     "dual_accept_on_ci95": ctrl_dual_on_ci,
                     "dual_accept_off": ctrl_dual_off,
                     "dual_accept_off_ci95": ctrl_dual_off_ci,
-                    "rate_overlap": ctrl_rate_overlap,
-                    "scale_bias_held": ctrl_bias_held,
-                    "tag": "[open]",
+                    "independent_ci_rate_overlap": ctrl_rate_overlap,
+                    "paired_diff_accept_off_minus_on": bias_paired,
+                    "scale_bias_held": bias_paired["ci95"][0] > 0.0,
+                    "tag": "[conj]",
                 },
             },
         }
@@ -594,6 +672,15 @@ def run_multi_seed_robustness(
         "parameters": receipt["parameters"],
         "frozen_task_error": receipt["frozen_task_error"],
         "results_by_seed": results,
+        "summary": {
+            "informative_dual_beats_gate_all_seeds": all(
+                r["verdicts"]["informative_sigma0_task_error"]["held"] for r in results.values()),
+            "control_dual_worse_than_gate_all_seeds": all(
+                r["verdicts"]["control_sigma01_uninformative"]["dual_worse_held"] for r in results.values()),
+            "control_scale_bias_all_seeds": all(
+                r["verdicts"]["control_sigma01_uninformative"]["scale_bias_held"] for r in results.values()),
+            "test": "paired bootstrap on per-trial differences (arms share seeds and proposal streams)",
+        },
         "environment": receipt["environment"],
     }
 
@@ -622,6 +709,20 @@ def _print_sweep(receipt: Dict[str, Any], sweep_key: str, header: str) -> None:
             print(f"  {arm:<18} {on_str:>23} {off_str:>23} {err_str:>25}")
 
 
+def _print_paired(receipt: Dict[str, Any]) -> None:
+    """Print the paired-difference verdicts for every robustness seed."""
+    print("\n=== paired-difference verdicts (95% bootstrap CI) ===")
+    for seed, res in receipt["results_by_seed"].items():
+        inf = res["verdicts"]["informative_sigma0_task_error"]["paired_diff_dual_minus_gate"]
+        ctrl = res["verdicts"]["control_sigma01_uninformative"]
+        cd, bias = ctrl["paired_diff_dual_minus_gate"], ctrl["paired_diff_accept_off_minus_on"]
+        print(f"seed {seed}: informative dual-gate task_err {inf['mean']:+.4f} "
+              f"[{inf['ci95'][0]:+.4f}, {inf['ci95'][1]:+.4f}] | "
+              f"control dual-gate {cd['mean']:+.4f} [{cd['ci95'][0]:+.4f}, {cd['ci95'][1]:+.4f}] | "
+              f"control accept off-on {bias['mean']:+.3f} [{bias['ci95'][0]:+.3f}, {bias['ci95'][1]:+.3f}]")
+    print(f"summary: {receipt['summary']}")
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     """CLI entry point for the task benchmark."""
     parser = argparse.ArgumentParser(
@@ -643,6 +744,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                                                 dim=args.dim)
             single_seed_receipt = receipt["results_by_seed"][str(args.seed)]
             _print_table(single_seed_receipt)
+            _print_paired(receipt)
         else:
             receipt = run_task_benchmark(trials=args.trials, steps=args.steps,
                                          dim=args.dim, base_seed=args.seed)

@@ -30,6 +30,7 @@ from run_task_benchmark import (  # type: ignore
     SIGNAL_SENSITIVITY,
     TaskProposalStream,
     bootstrap_ci,
+    paired_difference,
     constraint_signal,
     frozen_task_error,
     run_multi_seed_robustness,
@@ -156,6 +157,17 @@ class TestBootstrapAndRobustness(unittest.TestCase):
         with self.assertRaises(ValueError):
             bootstrap_ci([1.0], ci=1.0)
 
+    def test_paired_difference(self):
+        """An arm paired with itself differs by exactly zero; the control comparison is positive."""
+        same = paired_difference("gate_only", "gate_only", "final_task_error", 0.1, 0.0,
+                                 BASE_SEED, trials=5, steps=20, dim=8)
+        self.assertEqual(same["mean"], 0.0)
+        self.assertEqual(same["ci95"], [0.0, 0.0])
+        self.assertEqual(same["a_greater_in"], 0)
+        bias = paired_difference("gate_dual_channel", "gate_dual_channel", "accept_off", 0.1, 0.0,
+                                 BASE_SEED, trials=TRIALS, steps=STEPS, dim=DIM, metric_b="accept_on")
+        self.assertGreater(bias["ci95"][0], 0.0)
+
     def test_multi_seed_robustness(self):
         """Multi-seed robustness runner collects results for all registered seeds."""
         rob = run_multi_seed_robustness(trials=2, steps=5, dim=4, sigmas=[0.0, 0.1])
@@ -164,6 +176,9 @@ class TestBootstrapAndRobustness(unittest.TestCase):
             self.assertIn("verdicts", seed_res)
             self.assertIn("informative_sigma0_task_error", seed_res["verdicts"])
             self.assertIn("control_sigma01_uninformative", seed_res["verdicts"])
+            self.assertIn("paired_diff_dual_minus_gate",
+                          seed_res["verdicts"]["control_sigma01_uninformative"])
+        self.assertIn("summary", rob)
 
 
 class TestDocumentedResults(unittest.TestCase):

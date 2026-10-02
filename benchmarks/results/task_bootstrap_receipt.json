@@ -2026,7 +2026,17 @@
             0.030702293124894597,
             0.04028111307377456
           ],
-          "overlap": false,
+          "independent_ci_overlap": false,
+          "independent_ci_held": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": -0.03158544941397977,
+            "ci95": [
+              -0.036466809239527255,
+              -0.026447037740722722
+            ],
+            "a_greater_in": 0,
+            "trials": 40
+          },
           "held": true,
           "tag": "[conj]"
         },
@@ -2041,7 +2051,17 @@
             0.030650060565509406,
             0.04039538506431052
           ],
-          "task_error_overlap": true,
+          "independent_ci_task_error_overlap": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": 0.007139144775710324,
+            "ci95": [
+              0.0048176803439090535,
+              0.009311532407971727
+            ],
+            "a_greater_in": 35,
+            "trials": 40
+          },
+          "dual_worse_held": true,
           "dual_accept_on": 0.5697972815586302,
           "dual_accept_on_ci95": [
             0.5350860732115219,
@@ -2052,9 +2072,18 @@
             0.9746226772353083,
             0.9894903013653014
           ],
-          "rate_overlap": false,
+          "independent_ci_rate_overlap": false,
+          "paired_diff_accept_off_minus_on": {
+            "mean": 0.41210113111620694,
+            "ci95": [
+              0.377310568708354,
+              0.44566849807754005
+            ],
+            "a_greater_in": 40,
+            "trials": 40
+          },
           "scale_bias_held": true,
-          "tag": "[open]"
+          "tag": "[conj]"
         }
       }
     },
@@ -4049,7 +4078,17 @@
             0.031160372347830655,
             0.04048617431134817
           ],
-          "overlap": false,
+          "independent_ci_overlap": false,
+          "independent_ci_held": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": -0.03269848098780649,
+            "ci95": [
+              -0.03745015945227183,
+              -0.02792728830847373
+            ],
+            "a_greater_in": 0,
+            "trials": 40
+          },
           "held": true,
           "tag": "[conj]"
         },
@@ -4064,7 +4103,17 @@
             0.03117430957910804,
             0.040462851496586516
           ],
-          "task_error_overlap": true,
+          "independent_ci_task_error_overlap": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": 0.00826255037721756,
+            "ci95": [
+              0.005601200698284547,
+              0.010969363750422397
+            ],
+            "a_greater_in": 39,
+            "trials": 40
+          },
+          "dual_worse_held": true,
           "dual_accept_on": 0.586954013956854,
           "dual_accept_on_ci95": [
             0.558105558636419,
@@ -4075,9 +4124,18 @@
             0.984947052947053,
             0.9960983102918586
           ],
-          "rate_overlap": false,
+          "independent_ci_rate_overlap": false,
+          "paired_diff_accept_off_minus_on": {
+            "mean": 0.4038348557755641,
+            "ci95": [
+              0.37151809143211684,
+              0.43640350380007015
+            ],
+            "a_greater_in": 40,
+            "trials": 40
+          },
           "scale_bias_held": true,
-          "tag": "[open]"
+          "tag": "[conj]"
         }
       }
     },
@@ -6072,7 +6130,17 @@
             0.029865063267117777,
             0.03968997687784039
           ],
-          "overlap": false,
+          "independent_ci_overlap": false,
+          "independent_ci_held": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": -0.03140043749587207,
+            "ci95": [
+              -0.036267796205552115,
+              -0.026356631010606646
+            ],
+            "a_greater_in": 0,
+            "trials": 40
+          },
           "held": true,
           "tag": "[conj]"
         },
@@ -6087,7 +6155,17 @@
             0.029744500252829487,
             0.03945206587669403
           ],
-          "task_error_overlap": true,
+          "independent_ci_task_error_overlap": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": 0.007556501480966815,
+            "ci95": [
+              0.004963183675985134,
+              0.010375968719642675
+            ],
+            "a_greater_in": 34,
+            "trials": 40
+          },
+          "dual_worse_held": true,
           "dual_accept_on": 0.5760796287678651,
           "dual_accept_on_ci95": [
             0.544165341359703,
@@ -6098,15 +6176,30 @@
             0.9768910889834801,
             0.9938297933950107
           ],
-          "rate_overlap": false,
+          "independent_ci_rate_overlap": false,
+          "paired_diff_accept_off_minus_on": {
+            "mean": 0.40988192326705664,
+            "ci95": [
+              0.375284517220864,
+              0.4398553120036439
+            ],
+            "a_greater_in": 40,
+            "trials": 40
+          },
           "scale_bias_held": true,
-          "tag": "[open]"
+          "tag": "[conj]"
         }
       }
     }
   },
+  "summary": {
+    "informative_dual_beats_gate_all_seeds": true,
+    "control_dual_worse_than_gate_all_seeds": true,
+    "control_scale_bias_all_seeds": true,
+    "test": "paired bootstrap on per-trial differences (arms share seeds and proposal streams)"
+  },
   "environment": {
-    "python": "3.11.16",
-    "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36"
+    "python": "3.11.15",
+    "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39"
   }
 }
