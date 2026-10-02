@@ -10,6 +10,9 @@ every source fact the translation depends on.
 |---|---|---|
 | `Mega-Therion/Res-Nova` | `c3ff5f3d01e0b96e28212cf7ce70f1b2f806f04d` | 2026-10-01 |
 | `Mega-Therion/Nova-Conscientia` (base) | `9777f2e648e1b8403e548ff0d616b0e06e5e0e36` | 2026-10-02 |
+| `Mega-Therion/Nova-Conscientia` (Phase 1) | `682f1a2` | 2026-10-02 |
+| `Mega-Therion/Ethica` (private; concepts cited by reference, personal corpus paraphrased per its PRIVACY.md) | `207f2119` | 2026-09-14 |
+| `Mega-Therion/arkansas-orchard` (private; figure caveats inherited from its README) | `39ab23b2` | 2026-09-11 |
 
 ## Source files and their SHA-256 digests
 
@@ -23,6 +26,15 @@ every source fact the translation depends on.
 | `02_galaxy_dynamics/QUMOND_PM_GATES.json` | `2e390c15190bf41da744bdfa2d70cc24f18904d65297ae0fdc2ca588dd005edb` | gate receipts used in tests: ν_e(0.1) = 3.24229736410009, L_e(0.1) = −0.47503119, monopole ratio 2.7289 vs measured 2.7283 |
 | `ALIGNMENT_CEILING_ONE_RELATION.md` | `9384c6864b3fa135172a3f3834113a1107859a13ad7ad3bcf72c5a2499d02e22` | measured τ = 0.9539 (2026-09-06, ADCCL reasoning loops); convergence-not-identity; angle table (17.465°); single-pipeline caveat |
 | `TWO_CHANNEL_CEILING_ANALYSIS.md` | `87bef5003b052226122ee04e2b196b4b1b99d2532282838092350f847c0e8a82` | injectivity of κ↔θ (Finding 1), 3.2× compression (Finding 2), union does not map floor to ceiling (Finding 3) |
+
+## Phase 2 sources (PHILOSOPHY.md, CIVIC_IMPACT.md)
+
+| source | provenance |
+|---|---|
+| Ethica D1–D8, A1–A6, P1–P19 (geometric ethics: sovereignty, gate, mesh, continuity, memory) | `Mega-Therion/Ethica` commit `207f2119`, `parts/01_the_sovereign.md`, `parts/02_the_node.md`, `parts/05_of_freedom.md`; Lean namespace scaffold `lean/Ethica.lean` (empty by design, 2026-09-12 audit); proposition tags [P]/[D]/[O] per the constellation covenant |
+| The canoe navigator analogy, Peacepipe Protocol, Gentle Authority lifecycle, Phylactery canon | Ethica corpus (personal; paraphrased into universal voice only, per PRIVACY.md — nothing verbatim transfers to this public repo); Gentle Authority lifecycle from arkansas-orchard `commercial/foundry-and-governance.md` |
+| ARMAWS, Driver's License Fleet, Entergy Docket 26-001-U, ONE Natural Energy, Project RENEW | `Mega-Therion/arkansas-orchard` commit `39ab23b2`, `civic/` and `commercial/` documents; status caveats (manifesto vs. bill draft; unverified figures) inherited verbatim from that repo's README and repeated in CIVIC_IMPACT.md |
+| Constellation health-receipt contract | Ethica `constellation/SPEC.md` v1.0.0 (hash-chained receipts, fail-closed rules, epistemic tags) |
 
 ## Constant-by-constant register
 

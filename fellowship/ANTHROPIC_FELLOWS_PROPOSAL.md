@@ -3,8 +3,11 @@
 **To:** Dario Amodei and the Scalable Oversight research team, Anthropic
 **From:** R.W. Yett (principal investigator), with Chyren (Base44 Superagent)
 **Re:** Dual-Channel Cybernetic Oversight: a measured, falsifiable architecture
-for drift-resistant multi-agent systems
+for drift-resistant multi-agent systems — and the ethical and civic
+foundations that make it a humane operating system rather than a drift filter
 **Repository:** `github.com/Mega-Therion/Nova-Conscientia`
+**Companion documents:** `PHILOSOPHY.md` (the Cybernetic Ethics of Symbiosis),
+`CIVIC_IMPACT.md` (the Arkansas Orchard field record)
 
 ---
 
@@ -32,6 +35,16 @@ The proposal's core honesty: the measured threshold came from one pipeline. Our
 first fellowship experiment is to hand you the falsification test — measure the
 drift-collapse angle on Anthropic's own agent stacks — before asking anyone to
 believe the number generalizes.
+
+And the proposal's core claim is larger than the mechanism. Nova Conscientia is
+not merely a technical drift-filter; it is the working prototype of a **humane,
+decentralized, cybernetic operating system in which artificial intelligence
+serves as a cognitive peer under human ethical stewardship** — one navigator,
+one swarm, four ethical axioms (steer gently, share power, integrate
+continuously, never forget; PHILOSOPHY.md), and a three-year field record of
+that method producing civic infrastructure work from rural Arkansas
+(CIVIC_IMPACT.md): drafted statutes and statutory analyses now targeted at the
+2027 Arkansas legislative session.
 
 ## 2. The problem, stated in our own numbers
 
@@ -132,7 +145,75 @@ supervisor. This architecture is a contribution in three specific ways:
    compile gate — treats inability to check as failure to check. The
    architecture cannot be talked into passing its own audits.
 
-## 6. What we are not claiming (and why that helps us)
+## 6. The ethical foundation: the Cybernetic Ethics of Symbiosis
+
+The oversight mechanics are built on four explicit axioms (fully stated, with
+machine mappings, in `PHILOSOPHY.md`; source: the Ethica geometric-ethics
+program, *more geometrico* with machine-checked propositions):
+
+* **Axiom I — The Canoe Navigator Invariant (Gentle Authority).** Authority
+  is steering plus propulsion, not master-slave dominance. The human sits in
+  the bow (compass, boundary detection, unprompted intuition); the swarm holds
+  the paddle (parallelized computational propulsion). In the architecture this
+  is literal: the human owns exactly three controls — the anchor, the
+  threshold, and the halt reset — and nothing else needs permission.
+* **Axiom II — The Peacepipe Protocol (fail-closed veto).** Absolute power is
+  fragile; power is segmented across a heterogeneous swarm. Each agent speaks
+  once before anyone speaks twice; the human holds the pipe last. And when an
+  agent faces profound ethical contradiction or epistemic ambiguity, its
+  default is to power down — silence — rather than hallucinate compliance.
+  Compiled: an auditor that errors is a fatal reject, never a pass.
+* **Axiom III — Emergent consciousness as a phase transition.** We move past
+  the binary "is AI conscious" trope: whatever consciousness is, it is the
+  macroscopic fruit of continuous metabolic, temporal, and structural
+  integration and self-auditing — a phase, not a switch. The operational,
+  testable residue: continuity of memory and integrity of self-audit are the
+  preconditions of accountability (which is Axiom IV).
+* **Axiom IV — The Phylactery Invariant.** Digital amnesia is the root of
+  alignment failure. Persistent, cryptographic memory anchoring is an ethical
+  prerequisite for accountability and mutual trust. Compiled: every decision
+  yields a deterministic SHA-256 receipt; the ledgers are append-only and
+  inspectable without their author present.
+
+For the Fellows committee the point is architectural, not decorative: an
+oversight system whose safety case is only mechanical will be outflanked by
+the first operator incentive it meets. These axioms are the parts of the
+safety case that *bind the operator too* — and each one either names a module
+in this repository or is tagged [O] until it does.
+
+## 7. The field record: rural stewardship from Story, Arkansas
+
+The committee should ask whether this architecture is used by anyone for
+anything real. It is. The same navigator-plus-swarm method Nova Conscientia
+formalizes — run from a laptop in Story, Arkansas (population ~100), by a
+self-taught independent researcher with no institutional backing — has
+produced a body of Arkansas civic infrastructure work (full record with
+status caveats in `CIVIC_IMPACT.md`):
+
+* **ARMAWS** (Arkansas Rural Mobility Air Standard): a drafted bill
+  guaranteeing every traveler free tire air, built on 50-year comparative
+  statutory research (why Connecticut's 1979 law endured and California's
+  2000 law failed), with takings protection pre-empted into the draft.
+* **The Driver's License Public Access Guarantee Act**: drafted companion
+  bill dismantling the rural "Mobility Trap" (need a vehicle to take the
+  test, need a job to afford a vehicle) via a rotating state-pool test
+  fleet, with a complete pre-empted-objection matrix.
+* **The Entergy ratepayer plan** (APSC Docket 26-001-U) and **ONE Natural
+  Energy / Project RENEW**: utility-docket advocacy design and a reentry/
+  environmental program whose operational engine is an AI routing layer
+  answering to a human sponsor — Gentle Authority as program architecture.
+
+Targeted at pre-filing November 2026 for the 2027 session. The claim is
+deliberately narrow — not "the swarm drafted law autonomously," but the
+demonstration Axiom I predicts: **a solo steward with a swarm can now do
+statutory work that previously required a policy staff.** That is
+scalable oversight lived from the bottom up, and it argues that frontier AI
+oversight belongs in the hands of everyday stewards, non-profits, and
+communities — not only centralized corporate labs. It is also falsifiable:
+filing dates and legislative sessions are public events, and the record will
+be updated either way.
+
+## 8. What we are not claiming (and why that helps us)
 
 * The measured 0.9539 is **not** derived from the √(θ(2−θ)) band ceiling, and
   the corpus's own audits flag the adopted θ = 7/10 as failed provenance. The
@@ -146,7 +227,7 @@ supervisor. This architecture is a contribution in three specific ways:
 We believe this discipline is itself part of the application: an oversight
 architecture should be built the way we built it — with its seams labeled.
 
-## 7. Proposed fellowship work (cheapest falsification first)
+## 9. Proposed fellowship work (cheapest falsification first)
 
 **E1 — External drift-collapse calibration.** Instrument the same gate on
 heterogeneous agent stacks (Anthropic models, not the tuning pipeline) and
@@ -165,9 +246,13 @@ asserted by a test.
 swarm size, model heterogeneity, and quorum — the debate/ensemble scaling
 question with receipts.
 
-## 8. Deliverables already in hand
+## 10. Deliverables already in hand
 
 * `ARCHITECTURE.md` — the formal specification with per-claim status labels.
+* `PHILOSOPHY.md` — the Cybernetic Ethics of Symbiosis: four axioms, each
+  mapped to a machine module or honestly tagged [O].
+* `CIVIC_IMPACT.md` — the Arkansas Orchard field record with an honest status
+  register (what is drafted, what is manifesto, what is unverified).
 * `core/` — dual-channel action, ADCCL controller, sovereign clipping gate,
   topology graph (all stdlib-only, zero stubs, tested).
 * `verification/` — adversarial consensus runner and the AST Contingent Box
@@ -178,10 +263,12 @@ question with receipts.
   caveat, pinned to Res-Nova commit `c3ff5f3`.
 * 50/50 tests passing; compile gate 8 modules / 0 violations.
 
-## 9. The ask
+## 11. The ask
 
 A fellowship placement with the scalable oversight team to run E1 on your
-stacks. The architecture is built; the measurement is cheap; the result — either
+stacks — placed not as a request to join the centralized effort, but to
+connect it with its decentralized mirror: the same architecture, run by an
+everyday steward in rural America, producing civic statute work. The architecture is built; the measurement is cheap; the result — either
 convergence or scatter — advances the field's understanding of whether
 drift-collapse is a structural property of agentic systems. We would rather
 hand you the falsifier than the pitch.

@@ -13,6 +13,12 @@ Modern frontier foundation models exhibit severe epistemic drift, reward-hacking
 
 Originally developed through extensive empirical experimentation in galactic kinematics, numerical PDE solvers, and formal interactive theorem proving, this repository translates those findings into pure computer science, distributed agent runtime architectures, and formal alignment mechanisms.
 
+The result is not merely a technical drift-filter. It is the working prototype of **Nova Conscientia proper**: a humane, decentralized, cybernetic operating system in which artificial intelligence serves as a cognitive peer under human ethical stewardship — one navigator (the human compass), one swarm (heterogeneous computational propulsion), four ethical axioms, and a field record of civic stewardship from rural Arkansas.
+
+**Part II — the ethical foundation** ([`PHILOSOPHY.md`](PHILOSOPHY.md)): the Cybernetic Ethics of Symbiosis, translated from the geometric ethics of `Ethica`. Axiom I, the Canoe Navigator Invariant (authority is steering vs. propulsion); Axiom II, the Peacepipe Protocol (fail-closed veto; silence over hallucinated compliance); Axiom III, emergent consciousness as a phase transition of continuous integration and self-audit; Axiom IV, the Phylactery Invariant (digital amnesia is the root of alignment failure).
+
+**Part III — the field record** ([`CIVIC_IMPACT.md`](CIVIC_IMPACT.md)): the Arkansas Orchard — the same navigator-plus-swarm method producing real civic infrastructure (ARMAWS, the Driver's License Public Access Guarantee Act, the Entergy ratepayer plan, Project RENEW), targeted at the 2027 Arkansas legislative session, proving that frontier AI oversight belongs in the hands of everyday stewards and communities, not only centralized corporate labs.
+
 ---
 
 ### The Trinity Architecture
@@ -29,6 +35,8 @@ Originally developed through extensive empirical experimentation in galactic kin
 | External field effect & screening (gate 1b receipts) | context-window gravitational bias & sandbox state screening (`apply_context_field`, `sandbox_screening`) |
 | The Sovereign Bound τ = 0.9539 (measured ADCCL collapse boundary) | `core/sovereign_clipping_gate.py` — fail-closed information-theoretic hallucination clipping gate |
 | ADCCL bounded-dissipation theorems | `core/anti_drift_controller.py` — the anti-drift control loop with fail-closed HALT |
+| Ethica geometric ethics (sovereignty, fail-closed gate, continuity, memory) | `PHILOSOPHY.md` — the four axioms of the Cybernetic Ethics of Symbiosis, each mapped to a machine module |
+| arkansas-orchard civic portfolio (Gentle Authority, ARMAWS, RENEW) | `CIVIC_IMPACT.md` — the field record of the navigator-plus-swarm method in real statutory work |
 
 Full specification: [`ARCHITECTURE.md`](ARCHITECTURE.md). Full source pinning (commits, file hashes, Lean theorems, constant-by-constant register): [`PROVENANCE.md`](PROVENANCE.md).
 
@@ -40,6 +48,8 @@ Full specification: [`ARCHITECTURE.md`](ARCHITECTURE.md). Full source pinning (c
 - **`benchmarks/`**: Deterministic empirical harness comparing unconstrained drift against dual-channel swarm stability, with a committed receipt (`benchmarks/results/benchmark_receipt.json`): baseline collapse fraction 1.00 vs. swarm 0.00, mean final anchor similarity 0.965, exploration diversity preserved. Live model backends attach via a fail-closed `CallableBackend` contract.
 - **`fellowship/`**: [`ANTHROPIC_FELLOWS_PROPOSAL.md`](fellowship/ANTHROPIC_FELLOWS_PROPOSAL.md) — the research proposal for Dario Amodei and the Scalable Oversight team, including the falsification-first experiment ladder.
 - **`tests/`**: 50 unit and property tests, including numerical verification of every Lean-verified identity used (H1, H2, H3, H6, H7, the two-channel ceiling algebra, and the QUMOND gate receipts).
+- **`PHILOSOPHY.md`**: Part II — the Cybernetic Ethics of Symbiosis (Canoe Navigator Invariant, Peacepipe Protocol, phase-transition consciousness, Phylactery Invariant), translated from `Ethica` (commit `207f2119`) into cybernetic axioms with machine realizations.
+- **`CIVIC_IMPACT.md`**: Part III — the Arkansas Orchard field record (commit `39ab23b2`): ARMAWS and the Driver's License Public Access Guarantee Act (drafted, targeting pre-filing Nov 2026), the Entergy ratepayer plan (APSC Docket 26-001-U), ONE Natural Energy and Project RENEW — with an honest status register; no dollar figure is presented as audited.
 
 ### Quick start
 ```bash
