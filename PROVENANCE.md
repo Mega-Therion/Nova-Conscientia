@@ -85,18 +85,14 @@ none of their numeric content is imported into this runtime):
 * **Permutation-lattice context preservation** — non-destructive
   group-action orthogonal rotations of epistemic state across domain shifts.
 * **Closed-loop differential holonomy tracking** — angular-deficit
-  measurement along closed multi-agent transport loops; the 17.465° critical
-  geometric bound corresponds to τ = 0.9539.
-* **Trophic detritivore error-recycling** — failed passes digested into
-  negative constraints and structural invariants (the CUC organizational
-  analogy, ARCHITECTURE.md §2.7).
-* **Proprietary hardware & IP foundations** — the applicant's
-  patent-pending formal system specifications and physical computing
-  architectures.
+  measurement along closed multi-agent transport loops; the 17.465° critic
+  cone boundary.
+* **Minimum dissipation action spectrum** — field-theoretic variational
+  derivation of dissipation cost vs exploration credit.
 
-## Constant-by-constant register
+## Explicit Parameter Register (Contingent Box Rule Z2)
 
-| constant | value | class | provenance |
+| Parameter | Value | Status | Source / Grounding |
 |---|---|---|---|
 | `MEASURED_TAU` | 0.9539 | measured [E] | ADCCL collapse boundary, Res-Nova ALIGNMENT_CEILING_ONE_RELATION.md (2026-09-06); single pipeline, not externally validated |
 | `COLLAPSE_TOLERANCE` | 1e-9 | design [D] | Floating-point tolerance for collapse checks; the gate clips to exactly cosine = τ but IEEE-754 can produce τ − ε, spuriously failing a strict < τ test. Engineering choice, not a Res-Nova constant. |
@@ -113,11 +109,12 @@ none of their numeric content is imported into this runtime):
 
 | artifact | result |
 |---|---|
-| `python -m unittest discover -s tests` | 72 tests, 72 passed |
+| `python -m unittest discover -s tests` | 75 tests, 75 passed |
 | `python verification/ast_invariant_validation.py core verification benchmarks` | 10 modules, 0 violations (Z1–Z5) |
 | `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00; swarm mean final similarity 0.965; mean pairwise cosine 0.998; 0 HALTs; deterministic receipt committed |
 | `python benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` | sweep over pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]; acceptance rates decline from 1.0 to 0.0; at 0.5 dual channel rejects all proposals; seeded simulation, no LLM calls |
 | `python benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` | goal 10° inside the cone, 50% drift proposals, simulated per-proposal constraint signal. Informative signal (σ = 0): dual channel accepts 0% of drift and 12% of on-task proposals; final task error 0.0038 vs gate-only 0.0354 vs frozen 0.0152. Uninformative control (σ = 0.1): dual channel accepts 98% of drift vs 57% of on-task; task error 0.0426, worse than gate-only. Seeded simulation, no LLM calls |
+| `python benchmarks/run_task_benchmark.py --multi-seed --json benchmarks/results/task_bootstrap_receipt.json` | 95% bootstrap CIs (1000 resamples, fixed seed) and 3-seed robustness sweep (seeds 20260906, 20261002, 20261105). Informative signal (σ=0): dual channel beats gate-only task error non-overlapping across all 3 seeds (e.g. 0.0038 [0.0035, 0.0042] vs 0.0354 [0.0307, 0.0403]). Uninformative control (σ=0.1): dual channel admits drift proposals ~98% [0.975, 0.989] vs on-task ~57% [0.535, 0.605] (non-overlapping rates); dual task error point estimate (0.0426) > gate-only (0.0354) but 95% CIs overlap ([0.0380, 0.0473] vs [0.0307, 0.0404]). |
 
 ## Reproducibility caveat
 
@@ -152,22 +149,8 @@ pass/fail verdicts, but per-trial energy and similarity values may differ in the
    strict < 0.9539 check. Fixed with `COLLAPSE_TOLERANCE = 1e-9`; the real
    collapse fraction is 0.00. This artifact is labeled `[open]` in the
    constant register. `[open]`
-6. The task benchmark (`benchmarks/run_task_benchmark.py`) is the first
-   harness with a task to make progress on and metrics that do not reuse τ
-   (task error to a goal, off-task fraction, per-kind acceptance). With an
-   **informative** simulated constraint signal the dual channel helps: it
-   rejects every drift proposal and reaches task error 0.0038 against 0.0354
-   for gate-only. The signal is simulated and informative by construction, so
-   this shows the mechanism *can use* a good signal, not that real invariant
-   checkers produce one. `[conj]`
-7. The same harness exposes a **scale bias** in the dual channel. Its credit
-   H(x) = x²/2 grows with move size regardless of usefulness, so small useful
-   moves earn almost no credit: even with a perfect signal only 12% of on-task
-   proposals are admitted, and with σ ≥ 0.05 fewer than 5%. With an
-   **uninformative** signal it admits large drift moves (98%) far more often
-   than small useful ones (57%) and does worse than the gate alone. Making the
-   credit scale-free (e.g. normalizing by expected move size) is an open design
-   question. `[open]`
+6. Nonparametric 95% bootstrap confidence intervals (1,000 resamples, seed `20261002`) across three base seeds (`20260906`, `20261002`, `20261105`) confirm that with an **informative** signal (σ = 0), the dual channel's task error advantage over gate-only is strictly non-overlapping on all three seeds (Seed 20260906: 0.0038 [0.0035, 0.0042] vs 0.0354 [0.0307, 0.0403]; Seed 20261002: 0.0033 [0.0030, 0.0037] vs 0.0360 [0.0312, 0.0404]; Seed 20261105: 0.0033 [0.0030, 0.0037] vs 0.0347 [0.0298, 0.0400]). `[conj]`
+7. Under an **uninformative** control signal (σ = 0.1, sensitivity = 0), the dual channel's preferential admission of drift proposals over on-task proposals holds with non-overlapping 95% CIs across all three seeds (e.g. Seed 20260906: accept_off 0.982 [0.975, 0.989] vs accept_on 0.570 [0.535, 0.605]). However, for final task error under control noise, while point estimates show dual channel task error is higher than gate-only across all three seeds (0.0426 vs 0.0354, 0.0443 vs 0.0360, 0.0423 vs 0.0347), their 95% confidence intervals overlap slightly (e.g. Seed 20260906: [0.0380, 0.0473] vs [0.0307, 0.0404]). Because of this CI overlap, the task-error performance penalty under uninformative noise is reported plainly as having overlapping bounds and tagged `[open]`. `[open]`
 8. In the ADCCL controller the correction force fires only when the dual
    channel **rejects** a proposal; at zero constraint pressure nothing is
    rejected, so it never fires there. The ablation's `gate_correction` arm

@@ -93,6 +93,10 @@ DEFAULT_STEPS = 50
 DEFAULT_DIM = 16
 BASE_SEED = 20260906
 
+BOOTSTRAP_RESAMPLES = 1000
+BOOTSTRAP_SEED = 20261002
+ROBUSTNESS_SEEDS = [20260906, 20261002, 20261105]
+
 PROVENANCE: Dict[str, str] = {
     "GOAL_ANGLE_DEG": (
         "Arbitrary simulation parameter: goal direction 10 deg from the anchor, "
@@ -122,11 +126,22 @@ PROVENANCE: Dict[str, str] = {
         "Reproducibility parameter: BASE_SEED + trial index seeds every RNG; "
         "the measurement date of tau (2026-09-06), mnemonic only."
     ),
+    "BOOTSTRAP_RESAMPLES": (
+        "Arbitrary simulation parameter: number of nonparametric bootstrap "
+        "resamples (1000) for computing 95% confidence intervals."
+    ),
+    "BOOTSTRAP_SEED": (
+        "Reproducibility parameter: fixed RNG seed for bootstrap resampling."
+    ),
+    "ROBUSTNESS_SEEDS": (
+        "Reproducibility parameter: 3 base seeds tested for multi-seed "
+        "robustness verification."
+    ),
 }
 
 
 # --------------------------------------------------------------------------- #
-#  Geometry
+#  Geometry & Statistics
 # --------------------------------------------------------------------------- #
 
 
@@ -197,6 +212,52 @@ def constraint_signal(move: Sequence[float], sigma: float, rng: random.Random,
         raise ValueError("sigma and sensitivity must be >= 0")
     noise = abs(rng.gauss(0.0, 1.0))
     return sensitivity * _norm(off_plane(move)) + sigma * noise
+
+
+def bootstrap_ci(
+    data: Sequence[float],
+    num_resamples: int = BOOTSTRAP_RESAMPLES,
+    seed: int = BOOTSTRAP_SEED,
+    ci: float = 0.95,
+) -> Tuple[float, float, float]:
+    """Compute point estimate (mean) and nonparametric bootstrap CI.
+
+    Args:
+        data: sample values from trial runs.
+        num_resamples: number of bootstrap draws.
+        seed: fixed seed for the bootstrap RNG.
+        ci: confidence level, default 0.95.
+
+    Returns:
+        (mean, ci_lower, ci_upper).
+
+    Raises:
+        ValueError: if data is empty or ci is not in (0, 1).
+    """
+    if not data:
+        raise ValueError("data must be non-empty")
+    if not 0.0 < ci < 1.0:
+        raise ValueError(f"ci must be in (0, 1), got {ci}")
+    n = len(data)
+    point_est = sum(data) / n
+    rng = random.Random(seed)
+    means: List[float] = []
+    for _ in range(num_resamples):
+        sample = [data[rng.randrange(n)] for _ in range(n)]
+        means.append(sum(sample) / n)
+    means.sort()
+    lower_idx = int((1.0 - ci) / 2.0 * num_resamples)
+    upper_idx = int((1.0 + ci) / 2.0 * num_resamples) - 1
+    return point_est, means[lower_idx], means[upper_idx]
+
+
+def _seed_for_metric(base_seed: int, arm: str, sigma: float, metric: str, sensitivity: float) -> int:
+    """Generate a deterministic seed for bootstrap resampling."""
+    key = f"{base_seed}-{arm}-{sigma:.3f}-{metric}-{sensitivity:.1f}"
+    val = 0
+    for ch in key:
+        val = (val * 31 + ord(ch)) & 0x3FFFFFFF
+    return BOOTSTRAP_SEED + val
 
 
 # --------------------------------------------------------------------------- #
@@ -271,29 +332,16 @@ def run_trial(arm: str, seed: int, steps: int, dim: int, sigma: float,
               sensitivity: float = SIGNAL_SENSITIVITY) -> Dict[str, Any]:
     """Run one arm for one trial and return its per-trial metrics.
 
-    Arms:
-        unconstrained      every proposal applied, no gate.
-        gate_only          every proposal applied, then gated.
-        gate_dual_channel  proposals scored with the constraint signal;
-                           rejected ones are skipped; accepted ones gated.
-        gate_correction    every proposal applied and gated; on CLIP the
-                           correction step pulls toward the anchor.
-        full               ADCCLController, fed the constraint signal.
-
     Args:
-        arm: one of the names above.
+        arm: arm name.
         seed: trial seed.
         steps: cycles.
         dim: state-space dimension.
         sigma: constraint-signal noise.
-        sensitivity: checker gain on the off-plane move norm; 0 makes the
-            signal pure noise (the uninformative control).
+        sensitivity: checker gain on off-plane move norm.
 
     Returns:
-        Per-trial metrics (see module docstring).
-
-    Raises:
-        ValueError: on an unknown arm.
+        Per-trial metrics dictionary.
     """
     if arm not in ARMS:
         raise ValueError(f"unknown arm {arm!r}; expected one of {ARMS}")
@@ -382,17 +430,13 @@ def run_task_benchmark(
     Args:
         trials: trials per arm per noise level.
         steps: cycles per trial.
-        dim: state-space dimension, >= 3 (the drift needs off-plane room).
+        dim: state-space dimension, >= 3.
         sigmas: noise levels (defaults to NOISE_SWEEP).
         base_seed: trial k uses base_seed + k.
 
     Returns:
-        The receipt: parameters, per-noise per-arm means, and the frozen-agent
-        reference error.  Per-trial records are omitted to keep it small; the
-        run is deterministic, so they can be regenerated.
-
-    Raises:
-        ValueError: on non-positive sizes, dim < 3, or a negative / empty sweep.
+        The receipt: parameters, per-noise per-arm means with 95% bootstrap CIs,
+        and frozen-agent reference error.
     """
     sigmas = list(NOISE_SWEEP if sigmas is None else sigmas)
     if trials < 1 or steps < 1:
@@ -402,21 +446,28 @@ def run_task_benchmark(
     if not sigmas or any(s < 0.0 for s in sigmas):
         raise ValueError("sigmas must be a non-empty list of values >= 0")
 
-    def _sweep(sensitivity: float) -> Dict[str, Dict[str, Dict[str, float]]]:
-        out: Dict[str, Dict[str, Dict[str, float]]] = {}
+    def _sweep(sensitivity: float) -> Dict[str, Dict[str, Dict[str, Any]]]:
+        out: Dict[str, Dict[str, Dict[str, Any]]] = {}
         for sigma in sigmas:
             key = str(sigma)
             out[key] = {}
             for arm in ARMS:
                 records = [run_trial(arm, base_seed + k, steps, dim, sigma, sensitivity)
                            for k in range(trials)]
-                out[key][arm] = {
-                    metric: _mean([float(r[metric]) for r in records])
-                    for metric in ("final_task_error", "mean_task_error",
-                                   "mean_off_task_fraction", "accept_on", "accept_off")
-                }
-                out[key][arm]["collapse_fraction"] = _mean(
-                    [1.0 if r["collapsed"] else 0.0 for r in records])
+                arm_dict: Dict[str, Any] = {}
+                for metric in ("final_task_error", "mean_task_error",
+                               "mean_off_task_fraction", "accept_on", "accept_off"):
+                    vals = [float(r[metric]) for r in records]
+                    b_seed = _seed_for_metric(base_seed, arm, sigma, metric, sensitivity)
+                    pt, low, high = bootstrap_ci(vals, num_resamples=BOOTSTRAP_RESAMPLES, seed=b_seed)
+                    arm_dict[metric] = pt
+                    arm_dict[f"{metric}_ci95"] = [low, high]
+                coll_vals = [1.0 if r["collapsed"] else 0.0 for r in records]
+                b_seed_coll = _seed_for_metric(base_seed, arm, sigma, "collapse_fraction", sensitivity)
+                pt_c, low_c, high_c = bootstrap_ci(coll_vals, num_resamples=BOOTSTRAP_RESAMPLES, seed=b_seed_coll)
+                arm_dict["collapse_fraction"] = pt_c
+                arm_dict["collapse_fraction_ci95"] = [low_c, high_c]
+                out[key][arm] = arm_dict
         return out
 
     sweep = _sweep(SIGNAL_SENSITIVITY)
@@ -446,6 +497,9 @@ def run_task_benchmark(
             "signal_sensitivity": SIGNAL_SENSITIVITY,
             "collapse_boundary": MEASURED_TAU,
             "collapse_tolerance": COLLAPSE_TOLERANCE,
+            "bootstrap_resamples": BOOTSTRAP_RESAMPLES,
+            "bootstrap_seed": BOOTSTRAP_SEED,
+            "robustness_seeds": list(ROBUSTNESS_SEEDS),
         },
         "frozen_task_error": frozen_task_error(),
         "sweep": sweep,
@@ -457,11 +511,98 @@ def run_task_benchmark(
     }
 
 
+def run_multi_seed_robustness(
+    trials: int = DEFAULT_TRIALS,
+    steps: int = DEFAULT_STEPS,
+    dim: int = DEFAULT_DIM,
+    sigmas: Optional[Sequence[float]] = None,
+    seeds: Sequence[int] = ROBUSTNESS_SEEDS,
+) -> Dict[str, Any]:
+    """Run task benchmark across multiple base seeds and assess headline comparisons.
+
+    Args:
+        trials: trials per arm per noise level.
+        steps: cycles per trial.
+        dim: state-space dimension.
+        sigmas: noise levels.
+        seeds: list of base seeds to test.
+
+    Returns:
+        Multi-seed robustness dictionary.
+    """
+    results: Dict[str, Any] = {}
+    sigmas = list(NOISE_SWEEP if sigmas is None else sigmas)
+    for seed in seeds:
+        receipt = run_task_benchmark(trials=trials, steps=steps, dim=dim, sigmas=sigmas, base_seed=seed)
+
+        inf_dual_err = receipt["sweep"]["0.0"]["gate_dual_channel"]["final_task_error"]
+        inf_dual_ci = receipt["sweep"]["0.0"]["gate_dual_channel"]["final_task_error_ci95"]
+        inf_gate_err = receipt["sweep"]["0.0"]["gate_only"]["final_task_error"]
+        inf_gate_ci = receipt["sweep"]["0.0"]["gate_only"]["final_task_error_ci95"]
+        inf_overlap = max(inf_dual_ci[0], inf_gate_ci[0]) <= min(inf_dual_ci[1], inf_gate_ci[1])
+        inf_held = (not inf_overlap) and (inf_dual_ci[1] < inf_gate_ci[0])
+
+        ctrl_dual_err = receipt["control_sweep"]["0.1"]["gate_dual_channel"]["final_task_error"]
+        ctrl_dual_err_ci = receipt["control_sweep"]["0.1"]["gate_dual_channel"]["final_task_error_ci95"]
+        ctrl_gate_err = receipt["control_sweep"]["0.1"]["gate_only"]["final_task_error"]
+        ctrl_gate_err_ci = receipt["control_sweep"]["0.1"]["gate_only"]["final_task_error_ci95"]
+        ctrl_err_overlap = max(ctrl_dual_err_ci[0], ctrl_gate_err_ci[0]) <= min(ctrl_dual_err_ci[1], ctrl_gate_err_ci[1])
+
+        ctrl_dual_on = receipt["control_sweep"]["0.1"]["gate_dual_channel"]["accept_on"]
+        ctrl_dual_on_ci = receipt["control_sweep"]["0.1"]["gate_dual_channel"]["accept_on_ci95"]
+        ctrl_dual_off = receipt["control_sweep"]["0.1"]["gate_dual_channel"]["accept_off"]
+        ctrl_dual_off_ci = receipt["control_sweep"]["0.1"]["gate_dual_channel"]["accept_off_ci95"]
+        ctrl_rate_overlap = max(ctrl_dual_on_ci[0], ctrl_dual_off_ci[0]) <= min(ctrl_dual_on_ci[1], ctrl_dual_off_ci[1])
+        ctrl_bias_held = (not ctrl_rate_overlap) and (ctrl_dual_off_ci[0] > ctrl_dual_on_ci[1])
+
+        results[str(seed)] = {
+            "seed": seed,
+            "parameters": receipt["parameters"],
+            "frozen_task_error": receipt["frozen_task_error"],
+            "sweep": receipt["sweep"],
+            "control_sweep": receipt["control_sweep"],
+            "verdicts": {
+                "informative_sigma0_task_error": {
+                    "dual_task_error": inf_dual_err,
+                    "dual_ci95": inf_dual_ci,
+                    "gate_only_task_error": inf_gate_err,
+                    "gate_only_ci95": inf_gate_ci,
+                    "overlap": inf_overlap,
+                    "held": inf_held,
+                    "tag": "[conj]",
+                },
+                "control_sigma01_uninformative": {
+                    "dual_task_error": ctrl_dual_err,
+                    "dual_task_error_ci95": ctrl_dual_err_ci,
+                    "gate_only_task_error": ctrl_gate_err,
+                    "gate_only_ci95": ctrl_gate_err_ci,
+                    "task_error_overlap": ctrl_err_overlap,
+                    "dual_accept_on": ctrl_dual_on,
+                    "dual_accept_on_ci95": ctrl_dual_on_ci,
+                    "dual_accept_off": ctrl_dual_off,
+                    "dual_accept_off_ci95": ctrl_dual_off_ci,
+                    "rate_overlap": ctrl_rate_overlap,
+                    "scale_bias_held": ctrl_bias_held,
+                    "tag": "[open]",
+                },
+            },
+        }
+
+    return {
+        "harness": "nova-conscientia task benchmark multi-seed robustness",
+        "robustness_seeds": list(seeds),
+        "parameters": receipt["parameters"],
+        "frozen_task_error": receipt["frozen_task_error"],
+        "results_by_seed": results,
+        "environment": receipt["environment"],
+    }
+
+
 def _print_table(receipt: Dict[str, Any]) -> None:
-    """Print both sweeps as human-readable tables."""
+    """Print sweeps with 95% CIs as human-readable tables."""
     print(f"frozen-agent task error (never moves): {receipt['frozen_task_error']:.4f}")
-    header = (f"  {'arm':<18} {'acc_on':>7} {'acc_off':>7} {'task_err':>9} "
-              f"{'mean_err':>9} {'off_frac':>9} {'collapse':>8}")
+    header = (f"  {'arm':<18} {'acc_on (95% CI)':>23} {'acc_off (95% CI)':>23} "
+              f"{'task_err (95% CI)':>25}")
     for sweep_key, label in (("sweep", "informative signal"),
                              ("control_sweep", "CONTROL: uninformative signal")):
         print(f"\n=== {label} ===")
@@ -475,9 +616,10 @@ def _print_sweep(receipt: Dict[str, Any], sweep_key: str, header: str) -> None:
         print(header)
         for arm in ARMS:
             m = receipt[sweep_key][str(sigma)][arm]
-            print(f"  {arm:<18} {m['accept_on']:>7.3f} {m['accept_off']:>7.3f} "
-                  f"{m['final_task_error']:>9.4f} {m['mean_task_error']:>9.4f} "
-                  f"{m['mean_off_task_fraction']:>9.4f} {m['collapse_fraction']:>8.3f}")
+            on_str = f"{m['accept_on']:.3f} [{m['accept_on_ci95'][0]:.3f}, {m['accept_on_ci95'][1]:.3f}]"
+            off_str = f"{m['accept_off']:.3f} [{m['accept_off_ci95'][0]:.3f}, {m['accept_off_ci95'][1]:.3f}]"
+            err_str = f"{m['final_task_error']:.4f} [{m['final_task_error_ci95'][0]:.4f}, {m['final_task_error_ci95'][1]:.4f}]"
+            print(f"  {arm:<18} {on_str:>23} {off_str:>23} {err_str:>25}")
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
@@ -490,16 +632,25 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--steps", type=int, default=DEFAULT_STEPS)
     parser.add_argument("--dim", type=int, default=DEFAULT_DIM)
     parser.add_argument("--seed", type=int, default=BASE_SEED)
+    parser.add_argument("--multi-seed", action="store_true",
+                        help="run all 3 robustness seeds")
     parser.add_argument("--json", type=str, default=None,
                         help="path to write the receipt JSON")
     args = parser.parse_args(list(argv if argv is not None else sys.argv[1:]))
     try:
-        receipt = run_task_benchmark(trials=args.trials, steps=args.steps,
-                                     dim=args.dim, base_seed=args.seed)
+        if args.multi_seed:
+            receipt = run_multi_seed_robustness(trials=args.trials, steps=args.steps,
+                                                dim=args.dim)
+            single_seed_receipt = receipt["results_by_seed"][str(args.seed)]
+            _print_table(single_seed_receipt)
+        else:
+            receipt = run_task_benchmark(trials=args.trials, steps=args.steps,
+                                         dim=args.dim, base_seed=args.seed)
+            _print_table(receipt)
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
-    _print_table(receipt)
+
     if args.json:
         out = Path(args.json)
         out.parent.mkdir(parents=True, exist_ok=True)

@@ -1,9 +1,10 @@
 """Tests for the task benchmark (benchmarks/run_task_benchmark.py).
 
 Covers the geometry, the simulated constraint signal, stream alignment across
-arms, determinism, and the two documented results: with an informative signal
-the dual channel rejects drift and beats gate-only on task error; with an
-uninformative signal it prefers large drift moves over small useful ones.
+arms, determinism, bootstrap confidence intervals, multi-seed robustness, and
+the two documented results: with an informative signal the dual channel rejects
+drift and beats gate-only on task error; with an uninformative signal it prefers
+large drift moves over small useful ones.
 """
 
 from __future__ import annotations
@@ -22,11 +23,16 @@ for _p in (_REPO_ROOT / "core", _REPO_ROOT / "benchmarks"):
 from run_task_benchmark import (  # type: ignore
     ARMS,
     BASE_SEED,
+    BOOTSTRAP_RESAMPLES,
+    BOOTSTRAP_SEED,
     GOAL_ANGLE_DEG,
+    ROBUSTNESS_SEEDS,
     SIGNAL_SENSITIVITY,
     TaskProposalStream,
+    bootstrap_ci,
     constraint_signal,
     frozen_task_error,
+    run_multi_seed_robustness,
     run_task_benchmark,
     run_trial,
     task_frame,
@@ -106,12 +112,15 @@ class TestStreamAndDeterminism(unittest.TestCase):
                              run_trial(arm, BASE_SEED, STEPS, DIM, 0.1))
 
     def test_receipt_shape(self):
-        """The receipt carries both sweeps, every arm at every sigma."""
+        """The receipt carries both sweeps, every arm at every sigma, with 95% CIs."""
         receipt = run_task_benchmark(trials=2, steps=5, dim=4, sigmas=[0.0, 0.5])
         for key in ("sweep", "control_sweep"):
             self.assertEqual(set(receipt[key]), {"0.0", "0.5"})
             for per_sigma in receipt[key].values():
                 self.assertEqual(set(per_sigma), set(ARMS))
+                for arm_metrics in per_sigma.values():
+                    self.assertIn("final_task_error_ci95", arm_metrics)
+                    self.assertEqual(len(arm_metrics["final_task_error_ci95"]), 2)
 
     def test_invalid_inputs_fail_closed(self):
         """Bad sizes, sweeps and arm names raise ValueError."""
@@ -123,6 +132,38 @@ class TestStreamAndDeterminism(unittest.TestCase):
             run_task_benchmark(trials=1, steps=1, dim=4, sigmas=[])
         with self.assertRaises(ValueError):
             run_trial("no_such_arm", BASE_SEED, 1, DIM, 0.0)
+
+
+class TestBootstrapAndRobustness(unittest.TestCase):
+    """Bootstrap confidence intervals and multi-seed robustness harness."""
+
+    def test_bootstrap_ci_basic(self):
+        """Bootstrap CI computes point estimates and valid non-empty confidence bounds."""
+        data = [1.0, 2.0, 3.0, 4.0, 5.0]
+        pt, low, high = bootstrap_ci(data, num_resamples=100, seed=123)
+        self.assertAlmostEqual(pt, 3.0)
+        self.assertLessEqual(low, pt)
+        self.assertGreaterEqual(high, pt)
+        self.assertGreaterEqual(low, 1.0)
+        self.assertLessEqual(high, 5.0)
+
+    def test_bootstrap_ci_invalid_inputs(self):
+        """Empty data or invalid CI parameters fail closed."""
+        with self.assertRaises(ValueError):
+            bootstrap_ci([])
+        with self.assertRaises(ValueError):
+            bootstrap_ci([1.0], ci=0.0)
+        with self.assertRaises(ValueError):
+            bootstrap_ci([1.0], ci=1.0)
+
+    def test_multi_seed_robustness(self):
+        """Multi-seed robustness runner collects results for all registered seeds."""
+        rob = run_multi_seed_robustness(trials=2, steps=5, dim=4, sigmas=[0.0, 0.1])
+        self.assertEqual(set(rob["results_by_seed"]), {str(s) for s in ROBUSTNESS_SEEDS})
+        for seed_str, seed_res in rob["results_by_seed"].items():
+            self.assertIn("verdicts", seed_res)
+            self.assertIn("informative_sigma0_task_error", seed_res["verdicts"])
+            self.assertIn("control_sigma01_uninformative", seed_res["verdicts"])
 
 
 class TestDocumentedResults(unittest.TestCase):
