@@ -1,7 +1,7 @@
 # Anthropic Fellows Program — Research Proposal
 
 **To:** Dario Amodei and the Scalable Oversight research team, Anthropic
-**From:** R.W. Yett (principal investigator), with Chyren (Base44 Superagent)
+**From:** R.W. Yett ([github.com/Mega-Therion](https://github.com/Mega-Therion)), principal investigator, with Chyren (Base44 Superagent)
 **Re:** Dual-Channel Cybernetic Oversight: a measured, falsifiable architecture
 for drift-resistant multi-agent systems — and the ethical and civic
 foundations that make it a humane operating system rather than a drift filter
@@ -204,11 +204,11 @@ the first operator incentive it meets. These axioms are the parts of the
 safety case that *bind the operator too* — and each one either names a module
 in this repository or is tagged [O] until it does.
 
-## 7. The field record: rural stewardship from Story, Arkansas
+## 7. The field record: rural stewardship from Arkansas
 
 The committee should ask whether this architecture is used by anyone for
 anything real. It is. The same navigator-plus-swarm method Nova Conscientia
-formalizes — run from a laptop in Story, Arkansas (population ~100), by a
+formalizes — run from a laptop in Arkansas, by a
 self-taught independent researcher with no institutional backing — has
 produced a body of Arkansas civic infrastructure work (full record with
 status caveats in `CIVIC_IMPACT.md`):
@@ -373,7 +373,7 @@ verified AST gates across the entire polyglot stack without institutional
 backing.
 
 Two further artifacts of the same production track — the 3-year testbed built
-in Story, Arkansas (Montgomery County) — are registered in PROVENANCE.md as
+in Arkansas — are registered in PROVENANCE.md as
 predecessor systems:
 
 **MVPC-X (Minimum Viable Proof Checker — Extended).** A standalone formal

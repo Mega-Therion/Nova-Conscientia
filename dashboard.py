@@ -728,7 +728,7 @@ def _dashboard_html() -> str:
     </div>
   </div>
   <div class="coord-bar">
-    <span class="coord-marker"><span class="dot"></span>STORY, AR &nbsp;[34.7° N, 93.5° W]</span>
+    <span class="coord-marker"><span class="dot"></span>ARKANSAS</span>
     <span class="commit-pill">git:{git_hash}</span>
   </div>
   <div class="telemetry-bar">

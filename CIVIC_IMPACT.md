@@ -18,8 +18,7 @@ another alignment proposal that has never left the lab.
 
 The field record is this: the same working method that Nova Conscientia
 formalizes — one human navigator with persistent machine memory and a
-heterogeneous agent swarm, run from a laptop in Story, Arkansas (population
-~100, Montgomery County, Ouachita foothills) — has been used for three years to
+heterogeneous agent swarm, run from a laptop in Arkansas — has been used for three years to
 produce, among other things, a body of Arkansas civic infrastructure work:
 drafted statutes, 50-year comparative statutory analyses, utility-docket
 advocacy plans, and reentry/environmental program designs, currently
@@ -110,10 +109,10 @@ forfeited vehicles already in state possession, insured under the existing
 state self-insurance pool — near-zero marginal taxpayer cost), and a
 complete pre-empted-objection matrix: fleet cost (<0.04% of the FY25
 $367.9M state surplus), liability (existing DFA Risk Management pool),
-"just borrow a car" (Montgomery County poverty rate 22.4%), and funding
+"just borrow a car" (local county poverty rate 22.4%), and funding
 mechanism (Act 1006 of 2025's Motor Vehicle Acquisition Revolving Fund, up
-to $15M already appropriated). Phase 1 pilot: Troop K (Montgomery, Garland,
-Polk counties). Named sponsors and officials are as recorded in the
+to $15M already appropriated). Phase 1 pilot: a rural troop
+region. Named sponsors and officials are as recorded in the
 source planning document; current willingness must be confirmed before
 treating them as committed. `[E]`
 
@@ -223,7 +222,7 @@ manifestos — and the record says exactly that. `[E]`
 
 1. **Oversight is not only a safety problem; it is an access problem.**
    The same architecture that guards a frontier model's drift lets a
-   self-taught researcher in a town of ~100 people run statutory analysis
+   self-taught researcher in rural Arkansas run statutory analysis
    at the depth of a policy staff. Decentralized stewardship is the
    constructive face of the alignment conversation.
 2. **The field tests the axioms.** The bills were built with the

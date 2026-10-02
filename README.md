@@ -1,10 +1,11 @@
 # Nova Conscientia (Nova C)
 ## Cybernetic Dual-Channel Oversight Architecture & Multi-Agent Swarm Laboratory
 
-> **Principal Investigator / Architect:** R.W. Yett (Story, Arkansas)  
+> **Principal Investigator / Architect:** R.W. Yett ([github.com/Mega-Therion](https://github.com/Mega-Therion), Arkansas)  
 > **Target Program:** Anthropic Fellows Program / Scalable Oversight & Multi-Agent Alignment  
 > **Repository:** `Nova-Conscientia`  
 > **Status:** Architecture Blueprint & Translation Phase — machine code complete, benchmark receipt committed  
+> **License:** Apache 2.0 (see [`LICENSE`](LICENSE))  
 
 ---
 
@@ -71,6 +72,10 @@ python3 verification/ast_invariant_validation.py core verification benchmarks
 
 # run the benchmark and write a fresh receipt
 python3 benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json
+
+# launch the cybernetic telemetry HUD dashboard (stdlib only)
+python3 dashboard.py
+# view at http://localhost:3000
 ```
 
 ### Epistemic status (Contingent Box Protocol)

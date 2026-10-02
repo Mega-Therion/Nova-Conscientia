@@ -63,7 +63,7 @@ runtime — they stay in their home repo with their own provenance.
 ## Predecessor Systems & Ecosystem Lineage
 
 Prior production systems on the Engineering Provenance track (things built by
-R.W. Yett, Story, Arkansas). None of their numeric constants are imported into
+R.W. Yett, Arkansas). None of their numeric constants are imported into
 this runtime.
 
 | System | Repository | Core Mechanism / Formal Invariant | Language Ecosystem |
