@@ -31,6 +31,7 @@ from run_task_benchmark import (  # type: ignore
     TaskProposalStream,
     bootstrap_ci,
     paired_difference,
+    run_credit_mode_comparison,
     constraint_signal,
     frozen_task_error,
     run_multi_seed_robustness,
@@ -213,6 +214,38 @@ class TestDocumentedResults(unittest.TestCase):
         self.assertGreater(off, on)
         dual = _mean_metric("gate_dual_channel", "final_task_error", 0.1, sensitivity=0.0)
         self.assertGreater(dual, _mean_metric("gate_only", "final_task_error", 0.1))
+
+
+class TestCreditModes(unittest.TestCase):
+    """The credit-mode comparison and its documented verdicts."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.receipt = run_credit_mode_comparison(trials=TRIALS, steps=STEPS, dim=DIM,
+                                                 seeds=[BASE_SEED])
+
+    def test_receipt_covers_every_mode(self):
+        """Every credit mode appears in results and summary."""
+        self.assertEqual(set(self.receipt["results"]), {"classic", "scale_free", "running_reference"})
+        self.assertEqual(set(self.receipt["summary"]), set(self.receipt["results"]))
+
+    def test_classic_and_scale_free_keep_the_bias(self):
+        """Classic and scale_free credit still prefer drift under the control."""
+        for mode in ("classic", "scale_free"):
+            self.assertTrue(self.receipt["summary"][mode]["gate_dual_channel"]
+                            ["scale_bias_under_control_all_seeds"], mode)
+
+    def test_running_reference_fixes_the_bias(self):
+        """running_reference beats gate-only with a good signal and is unbiased without one."""
+        verdict = self.receipt["summary"]["running_reference"]["gate_dual_channel"]
+        self.assertTrue(verdict["beats_gate_informative_all_seeds"])
+        self.assertFalse(verdict["scale_bias_under_control_all_seeds"])
+        self.assertFalse(verdict["worse_than_gate_under_control_all_seeds"])
+
+    def test_unknown_mode_fails_closed(self):
+        """An unknown credit mode raises ValueError."""
+        with self.assertRaises(ValueError):
+            run_credit_mode_comparison(trials=1, steps=1, dim=4, seeds=[BASE_SEED], modes=["nope"])
 
 
 if __name__ == "__main__":

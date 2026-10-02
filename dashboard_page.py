@@ -513,7 +513,9 @@ _LEDGER = [
              "invariant checkers produce one."),
     ("open", "Scale bias: the credit H(x) = x²/2 rewards large moves regardless of usefulness. "
              "With an uninformative signal (σ = 0.1) the dual channel admits 98% of drift vs "
-             "57% of on-task proposals and does worse than the gate alone."),
+             "57% of on-task proposals and does worse than the gate alone. Candidate fix: "
+             "running_reference credit removes the bias in simulation (equal acceptance, "
+             "task error equal to gate-only) while keeping the informative-signal gain."),
     ("open", "Does a real invariant checker on a live model produce a signal informative "
              "enough for the dual channel to help?"),
     ("open", "How does the system behave with a live model and an independent drift metric?"),
@@ -680,7 +682,7 @@ def render_dashboard(receipt: Optional[dict], git_hash: str) -> str:
     <p class="hero-desc">Fail-closed hallucination clipping at τ = 0.9539. Dual-channel
        oversight, anti-drift control, and swarm topology for AI alignment research.</p>
     <div class="hero-badges">
-      <span class="hero-badge teal">76/76 PASS</span>
+      <span class="hero-badge teal">83/83 PASS</span>
       <span class="hero-badge teal">0 Violations</span>
       <span class="hero-badge">git:{git_hash}</span>
     </div>

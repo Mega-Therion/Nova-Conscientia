@@ -131,6 +131,26 @@ class TestHamilgrangianIdentities(unittest.TestCase):
         dirty = action_sf.evaluate(momentum=0.01, constraint_pressure=0.05)
         self.assertFalse(dirty.accepted)
 
+    def test_running_reference_credit_mode(self):
+        """running_reference credits the mean momentum of earlier proposals, not the current one's size."""
+        action = DualChannelAction(credit_mode="running_reference")
+        first = action.evaluate(momentum=0.4, constraint_pressure=0.0)
+        self.assertAlmostEqual(first.net_action, h_kinetic(0.4), places=12)
+        # A zero-size proposal is credited on the earlier mean (0.4), not on itself.
+        tiny = action.evaluate(momentum=0.0, constraint_pressure=0.1)
+        self.assertAlmostEqual(tiny.net_action, h_kinetic(0.4) - l_corr(0.1), places=12)
+        self.assertTrue(tiny.accepted)
+        # Under classic credit the same proposal earns nothing and is rejected.
+        self.assertFalse(DualChannelAction().evaluate(momentum=0.0, constraint_pressure=0.1).accepted)
+        # Same history and pressure, very different current sizes: identical net action.
+        a = DualChannelAction(credit_mode="running_reference")
+        b = DualChannelAction(credit_mode="running_reference")
+        a.evaluate(momentum=0.3, constraint_pressure=0.0)
+        b.evaluate(momentum=0.3, constraint_pressure=0.0)
+        small = a.evaluate(momentum=0.01, constraint_pressure=0.05)
+        large = b.evaluate(momentum=0.9, constraint_pressure=0.05)
+        self.assertEqual(small.net_action, large.net_action)
+
     def test_invalid_credit_mode(self):
         """Unknown credit modes are rejected."""
         action = DualChannelAction(credit_mode="invalid_mode")

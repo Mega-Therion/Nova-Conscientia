@@ -353,7 +353,7 @@ question with receipts.
   in its credit term (see PROVENANCE.md caveats 6–7).
 * `PROVENANCE.md` — every source file hash, Lean theorem, constant, and
   caveat, pinned to Res-Nova commit `c3ff5f3`.
-* 76/76 tests passing; compile gate 10 modules / 0 violations.
+* 83/83 tests passing; compile gate 10 modules / 0 violations.
 
 ### 11.1 Provenance of Engineering: The Chyren Ecosystem & Prior Formal Tooling
 

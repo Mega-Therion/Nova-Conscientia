@@ -105,7 +105,7 @@ none of their numeric content is imported into this runtime):
 | equipartition floor θ | 1/√2 = cos 45° | derived [P] | RapidityEquipartition.lean (sinh ψ = 1 ⇒ γ = √2, θ = tanh ψ) |
 | `ν_std`, `L_e`, far-field factor | — | proved/receipted [E] | qumond_pm.py + QUMOND_PM_GATES.json |
 | drift coordinate x = tan α | — | design [D] | Nova Conscientia choice; x = 1 is exactly 45° (ties to equipartition) |
-| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults, task-benchmark goal angle / on-task mix / signal sensitivity / noise sweep | — | design [D] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
+| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults, task-benchmark goal angle / on-task mix / signal sensitivity / noise sweep, dual-channel credit modes and `SCALE_FREE_MOMENTUM_FLOOR` | — | design [D] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
 | baseline mean final energy ~7.5e10 | — | artifact [open] | Artifact of the 1e6 drift cap in `drift_coordinate_capped`; median energy is 2.75 and only 15% of trials hit the cap. The mean is dominated by the few capped trials. |
 | gate-only collapse fraction (pre-tolerance) | 0.05 | artifact [open] | Was a floating-point rounding artifact, not real drift: the gate clips to exactly cosine = τ, but IEEE-754 produced 0.9538999999999999, failing a strict < 0.9539 check. Fixed with COLLAPSE_TOLERANCE = 1e-9; real collapse fraction is 0.00. |
 
@@ -113,12 +113,13 @@ none of their numeric content is imported into this runtime):
 
 | artifact | result |
 |---|---|
-| `python -m unittest discover -s tests` | 76 tests, 76 passed |
+| `python -m unittest discover -s tests` | 83 tests, 83 passed |
 | `python verification/ast_invariant_validation.py core verification benchmarks` | 10 modules, 0 violations (Z1–Z5) |
 | `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00; swarm mean final similarity 0.965; mean pairwise cosine 0.998; 0 HALTs; deterministic receipt committed |
 | `python benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` | sweep over pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]; acceptance rates decline from 1.0 to 0.0; at 0.5 dual channel rejects all proposals; seeded simulation, no LLM calls |
 | `python benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` | goal 10° inside the cone, 50% drift proposals, simulated per-proposal constraint signal. Informative signal (σ = 0): dual channel accepts 0% of drift and 12% of on-task proposals; final task error 0.0038 vs gate-only 0.0354 vs frozen 0.0152. Uninformative control (σ = 0.1): dual channel accepts 98% of drift vs 57% of on-task; task error 0.0426, worse than gate-only. Seeded simulation, no LLM calls |
 | `python benchmarks/run_task_benchmark.py --multi-seed --json benchmarks/results/task_bootstrap_receipt.json` | 95% bootstrap CIs (1,000 resamples, fixed seeds) on 3 base seeds (20260906, 20261002, 20261105), with **paired** bootstrap CIs on per-trial differences (arms share seeds and proposal streams). Dual − gate-only task error, informative σ = 0: −0.0316 [−0.0365, −0.0264], −0.0327 [−0.0375, −0.0279], −0.0314 [−0.0363, −0.0264]. Control σ = 0.1: +0.0071 [+0.0048, +0.0093], +0.0083 [+0.0056, +0.0110], +0.0076 [+0.0050, +0.0104]. Control accept_off − accept_on: +0.41 [+0.38, +0.45], +0.40 [+0.37, +0.44], +0.41 [+0.38, +0.44]. All three claims hold on all three seeds |
+| `python benchmarks/run_task_benchmark.py --credit-modes --json benchmarks/results/task_credit_modes_receipt.json` | Credit modes compared on 3 seeds with paired 95% CIs. `classic` and `scale_free` keep the scale bias (control accept_off − accept_on +0.41 / +0.32, task error worse than gate-only). `running_reference` (credit from the mean momentum of earlier proposals) removes it: informative σ = 0 accepts 98.5% of on-task and 0% of drift, task error 0.0005 vs gate-only 0.0354; control σ = 0.1 accepts both kinds equally (0.852 / 0.852) and task error matches gate-only (paired CI spans zero) |
 
 ## Reproducibility caveat
 
@@ -173,8 +174,17 @@ pass/fail verdicts, but per-trial energy and similarity values may differ in the
    zero). An earlier check compared two independent CIs, found them slightly
    overlapping and downgraded the task-error claim; that test ignores the
    paired design (same seeds and proposal streams in every arm) and is too
-   conservative. The bias itself is established in this simulation `[conj]`;
-   how to remove it is an open design question `[open]`.
+   conservative. The bias itself is established in this simulation `[conj]`.
+   **Candidate fix** (`credit_mode="running_reference"`, off by default):
+   credit the mean momentum of earlier proposals instead of the current
+   proposal's own size, so acceptance depends on pressure alone. On three
+   seeds it keeps the informative-signal gain (task error 0.0005 vs 0.0354)
+   and removes the bias under the control (equal acceptance, task error equal
+   to gate-only). The agent's `scale_free` ratio mode does not remove it.
+   Caveats: the reference drifts with the proposal mix (a stream dominated by
+   large moves raises everyone's credit), and the signal is still simulated.
+   Fix established in simulation `[conj]`; whether it survives a real checker
+   and a live model is `[open]`.
 8. In the ADCCL controller the correction force fires only when the dual
    channel **rejects** a proposal; at zero constraint pressure nothing is
    rejected, so it never fires there. The ablation's `gate_correction` arm
