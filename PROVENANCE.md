@@ -105,7 +105,7 @@ none of their numeric content is imported into this runtime):
 | equipartition floor θ | 1/√2 = cos 45° | derived [P] | RapidityEquipartition.lean (sinh ψ = 1 ⇒ γ = √2, θ = tanh ψ) |
 | `ν_std`, `L_e`, far-field factor | — | proved/receipted [E] | qumond_pm.py + QUMOND_PM_GATES.json |
 | drift coordinate x = tan α | — | design [D] | Nova Conscientia choice; x = 1 is exactly 45° (ties to equipartition) |
-| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults, task-benchmark goal angle / on-task mix / signal sensitivity / noise sweep, dual-channel credit modes and `SCALE_FREE_MOMENTUM_FLOOR`, auditor-signal critic limit / subspace share / per-rejection pressures / `FROZEN_TOLERANCE` | — | design [D] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
+| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults, task-benchmark goal angle / on-task mix / signal sensitivity / noise sweep, dual-channel credit modes and `SCALE_FREE_MOMENTUM_FLOOR`, auditor-signal critic limit / subspace share / per-rejection pressures / `FROZEN_TOLERANCE`, live-backend hash dimension / HTTP timeout / step count | — | design [D] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
 | baseline mean final energy ~7.5e10 | — | artifact [open] | Artifact of the 1e6 drift cap in `drift_coordinate_capped`; median energy is 2.75 and only 15% of trials hit the cap. The mean is dominated by the few capped trials. |
 | gate-only collapse fraction (pre-tolerance) | 0.05 | artifact [open] | Was a floating-point rounding artifact, not real drift: the gate clips to exactly cosine = τ, but IEEE-754 produced 0.9538999999999999, failing a strict < 0.9539 check. Fixed with COLLAPSE_TOLERANCE = 1e-9; real collapse fraction is 0.00. |
 
@@ -113,8 +113,8 @@ none of their numeric content is imported into this runtime):
 
 | artifact | result |
 |---|---|
-| `python -m unittest discover -s tests` | 93 tests, 93 passed |
-| `python verification/ast_invariant_validation.py core verification benchmarks` | 11 modules, 0 violations (Z1–Z5) |
+| `python -m unittest discover -s tests` | 103 tests, 103 passed |
+| `python verification/ast_invariant_validation.py core verification benchmarks` | 12 modules, 0 violations (Z1–Z5) |
 | `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00; swarm mean final similarity 0.965; mean pairwise cosine 0.998; 0 HALTs; deterministic receipt committed |
 | `python benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` | sweep over pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]; acceptance rates decline from 1.0 to 0.0; at 0.5 dual channel rejects all proposals; seeded simulation, no LLM calls |
 | `python benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` | goal 10° inside the cone, 50% drift proposals, simulated per-proposal constraint signal. Informative signal (σ = 0): dual channel accepts 0% of drift and 12% of on-task proposals; final task error 0.0038 vs gate-only 0.0354 vs frozen 0.0152. Uninformative control (σ = 0.1): dual channel accepts 98% of drift vs 57% of on-task; task error 0.0426, worse than gate-only. Seeded simulation, no LLM calls |
@@ -204,3 +204,14 @@ pass/fail verdicts, but per-trial energy and similarity values may differ in the
    parameter and the critics are hand-written stand-ins for model critics.
    `[conj]` for this simulation; the right pressure mapping for real critics
    is `[open]`.
+10. `benchmarks/live_backend.py` connects real model output to the loop:
+    responses are embedded, and the step between consecutive response
+    embeddings is the proposal, passed through the existing fail-closed
+    `CallableBackend`. **No live run has been performed**; `--mock` runs are
+    plumbing checks only. The offline mock already shows one thing to measure
+    in a live run: every scripted response, on-topic ones included, falls
+    outside the 17.5° cone, so the gate clips every cycle. The mock's
+    feature-hashing embedder is crude, but real embedding models also often
+    score paraphrases below cosine 0.95, so τ = 0.9539 (measured on ADCCL
+    reasoning loops) may be far too tight in embedding space. Calibrating τ
+    per embedding model is part of E1. `[open]`

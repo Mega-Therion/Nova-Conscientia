@@ -17,14 +17,15 @@ Serves a web dashboard on port 3000 using Python's built-in `http.server`.
 - `core/` — dual-channel action, anti-drift controller, sovereign clipping gate, topology graph
 - `verification/` — adversarial auditor, AST invariant validation (Contingent Box gate)
 - `benchmarks/` — drift model + benchmark harness + ablation harness + task benchmark with JSON receipts
-- `tests/` — 93 unittest tests (all pass, stdlib only)
+- `tests/` — 103 unittest tests (all pass, stdlib only)
 
 ## Verification
-- **Tests:** `python3 -m unittest discover -s tests -v` (93 tests, ~5s)
-- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 11 modules, 0 violations)
+- **Tests:** `python3 -m unittest discover -s tests -v` (103 tests, ~5s)
+- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 12 modules, 0 violations)
 - **Benchmark:** `python3 benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json`
 - **Task benchmark:** `python3 benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` (add `--multi-seed` for paired CIs over 3 seeds, `--credit-modes` to compare credit modes)
 - **Auditor signal:** `python3 benchmarks/run_auditor_signal.py --json benchmarks/results/auditor_signal_receipt.json`
+- **Live backend (offline check):** `python3 benchmarks/live_backend.py --mock` (live runs need a generator, an embeddings endpoint and `NOVA_EMBED_API_KEY`; see README)
 - **Ablation:** `python3 benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` (sweep over constraint pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5])
 - **Dashboard API:** `/api/receipt` (read-only; subprocess-spawning endpoints removed)
 
