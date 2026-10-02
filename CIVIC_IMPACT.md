@@ -19,7 +19,7 @@ another alignment proposal that has never left the lab.
 The field record is this: the same working method that Nova Conscientia
 formalizes — one human navigator with persistent machine memory and a
 heterogeneous agent swarm, run from a laptop in Story, Arkansas (population
-~100, Newton County, Ozark foothills) — has been used for three years to
+~100, Montgomery County, Ouachita foothills) — has been used for three years to
 produce, among other things, a body of Arkansas civic infrastructure work:
 drafted statutes, 50-year comparative statutory analyses, utility-docket
 advocacy plans, and reentry/environmental program designs, currently

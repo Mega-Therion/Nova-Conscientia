@@ -2,7 +2,7 @@
 
 **Nova Conscientia, Part II: the ethical foundation**
 Source: `Mega-Therion/Ethica` (geometric ethics, *more geometrico*, commit
-`207f2119`) — Ryan W. Yett's ethics of sovereignty, built from his own corpus.
+`207f2119`) — R.W. Yett's ethics of sovereignty, built from his own corpus.
 Status labels per the constellation covenant: `[P]` proved, `[D]` derived,
 `[C]` conditional, `[O]` open, `[E]` empirical. Personal corpus material is
 paraphrased into universal voice only, per Ethica's binding privacy policy
