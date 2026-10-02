@@ -46,6 +46,9 @@ import math
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
 
+VALID_CREDIT_MODES: Tuple[str, ...] = ("classic", "scale_free")
+DEFAULT_CREDIT_MODE: str = "classic"
+
 PROVENANCE: Dict[str, str] = {
     "H_KINETIC": (
         "Channel 1, H(x) = (1/2) x^2. Res-Nova Hamilgrangian.lean "
@@ -69,6 +72,15 @@ PROVENANCE: Dict[str, str] = {
         "Constitutive flux p_flux(x) = x^2/(1+x) = F'(x). Res-Nova "
         "Hamilgrangian.lean def p_flux (theorem H2 constitutive_flux_balance), "
         "same sha256."
+    ),
+    "VALID_CREDIT_MODES": (
+        "Supported dual-channel credit modes: 'classic' (default absolute "
+        "quadratic credit H(x)=x^2/2) and 'scale_free' (relative pressure "
+        "dissipation cost L_corr(w/x) evaluated against unit credit H(1)=0.5)."
+    ),
+    "DEFAULT_CREDIT_MODE": (
+        "Default credit evaluation mode ('classic'), preserving backward "
+        "compatibility and committed receipt reproduceability."
     ),
 }
 
@@ -250,6 +262,11 @@ class DualChannelAction:
     ``drift_excess`` any drift beyond the controller's tolerated drift budget
     (charged into the dissipation channel at rate ``drift_penalty_rate``).
 
+    Supports two credit evaluation modes via ``credit_mode``:
+      - ``"classic"`` (default): absolute quadratic credit H(x) = x^2/2.
+      - ``"scale_free"``: relative pressure dissipation cost L_corr(w/x)
+        evaluated against unit credit H(1.0) = 0.5.
+
     The acceptance threshold (default 0.0) is an engineering parameter of this
     runtime, not a Res-Nova constant: it is recorded here and in ARCHITECTURE.md
     as a Nova Conscientia engineering choice, so no ungrounded numerology enters
@@ -258,10 +275,12 @@ class DualChannelAction:
     Attributes:
         acceptance_threshold: minimum net action to admit a proposal.
         drift_penalty_rate: rate at which drift excess is charged to Channel 2.
+        credit_mode: 'classic' or 'scale_free'.
     """
 
     acceptance_threshold: float = 0.0
     drift_penalty_rate: float = 1.0
+    credit_mode: str = DEFAULT_CREDIT_MODE
 
     def evaluate(
         self,
@@ -282,7 +301,7 @@ class DualChannelAction:
             negative inputs raise ValueError (fail closed on malformed data).
 
         Raises:
-            ValueError: if any input is negative.
+            ValueError: if any input is negative or if credit_mode is unknown.
         """
         if momentum < 0.0 or constraint_pressure < 0.0 or drift_excess < 0.0:
             raise ValueError(
@@ -290,13 +309,29 @@ class DualChannelAction:
                 f"momentum={momentum}, constraint_pressure={constraint_pressure}, "
                 f"drift_excess={drift_excess}"
             )
-        channel_1 = h_kinetic(momentum)
-        dissipation_input = constraint_pressure + self.drift_penalty_rate * drift_excess
-        channel_2 = l_corr(dissipation_input)
-        net = channel_1 - channel_2
+
+        if self.credit_mode == "classic":
+            channel_1 = h_kinetic(momentum)
+            dissipation_input = constraint_pressure + self.drift_penalty_rate * drift_excess
+            channel_2 = l_corr(dissipation_input)
+            net = channel_1 - channel_2
+        elif self.credit_mode == "scale_free":
+            denom = max(momentum, 1e-6)
+            dissipation_input = (
+                constraint_pressure + self.drift_penalty_rate * drift_excess
+            ) / denom
+            channel_1 = 0.5
+            channel_2 = l_corr(dissipation_input)
+            net = channel_1 - channel_2
+        else:
+            raise ValueError(
+                f"unknown credit_mode {self.credit_mode!r}; "
+                f"expected one of {VALID_CREDIT_MODES}"
+            )
+
         accepted = net >= self.acceptance_threshold
         reason = (
-            f"Channel 1 (generative) H({momentum:.6g}) = {channel_1:.6g}; "
+            f"Credit mode '{self.credit_mode}': Channel 1 (generative) H = {channel_1:.6g}; "
             f"Channel 2 (dissipation) L_corr({dissipation_input:.6g}) = "
             f"{channel_2:.6g}; net action {net:.6g} "
             f"{'>=' if accepted else '<'} threshold {self.acceptance_threshold:.6g}"
