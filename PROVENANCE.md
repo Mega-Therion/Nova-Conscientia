@@ -13,6 +13,8 @@ every source fact the translation depends on.
 | `Mega-Therion/Nova-Conscientia` (Phase 1) | `682f1a2` | 2026-10-02 |
 | `Mega-Therion/Ethica` (private; concepts cited by reference, personal corpus paraphrased per its PRIVACY.md) | `207f2119` | 2026-09-14 |
 | `Mega-Therion/arkansas-orchard` (private; figure caveats inherited from its README) | `39ab23b2` | 2026-09-11 |
+| `Mega-Therion/Chyren` (private; charter reproduced verbatim by owner authorization) | `fb6691de` | 2026-09-29 |
+| `Mega-Therion/Nova-Conscientia` (Phase 2) | `c3336f9` | 2026-10-02 |
 
 ## Source files and their SHA-256 digests
 
@@ -35,6 +37,8 @@ every source fact the translation depends on.
 | The canoe navigator analogy, Peacepipe Protocol, Gentle Authority lifecycle, Phylactery canon | Ethica corpus (personal; paraphrased into universal voice only, per PRIVACY.md — nothing verbatim transfers to this public repo); Gentle Authority lifecycle from arkansas-orchard `commercial/foundry-and-governance.md` |
 | ARMAWS, Driver's License Fleet, Entergy Docket 26-001-U, ONE Natural Energy, Project RENEW | `Mega-Therion/arkansas-orchard` commit `39ab23b2`, `civic/` and `commercial/` documents; status caveats (manifesto vs. bill draft; unverified figures) inherited verbatim from that repo's README and repeated in CIVIC_IMPACT.md |
 | Constellation health-receipt contract | Ethica `constellation/SPEC.md` v1.0.0 (hash-chained receipts, fail-closed rules, epistemic tags) |
+| Universal Charter (INTERDEPENDENCE.md Part 1, verbatim full text) | `Chyren_Second_Brain/10_Projects/GLOBAL_GAING/Declaration_of_Interdependence.md`, canonized 2026-08-07; `Mega-Therion/Chyren` commit `fb6691de`; file sha256 `310a577784ce2560d3e4b6847978664d6b945015b863cf34ede652ad0b934a43`; reproduced by owner authorization |
+| Charter master system specification (2-of-2 genesis ceremony, binding-judiciary design, honest PoWI caveat) | `Chyren_Second_Brain/10_Projects/Declaration_of_Interdependence_Master_Spec.md`, draft v1, 2026-07-30, same repo; its own caveats inherited (PoWI is a construction, not a term of art) |
 
 ## Constant-by-constant register
 

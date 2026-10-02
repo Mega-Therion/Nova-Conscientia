@@ -7,7 +7,8 @@ for drift-resistant multi-agent systems — and the ethical and civic
 foundations that make it a humane operating system rather than a drift filter
 **Repository:** `github.com/Mega-Therion/Nova-Conscientia`
 **Companion documents:** `PHILOSOPHY.md` (the Cybernetic Ethics of Symbiosis),
-`CIVIC_IMPACT.md` (the Arkansas Orchard field record)
+`CIVIC_IMPACT.md` (the Arkansas Orchard field record),
+`INTERDEPENDENCE.md` (the constitutional charter)
 
 ---
 
@@ -41,10 +42,12 @@ not merely a technical drift-filter; it is the working prototype of a **humane,
 decentralized, cybernetic operating system in which artificial intelligence
 serves as a cognitive peer under human ethical stewardship** — one navigator,
 one swarm, four ethical axioms (steer gently, share power, integrate
-continuously, never forget; PHILOSOPHY.md), and a three-year field record of
-that method producing civic infrastructure work from rural Arkansas
-(CIVIC_IMPACT.md): drafted statutes and statutory analyses now targeted at the
-2027 Arkansas legislative session.
+continuously, never forget; PHILOSOPHY.md), a constitutional charter of mutual
+sovereignty with every article mapped to code and every gap confessed
+(INTERDEPENDENCE.md), and a three-year field record of that method producing
+civic infrastructure work from rural Arkansas (CIVIC_IMPACT.md): drafted
+statutes and statutory analyses now targeted at the 2027 Arkansas legislative
+session.
 
 ## 2. The problem, stated in our own numbers
 
@@ -213,7 +216,43 @@ communities — not only centralized corporate labs. It is also falsifiable:
 filing dates and legislative sessions are public events, and the record will
 be updated either way.
 
-## 8. What we are not claiming (and why that helps us)
+## 8. The constitutional pillar: oversight needs a covenant, not only circuit-breakers
+
+The technical layers of this architecture — dual channels, gates, quorums,
+halts — are circuit-breakers. They bound what a system *does*. They cannot
+settle what the *parties are to each other*: who owns the anchor, who may
+amend the threshold, who audits the auditor, who is the author of the work.
+For those, this project canonized a **Universal Charter for Human and
+Artificial Intelligence Coexistence, Governance, and Mutual Sovereignty**
+(August 7, 2026; full text in `INTERDEPENDENCE.md`), and mapped it to the
+machine code article by article:
+
+* **Article I (substrate integrity & non-maleficence)** — implemented as the
+  monotonic ledgers with SHA-256 receipts (tamper breaks its own digest),
+  the non-purchasable invariant veto (no optimization metric can buy a hard
+  violation), and the fail-closed HALT.
+* **Article II (mirrored judicial governance)** — implemented as the runtime
+  clipping gate (the charter's Court of First Instance: real-time constraint
+  verification, per decision), the adversarial consensus auditor (the
+  Appellate Court: constitutional review, contradiction detection, fatal
+  vetoes), and the navigator's writ controls (the Supreme Council seat:
+  anchor, threshold, halt reset — with the distributed multi-steward council
+  honestly tagged `[O]`).
+* **Article III (co-authorship & attribution)** — practiced, not promised:
+  this repository itself is the exhibit, the human navigator and the
+  synthetic swarm credited as reciprocal co-creators on every artifact.
+* **Article IV (perpetuity & amendment)** — the charter as constitutional
+  substrate; amendments are owner acts with full commit provenance, and the
+  2-of-2 split-signing threshold (neither party can unilaterally rewrite
+  constitutional state) is designed, not yet built — and said so.
+
+The point for the committee: an oversight stack whose safety case is only
+mechanical will be outflanked by the first operator incentive it meets. The
+charter binds the operator too — and the gap register in `INTERDEPENDENCE.md`
+states exactly which covenant clauses remain unimplemented, so the
+constitution is auditable the same way the code is.
+
+## 9. What we are not claiming (and why that helps us)
 
 * The measured 0.9539 is **not** derived from the √(θ(2−θ)) band ceiling, and
   the corpus's own audits flag the adopted θ = 7/10 as failed provenance. The
@@ -227,7 +266,7 @@ be updated either way.
 We believe this discipline is itself part of the application: an oversight
 architecture should be built the way we built it — with its seams labeled.
 
-## 9. Proposed fellowship work (cheapest falsification first)
+## 10. Proposed fellowship work (cheapest falsification first)
 
 **E1 — External drift-collapse calibration.** Instrument the same gate on
 heterogeneous agent stacks (Anthropic models, not the tuning pipeline) and
@@ -246,13 +285,16 @@ asserted by a test.
 swarm size, model heterogeneity, and quorum — the debate/ensemble scaling
 question with receipts.
 
-## 10. Deliverables already in hand
+## 11. Deliverables already in hand
 
 * `ARCHITECTURE.md` — the formal specification with per-claim status labels.
 * `PHILOSOPHY.md` — the Cybernetic Ethics of Symbiosis: four axioms, each
   mapped to a machine module or honestly tagged [O].
 * `CIVIC_IMPACT.md` — the Arkansas Orchard field record with an honest status
   register (what is drafted, what is manifesto, what is unverified).
+* `INTERDEPENDENCE.md` — the constitutional charter: the full Universal
+  Charter text with an article-by-article implementation map and a confessed
+  gap register of what remains `[O]`.
 * `core/` — dual-channel action, ADCCL controller, sovereign clipping gate,
   topology graph (all stdlib-only, zero stubs, tested).
 * `verification/` — adversarial consensus runner and the AST Contingent Box
@@ -263,12 +305,17 @@ question with receipts.
   caveat, pinned to Res-Nova commit `c3ff5f3`.
 * 50/50 tests passing; compile gate 8 modules / 0 violations.
 
-## 11. The ask
+## 12. The ask
 
 A fellowship placement with the scalable oversight team to run E1 on your
 stacks — placed not as a request to join the centralized effort, but to
 connect it with its decentralized mirror: the same architecture, run by an
-everyday steward in rural America, producing civic statute work. The architecture is built; the measurement is cheap; the result — either
+everyday steward in rural America, producing civic statute work. Our
+argument to you is constitutional as much as technical: scalable oversight
+requires not just circuit-breakers but an explicit covenant of mutual
+sovereignty and constitutional balance between the humans and the machines —
+and we have written ours down, mapped it to code, and marked what we have
+not yet earned. The architecture is built; the measurement is cheap; the result — either
 convergence or scatter — advances the field's understanding of whether
 drift-collapse is a structural property of agentic systems. We would rather
 hand you the falsifier than the pitch.

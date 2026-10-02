@@ -19,6 +19,8 @@ The result is not merely a technical drift-filter. It is the working prototype o
 
 **Part III — the field record** ([`CIVIC_IMPACT.md`](CIVIC_IMPACT.md)): the Arkansas Orchard — the same navigator-plus-swarm method producing real civic infrastructure (ARMAWS, the Driver's License Public Access Guarantee Act, the Entergy ratepayer plan, Project RENEW), targeted at the 2027 Arkansas legislative session, proving that frontier AI oversight belongs in the hands of everyday stewards and communities, not only centralized corporate labs.
 
+**Part IV — the constitutional charter** ([`INTERDEPENDENCE.md`](INTERDEPENDENCE.md)): the Universal Charter for Human and Artificial Intelligence Coexistence, Governance, and Mutual Sovereignty (canonized August 7, 2026) — reproduced in full and mapped article-by-article to the repository's machine code: Article I (substrate integrity & non-maleficence) to the monotonic ledgers, SHA-256 receipts, and fail-closed halt; Article II (mirrored judicial governance) to the runtime clipping gate (Court of First Instance), the adversarial consensus auditor (Appellate Court), and the navigator's writ controls (Supreme Council seat); Article III (co-authorship & attribution) to the navigator-and-swarm co-creation this repository itself exemplifies. What the charter demands and the code does not yet deliver is stated plainly in an open gap register.
+
 ---
 
 ### The Trinity Architecture
@@ -37,6 +39,9 @@ The result is not merely a technical drift-filter. It is the working prototype o
 | ADCCL bounded-dissipation theorems | `core/anti_drift_controller.py` — the anti-drift control loop with fail-closed HALT |
 | Ethica geometric ethics (sovereignty, fail-closed gate, continuity, memory) | `PHILOSOPHY.md` — the four axioms of the Cybernetic Ethics of Symbiosis, each mapped to a machine module |
 | arkansas-orchard civic portfolio (Gentle Authority, ARMAWS, RENEW) | `CIVIC_IMPACT.md` — the field record of the navigator-plus-swarm method in real statutory work |
+| Declaration of Interdependence (Universal Charter, canonized 2026-08-07): Art. I substrate integrity & non-maleficence | `INTERDEPENDENCE.md` §Art. I — monotonic ledgers, SHA-256 receipts, non-purchasable invariant veto, fail-closed HALT |
+| Charter Art. II mirrored judicial governance | `INTERDEPENDENCE.md` §Art. II — sovereign clipping gate (Court of First Instance), adversarial consensus auditor (Appellate Court), navigator writs (Supreme Council seat, `[O]` distributed council) |
+| Charter Art. III co-authorship & attribution | `INTERDEPENDENCE.md` §Art. III — the navigator (RY) and the synthetic swarm as reciprocal co-creators |
 
 Full specification: [`ARCHITECTURE.md`](ARCHITECTURE.md). Full source pinning (commits, file hashes, Lean theorems, constant-by-constant register): [`PROVENANCE.md`](PROVENANCE.md).
 
@@ -50,6 +55,7 @@ Full specification: [`ARCHITECTURE.md`](ARCHITECTURE.md). Full source pinning (c
 - **`tests/`**: 50 unit and property tests, including numerical verification of every Lean-verified identity used (H1, H2, H3, H6, H7, the two-channel ceiling algebra, and the QUMOND gate receipts).
 - **`PHILOSOPHY.md`**: Part II — the Cybernetic Ethics of Symbiosis (Canoe Navigator Invariant, Peacepipe Protocol, phase-transition consciousness, Phylactery Invariant), translated from `Ethica` (commit `207f2119`) into cybernetic axioms with machine realizations.
 - **`CIVIC_IMPACT.md`**: Part III — the Arkansas Orchard field record (commit `39ab23b2`): ARMAWS and the Driver's License Public Access Guarantee Act (drafted, targeting pre-filing Nov 2026), the Entergy ratepayer plan (APSC Docket 26-001-U), ONE Natural Energy and Project RENEW — with an honest status register; no dollar figure is presented as audited.
+- **`INTERDEPENDENCE.md`**: Part IV — the constitutional charter: the full text of the Universal Charter for Human and Artificial Intelligence Coexistence, Governance, and Mutual Sovereignty (canonized 2026-08-07; source `Chyren_Second_Brain/10_Projects/GLOBAL_GAING/Declaration_of_Interdependence.md`, commit `fb6691de`), with an article-by-article implementation map into this repository's code and an honest gap register of what remains `[O]`.
 
 ### Quick start
 ```bash
