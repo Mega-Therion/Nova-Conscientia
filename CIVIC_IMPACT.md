@@ -42,7 +42,7 @@ The Arkansas Orchard is an integrated portfolio with two faces of one body:
 a commercial tree (foundRY; ONE Natural Energy; six operating branches) and
 a civic fruit layer that hands the yield back to the people the tree grows
 among (ARMAWS, the Driver's License Public Access Guarantee Act, the
-Entergy ratepayer plan, Project RENEW). Every branch must pass the
+Entergy ratepayer plan, AINSA, Project RENEW). Every branch must pass the
 **Diamond Foundation Test**, named for the only public diamond mine in the
 world, in Murfreesboro, Arkansas — the standard is the mineral's own
 canonical attributes: *not fragile, not see-through, perfect clarity, and
@@ -165,6 +165,40 @@ is the civic-side mirror of the commercial trunk (§2.4).
 RENEW is where the multi-agent thesis is most explicit: the operational
 engine is *designed around* an AI routing layer answering to a human
 program sponsor — Gentle Authority as program architecture, not metaphor.
+
+### 2.5 The Infant Nutrition Security Guarantee — AINSA
+**Status: policy blueprint (orchard repo), not yet drafted as statute text.** `[D]`
+
+The third part of the **Rural Family Stabilization Trilogy** (Part I: ARMAWS,
+the tire; Part II: the Driver's License Act, the test vehicle; Part III:
+AINSA, the formula can). The problem is "the Month-End Formula Gap": the
+federal WIC ration for a fully formula-fed infant aged 0–3 months is a
+Monthly Maximum Allowance of nine cans of powder (~806 fl oz reconstituted,
+7 CFR 246.10), against actual infant demand of ~24–32 oz/day (AAP feeding
+guidance) — leaving roughly 3–4 uncovered days at the end of every benefit
+month, exactly when the household budget is thinnest. The gap gets filled
+unsafely: diluted formula (a documented cause of infant hyponatremia and
+seizures), stretched feedings, or too-early cow's milk.
+
+The market around the gap is a federal distortion Arkansas cannot fix alone:
+WIC is the single largest formula buyer in the nation (roughly half of all
+purchases, USDA ERS), states award one manufacturer a sole-source rebate
+contract with rebates commonly 85–95% of wholesale — most recently exceeding
+wholesale price entirely — and the winning brand takes an estimated 71–80%
+of the state shelf with a GAO-measured spillover price increase for every
+non-WIC shopper. The same rural household pays the distortion from both
+sides: capped under the ration, and overpaying on the shelf.
+
+The solution is the **Infant Nutrition Bridge** under the "State Pays First"
+doctrine: a state-funded top-up on the existing Arkansas WIC EBT card,
+retailer-neutral, covering the shortfall between the federal ration and
+medically indicated demand (AAP schedule, capped at 32 oz/day), funded by
+reallocation of General Revenue surplus — never a new tax. Structured as a
+state supplemental program adjacent to WIC so no federal waiver is needed,
+with an automatic sunset-and-shrink if USDA raises the federal MMAs. Full
+draft: `civic/infant-nutrition-security-act.md` in the orchard repository
+(commit `f757543`). All figures cited from named public sources and carried
+as unaudited estimates.
 
 ## 3. The Gentle Authority Doctrine, run in the field
 

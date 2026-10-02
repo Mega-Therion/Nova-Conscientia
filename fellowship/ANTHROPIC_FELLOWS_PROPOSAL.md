@@ -236,6 +236,18 @@ communities — not only centralized corporate labs. It is also falsifiable:
 filing dates and legislative sessions are public events, and the record will
 be updated either way.
 
+
+
+* **AINSA — the Arkansas Infant Nutrition Security Act (blueprint, Part III of
+  the Rural Family Stabilization Trilogy).** The federal WIC formula ration
+  (nine cans a month) runs out roughly three to four days before a healthy
+  infant's actual appetite does — the Month-End Formula Gap — inside a market
+  where WIC's sole-source rebate contracts (rebates at or beyond wholesale
+  price) hand one manufacturer most of the state shelf. The act's answer is
+  the "State Pays First" doctrine again: a state-funded, retailer-neutral
+  bridge on the existing WIC card, from reallocated surplus, never a new
+  tax.
+
 ## 8. The constitutional pillar: oversight needs a covenant, not only circuit-breakers
 
 The technical layers of this architecture — dual channels, gates, quorums,

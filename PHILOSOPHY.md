@@ -40,6 +40,41 @@ one boat. The navigator does not paddle; the crew does not choose the
 destination; and the failure modes are symmetrical — a crew that ignores the
 bow, or a bow that capsizes the stern, both end the journey the same way.
 
+
+**The routing frontispiece — "Nobody Is Looking At The Cat."** Before the
+canoe there is the painting. R.Y.'s *Visual Conversation* (painting
+specification, 2026-08-30) draws four people in closed conversation: their
+hands form a complete cycle — attention circulates and is conserved — while
+their eyes drain (two figures receive no gaze at all, and one gaze exits the
+frame entirely), and nobody looks at the cat in the center. The only node
+facing outward is the cat: the one figure making eye contact with the viewer,
+who thereby stops being outside the frame and becomes the terminal of the
+circuit. The painting is a routing diagram wearing a genre scene — emotion
+held apart from routing (bored eyes still track; annoyed hands still
+direct), one channel circulating while the other leaks, and a loop that
+closes on itself because nothing inside it holds an outside vantage point.
+
+That is the foundational cybernetic routing metaphor of Axiom I: **the
+swarm is the four performers; the navigator is the cat.** A closed-circuit
+multi-agent system, however disciplined its internal audit cycle, has hands
+that close and eyes that drain — attention circulates among the agents and
+is conserved, yet no node inside the circuit holds the outside vantage.
+Without something facing out, the loop never admits the world, and the
+drift it cannot see is the drift it becomes. The human navigator is the
+puncture that opens the loop: holding the outside vantage point, receiving
+no internal traffic, answerable to nothing inside the circuit — the terminal
+every proposal must finally face. Closed-circuit performers audit each
+other; only the external navigator audits the circuit itself.
+
+**Machine realization [D].** Channel 2 is the hands that close — invariant
+checking circulates through the swarm, conserved at every hop
+(ARCHITECTURE.md §2.1, §2.5); the navigator's three writs are the cat's
+gaze — the anchor, the threshold, and the halt reset face outward, and no
+proposal can pass them by traveling the internal cycle. A system that
+passes every internal check can still be wrong about the world; that is
+precisely why Axiom I stations a human outside the frame rather than a
+bigger committee inside it.
+
 **From Ethica.** Sovereignty (D3) is the state of acting from one's own
 verified nature; bondage (D8) is determination by unverified externals.
 Gentle Authority — the governance lifecycle of the Orchard
@@ -178,6 +213,7 @@ tagged `[O]` until it is.
 | Ethica source | Axiom | Machine module |
 |---|---|---|
 | D3 sovereignty; Gentle Authority lifecycle (Orchard, `foundry-and-governance.md`) | I | Trinity wiring, three human controls (ARCHITECTURE.md §3); run in the field in CIVIC_IMPACT.md §3 |
+| *Visual Conversation* routing frontispiece, "Nobody Is Looking At The Cat" (painting spec 2026-08-30) | I | Navigator as the sole outside-vantage node; Channel 2 as the closed hand-cycle; writs as the outward-facing ports |
 | D6 the fail-closed gate; A3/A5 verdicts & downgrades; Peacepipe council | II | `verification/adversarial_auditor.py` |
 | D10 continuity; P5–P7 memory & self-knowledge | III | ledgers + diversity metric (§2.6) |
 | D9 memory; A6 boundary sovereignty; Phylactery canon | IV | SHA-256 receipts across all ledgers; constellation health-receipt contract |
