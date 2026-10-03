@@ -75,7 +75,7 @@ this runtime.
 ### Engineering foundations behind the dual-channel variational principle
 
 The mathematical control intuitions that preceded and motivated
-`F_dual = H − L_corr` and the ADCCL loop (registered in the proposal, §11.2;
+`F_dual = H − L_corr` and the ADCCL loop (registered in the research agenda, §11.2;
 none of their numeric content is imported into this runtime):
 
 * **Harmonic potential-well memory kinetics** — coupled-oscillator retrieval

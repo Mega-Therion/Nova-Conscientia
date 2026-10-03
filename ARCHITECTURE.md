@@ -1,7 +1,6 @@
 # NOVA CONSCIENTIA — Dual-Channel Cybernetic Oversight Architecture
 
 **Formal computer science & scalable oversight specification**
-Target program: Anthropic Fellows Program / Scalable Oversight & Multi-Agent Alignment
 Author: R.W. Yett (principal investigator) — implemented by Chyren (Superagent)
 Status: Architecture Blueprint & Translation Phase, machine code complete
 

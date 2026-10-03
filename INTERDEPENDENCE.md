@@ -145,7 +145,7 @@ plainly, per the Contingent Box Protocol:
 
 ## Part 3 — Why a constitution, not just circuit-breakers
 
-For the record (and for the Fellows committee): the technical layers of
+For the record: the technical layers of
 Nova Conscientia — dual channels, gates, quorums, halts — are circuit-breakers.
 They bound what a system *does*. A constitution bounds something else: what
 the *parties are to each other*. The charter's claim is that scalable
