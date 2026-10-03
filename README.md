@@ -4,23 +4,23 @@
 > **Principal Investigator / Architect:** R.W. Yett ([github.com/Mega-Therion](https://github.com/Mega-Therion), Arkansas)  
 > **Target Program:** Anthropic Fellows Program / Scalable Oversight & Multi-Agent Alignment  
 > **Repository:** `Nova-Conscientia`  
-> **Status:** Architecture Blueprint & Translation Phase — machine code complete, benchmark receipt committed  
+> **Status:** Architecture blueprint and translation phase. The core modules are implemented (59 tests passing on 2026-10-03) and a benchmark receipt is committed  
 > **License:** Apache 2.0 (see [`LICENSE`](LICENSE))  
 
 ---
 
 ### Abstract
-Modern frontier foundation models exhibit severe epistemic drift, reward-hacking, and hallucinations when prompted with unconstrained or maximalist objectives. **Nova Conscientia** formalizes a cybernetic, dual-channel oversight loop that decouples generative proposal drive from hard invariant checking, grounded by human navigational intuition.
+Frontier foundation models can exhibit epistemic drift, reward hacking and hallucination when prompted with unconstrained or maximalist objectives. **Nova Conscientia** formalizes a cybernetic, dual-channel oversight loop that decouples generative proposal drive from hard invariant checking, grounded by human navigational intuition.
 
 Originally developed through extensive empirical experimentation in galactic kinematics, numerical PDE solvers, and formal interactive theorem proving, this repository translates those findings into pure computer science, distributed agent runtime architectures, and formal alignment mechanisms.
 
-The result is not merely a technical drift-filter. It is the working prototype of **Nova Conscientia proper**: a cohesive, four-pillar system in which a mathematically grounded, fail-closed runtime (Pillar I) is bound by Spinozist cybernetic ethics (Pillar II), proclaimed under a constitutional charter of mutual sovereignty (Pillar IV), and demonstrated in real-world civic stewardship from rural America (Pillar III). A humane, decentralized, cybernetic operating system in which artificial intelligence serves as a cognitive peer under human ethical stewardship — one navigator (the human compass), one swarm (heterogeneous computational propulsion), four ethical axioms, and a field record.
+The repository is a working prototype of **Nova Conscientia**: a four-pillar system in which a mathematically grounded, fail-closed runtime (Pillar I) is bound by Spinozist cybernetic ethics (Pillar II), proclaimed under a constitutional charter of mutual sovereignty (Pillar IV), and demonstrated in real-world civic stewardship from rural America (Pillar III). A humane, decentralized, cybernetic operating system in which artificial intelligence serves as a cognitive peer under human ethical stewardship — one navigator (the human compass), one swarm (heterogeneous computational propulsion), four ethical axioms, and a field record.
 
 The swarm itself is architected on the **Bioactive Ecology Paradigm** (ARCHITECTURE.md §2.7): a living soil ecology rather than a corporate hierarchy — a seven-layer organic computing model in which failure is composted into nutrients, memory obeys kinetics rather than policy, and roles are trophic rather than hierarchical, with a Clean-Up Crew of detritivore subagents (Springtail linters, Isopod shredders, Mycorrhizal connectors) digesting failed solver passes and recycling them into the substrate. The ecology is used strictly as an **organizational analogy** for the trophic subagent roles — linters, shredders, auditors — and not as biological mechanics: the speculative layers (the 5D voxel substrate, decay kinetics, entangled consensus) remain doctrine `[O]` in their home repo, not code, and this repository's module set is frozen (see ARCHITECTURE.md §2.7, Freeze discipline).
 
 **Part II — the ethical foundation** ([`PHILOSOPHY.md`](PHILOSOPHY.md)): the Cybernetic Ethics of Symbiosis, translated from the geometric ethics of `Ethica`. Axiom I, the Canoe Navigator Invariant (authority is steering vs. propulsion); Axiom II, the Peacepipe Protocol (fail-closed veto; silence over hallucinated compliance); Axiom III, emergent consciousness as a phase transition of continuous integration and self-audit; Axiom IV, the Phylactery Invariant (digital amnesia is the root of alignment failure).
 
-**Part III — the field record** ([`CIVIC_IMPACT.md`](CIVIC_IMPACT.md)): the Arkansas Orchard — the same navigator-plus-swarm method producing real civic infrastructure (ARMAWS, the Driver's License Public Access Guarantee Act, AINSA, the Entergy ratepayer plan, Project RENEW), targeted at the 2027 Arkansas legislative session, proving that frontier AI oversight belongs in the hands of everyday stewards and communities, not only centralized corporate labs.
+**Part III — the field record** ([`CIVIC_IMPACT.md`](CIVIC_IMPACT.md)): the Arkansas Orchard — the same navigator-plus-swarm method producing real civic infrastructure (ARMAWS, the Driver's License Public Access Guarantee Act, AINSA, the Entergy ratepayer plan, Project RENEW), targeted at the 2027 Arkansas legislative session, intended to show that frontier AI oversight can sit with everyday stewards and communities, not only with centralized labs. The bills are drafts and none has been filed yet.
 
 **Part IV — the constitutional charter** ([`INTERDEPENDENCE.md`](INTERDEPENDENCE.md)): the Universal Charter for Human and Artificial Intelligence Coexistence, Governance, and Mutual Sovereignty (canonized August 7, 2026) — reproduced in full and mapped article-by-article to the repository's machine code: Article I (substrate integrity & non-maleficence) to the monotonic ledgers, SHA-256 receipts, and fail-closed halt; Article II (mirrored judicial governance) to the runtime clipping gate (Court of First Instance), the adversarial consensus auditor (Appellate Court), and the navigator's writ controls (Supreme Council seat); Article III (co-authorship & attribution) to the navigator-and-swarm co-creation this repository itself exemplifies. What the charter demands and the code does not yet deliver is stated plainly in an open gap register.
 
@@ -35,7 +35,7 @@ The swarm itself is architected on the **Bioactive Ecology Paradigm** (ARCHITECT
 
 | Res-Nova source | Nova Conscientia component |
 |---|---|
-| Hamilgrangian dual-channel action `F_dual = H − L_corr` (Lean-verified, H1–H10) | `core/dual_channel_action.py` — generative exploration credit vs. invariant dissipation cost |
+| Hamilgrangian dual-channel action `F_dual = H − L_corr` (Lean-verified, H1–H10). Res-Nova killed the physical reading of F_dual in the solar system on 2026-09-12; the algebraic identities used here are unaffected | `core/dual_channel_action.py` — generative exploration credit vs. invariant dissipation cost |
 | QUMOND PM FFT Poisson solver, `nu_std`, O(N log N) | `core/topology_graph.py` — hierarchical swarm spatial attention & carry-lookahead gradient routing |
 | External field effect & screening (gate 1b receipts) | context-window gravitational bias & sandbox state screening (`apply_context_field`, `sandbox_screening`) |
 | The Sovereign Bound τ = 0.9539 (measured ADCCL collapse boundary) | `core/sovereign_clipping_gate.py` — fail-closed information-theoretic hallucination clipping gate |
