@@ -42,6 +42,8 @@ The swarm itself is architected on the **Bioactive Ecology Paradigm** (ARCHITECT
 
 ### The Translation Map (Res-Nova → Nova C)
 
+These rows are borrowed mathematics for the runtime. They are not galaxy tests, and this repository does not have to obey a physical law. A physical claim belongs in Res-Nova. The promotion rule is [`docs/REPO_PROMOTION.md`](docs/REPO_PROMOTION.md). `core/claim_band.py` enforces the matching certainty rule: a proof may sit at 1.0, a measurement only inside the band below 0.9, and borrowed mathematics is not emitted as a physical result.
+
 | Res-Nova source | Nova Conscientia component |
 |---|---|
 | Hamilgrangian dual-channel action `F_dual = H − L_corr` (Lean-verified, H1–H10). Res-Nova killed the physical reading of F_dual in the solar system on 2026-09-12; the algebraic identities used here are unaffected | `core/dual_channel_action.py` — generative exploration credit vs. invariant dissipation cost |
