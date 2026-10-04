@@ -81,3 +81,7 @@ python3 dashboard.py
 This repository keeps three numbers separate and labeled: the **measured** collapse boundary τ = 0.9539 (single pipeline, not externally validated), the **historical band ceiling** √(θ(2−θ)) at θ = 7/10 = 0.953939 (θ provenance failed audit), and the **derived ceiling** χ_s = 0.956145 at θ = 1/√2. The deterministic benchmark validates the control mechanism, not live frontier-model behavior; calibrating the threshold on external agent stacks is the proposal's first experiment (E1).
 
 *Nothing in this repository is a stub; nothing in it is ungrounded numerology — the compile gate enforces both claims on every commit.*
+
+## How this was built
+
+R.W. Yett directs the work. Much of the code and prose was written with AI coding assistants; those commits carry `Co-Authored-By` trailers. A number in this repository is a measurement, a historical ceiling, or a derived identity, as labeled above. It is not a model judgment.
