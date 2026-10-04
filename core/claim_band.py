@@ -17,8 +17,21 @@ from enum import Enum
 CHIRAL_FLOOR = 2.0**-0.5
 EMPIRICAL_CAP = 0.9
 
+PROVENANCE: dict[str, str] = {
+    "CHIRAL_FLOOR": (
+        "1/sqrt(2), the same floor as sovereign_conductor CHIRAL_FLOOR_THRESHOLD. "
+        "Below this an empirical claim is too thin to stand on."
+    ),
+    "EMPIRICAL_CAP": (
+        "Humility cap for claims about the world. An empirical certainty at or "
+        "above 0.9 is refused. A formal proof is not subject to this cap."
+    ),
+}
+
 
 class ClaimKind(Enum):
+    """Which filter a claim belongs to."""
+
     FORMAL = "formal"
     EMPIRICAL = "empirical"
     BORROWED_MATH = "borrowed_math"
@@ -26,6 +39,8 @@ class ClaimKind(Enum):
 
 @dataclass(frozen=True)
 class BandDecision:
+    """Whether a stated certainty may be emitted, and why."""
+
     kind: ClaimKind
     stated: float
     allowed: float | None
@@ -33,6 +48,7 @@ class BandDecision:
 
     @property
     def stands(self) -> bool:
+        """True when the stated certainty is allowed out as-is."""
         return self.allowed is not None
 
 
