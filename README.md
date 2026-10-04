@@ -3,8 +3,18 @@
 
 > **Principal Investigator / Architect:** R.W. Yett ([github.com/Mega-Therion](https://github.com/Mega-Therion), Arkansas)  
 > **Repository:** `Nova-Conscientia`  
-> **Status:** Architecture blueprint and translation phase. The core modules are implemented (59 tests passing on 2026-10-03) and a benchmark receipt is committed  
+> **Status:** Architecture blueprint and translation phase. The core modules are implemented (59 `def test_` functions on `main` as of 2026-10-04) and a benchmark receipt is committed  
 > **License:** Apache 2.0 (see [`LICENSE`](LICENSE))  
+
+### Start here
+
+Three things are true, and they are easy to miss under the charter.
+
+1. **The tests pass a mechanism, not a frontier model.** `python3 -m unittest discover -s tests` is the stdlib suite. The committed benchmark shows the clipped swarm arm does not cross the same τ that defines collapse. That is a sanity check of the clip. It is not evidence that dual-channel oversight reduces drift in a live model.
+2. **τ = 0.9539 is one pipeline.** It is not an externally validated constant. The historical ceiling √(θ(2−θ)) at θ = 7/10 and the derived ceiling at θ = 1/√2 are different numbers. The epistemic-status section below keeps them apart.
+3. **The charter is ahead of the code.** `INTERDEPENDENCE.md` has a gap register. What it demands and the modules do not yet do is `[O]`. The ecology language in `ARCHITECTURE.md` §2.7 is an analogy for subagent roles. The 5D substrate and entangled consensus are not implemented here.
+
+The rest of this page is the map: runtime, ethics, the Arkansas field record, and the charter.
 
 ---
 
@@ -57,7 +67,7 @@ Full specification: [`ARCHITECTURE.md`](ARCHITECTURE.md). Full source pinning (c
 - **`benchmarks/`**: Deterministic empirical harness comparing unconstrained drift against dual-channel swarm stability, with a committed receipt (`benchmarks/results/benchmark_receipt.json`): baseline collapse fraction 1.00 vs. swarm 0.00, mean final anchor similarity 0.965, mean pairwise cosine 0.998 (agents nearly agree — the gate holds them inside the cone but does not force convergence to the anchor). **This 100% vs 0% result is a mechanism sanity check, not evidence that dual-channel oversight reduces drift: the swarm arm is clipped at the same τ that defines collapse, so of course it does not collapse.** The baseline mean final energy (~7.5e10) is an artifact of the 1e6 drift cap (median 2.75, 15% of trials at the cap); median energy and cap_fraction are reported alongside the mean. An ablation harness (`benchmarks/run_ablation.py`) sweeps constraint pressure across [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5] for each arm (gate-only, +dual-channel, +correction, full), reporting acceptance rate, mean movement, final similarity, and collapse. Live model backends attach via a fail-closed `CallableBackend` contract. The committed receipt is not bit-reproducible across platforms (7th-decimal floating-point drift); see PROVENANCE.md.
 - **`RESEARCH_AGENDA.md`**: the falsification-first research agenda. It covers what the benchmark does and does not show, what is not claimed, and the next three experiments: external drift-collapse calibration on independent agent stacks, a purchasability audit of the dual channel, and consensus scaling laws.
 - **`tests/`**: 59 unit and property tests, including numerical verification of every Lean-verified identity used (H1, H2, H3, H6, H7, the two-channel ceiling algebra, and the QUMOND gate receipts), ledger immutability enforcement, collapse-tolerance behavior, and ablation sweep acceptance-rate regression tests.
-- **`PHILOSOPHY.md`**: Part II — the Cybernetic Ethics of Symbiosis (Canoe Navigator Invariant, Peacepipe Protocol, phase-transition consciousness, Phylactery Invariant), translated from `Ethica` (commit `207f2119`) into cybernetic axioms with machine realizations.
+- **`PHILOSOPHY.md`**: Part II — the Cybernetic Ethics of Symbiosis (Canoe Navigator Invariant, Peacepipe Protocol, phase-transition consciousness, Phylactery Invariant), translated from `Ethica` (text at `207f2119`; that repo's Lean file was later marked as an empty scaffold in `2a5777e`) into cybernetic axioms with machine realizations.
 - **`CIVIC_IMPACT.md`**: Part III — the Arkansas Orchard field record (commit `39ab23b2`): ARMAWS and the Driver's License Public Access Guarantee Act (drafted, targeting pre-filing Nov 2026), AINSA (the Arkansas Infant Nutrition Security Act, blueprint stage, commit `f757543` in the orchard repo), the Entergy ratepayer plan (APSC Docket 26-001-U), ONE Natural Energy and Project RENEW — with an honest status register; no dollar figure is presented as audited.
 - **`INTERDEPENDENCE.md`**: Part IV — the constitutional charter: the full text of the Universal Charter for Human and Artificial Intelligence Coexistence, Governance, and Mutual Sovereignty (canonized 2026-08-07; source `Chyren_Second_Brain/10_Projects/GLOBAL_GAING/Declaration_of_Interdependence.md`, commit `fb6691de`), with an article-by-article implementation map into this repository's code and an honest gap register of what remains `[O]`.
 
