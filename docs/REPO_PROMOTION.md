@@ -6,6 +6,6 @@ Chyren is the workshop and the book. A note stays there until it can pass exactl
 
 **This repository, Nova-Conscientia,** is the only place a sentence may claim a runtime result: navigator, swarm, clip, charter, tests. A formula borrowed from physics, including the QUMOND routing in `core/topology_graph.py`, is code. It is not a galaxy test and it is not a second Res-Nova.
 
-`core/claim_band.py` is the runtime form of that split. A formal result may be reported at certainty 1.0. An empirical result stands only in the band from `1/sqrt(2)` up to, and not including, 0.9. Borrowed mathematics is refused if someone tries to emit it as a physical measurement.
+`core/claim_band.py` is the runtime form of that split. `core/multisource.py` stacks several readings of one claim and leaves out any reading that points at a different object, lacks a citation, or fails the band. A formal result may be reported at certainty 1.0. An empirical result stands only in the band from `1/sqrt(2)` up to, and not including, 0.9. Borrowed mathematics is refused if someone tries to emit it as a physical measurement.
 
 Promotion is one way. A note moves from Chyren into one of those two repositories. The other may link to it. It does not grow its own copy of the claim.
