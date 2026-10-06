@@ -37,7 +37,7 @@ It is NOT evidence about live frontier models: the collapse boundary is the
 measured single-pipeline threshold of Res-Nova (tau = 0.9539, see
 core/sovereign_clipping_gate.py), and the decisive external test -- measuring
 drift collapse on agent stacks other than the one it was tuned on -- is the
-fellowship work plan's first experiment (fellowship/ANTHROPIC_FELLOWS_PROPOSAL.md).
+first experiment in the research agenda (RESEARCH_AGENDA.md).
 """
 
 from __future__ import annotations
