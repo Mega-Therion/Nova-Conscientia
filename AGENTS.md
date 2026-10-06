@@ -17,11 +17,11 @@ Serves a web dashboard on port 3000 using Python's built-in `http.server`.
 - `core/` — dual-channel action, anti-drift controller, sovereign clipping gate, topology graph
 - `verification/` — adversarial auditor, AST invariant validation (Contingent Box gate)
 - `benchmarks/` — drift model + benchmark harness + ablation harness + task benchmark with JSON receipts
-- `tests/` — 83 unittest tests (all pass, stdlib only)
+- `tests/` — 95 unittest tests (all pass, stdlib only)
 
 ## Verification
-- **Tests:** `python3 -m unittest discover -s tests -v` (83 tests, ~4s)
-- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 10 modules, 0 violations)
+- **Tests:** `python3 -m unittest discover -s tests -v` (95 tests, ~4s)
+- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 13 modules, 0 violations)
 - **Benchmark:** `python3 benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json`
 - **Task benchmark:** `python3 benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` (add `--multi-seed` for paired CIs over 3 seeds, `--credit-modes` to compare credit modes)
 - **Ablation:** `python3 benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` (sweep over constraint pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5])

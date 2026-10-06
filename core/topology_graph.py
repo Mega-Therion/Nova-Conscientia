@@ -1,5 +1,8 @@
 """Topology graph: hierarchical swarm attention and carry-lookahead gradient routing.
 
+The QUMOND formulas below are borrowed mathematics. They route a swarm.
+They are not a galaxy measurement and not a Res-Nova result.
+
 Translation target (Res-Nova -> Nova Conscientia)
 --------------------------------------------------
 Res-Nova solves the QUMOND field equation on a grid with the Hockney-Eastwood
@@ -173,7 +176,9 @@ class AgentNode:
         if self.mass <= 0.0:
             raise ValueError(f"mass must be positive, got {self.mass}")
         if self.context_scale <= 0.0:
-            raise ValueError(f"context_scale must be positive, got {self.context_scale}")
+            raise ValueError(
+                f"context_scale must be positive, got {self.context_scale}"
+            )
         if not all(math.isfinite(p) for p in self.position):
             raise ValueError("position must be finite")
 
@@ -284,9 +289,13 @@ class TopologyGraph:
         if agent_id not in self._by_id:
             raise KeyError(f"unknown agent: {agent_id}")
         target = self._by_id[agent_id]
-        g_tot = self._newtonian_field(self._root, target, excluded=frozenset({agent_id}))
+        g_tot = self._newtonian_field(
+            self._root, target, excluded=frozenset({agent_id})
+        )
         coupling = _norm(g_tot) / target.context_scale
-        attended = _scale(g_tot, nu_std(coupling)) if coupling > 0.0 else [0.0] * len(g_tot)
+        attended = (
+            _scale(g_tot, nu_std(coupling)) if coupling > 0.0 else [0.0] * len(g_tot)
+        )
         return attended
 
     def _newtonian_field(
@@ -334,9 +343,7 @@ class TopologyGraph:
         they would create zero-distance interactions).
         """
         members = [
-            self._by_id[i]
-            for i in agent_ids
-            if i in self._by_id and i not in excluded
+            self._by_id[i] for i in agent_ids if i in self._by_id and i not in excluded
         ]
         if not members:
             return None
@@ -442,7 +449,9 @@ class TopologyGraph:
         target = self._by_id[agent_id]
         if len(external_field) != len(target.position):
             raise ValueError("external field dimension mismatch")
-        g_int = self._newtonian_field(self._root, target, excluded=frozenset({agent_id}))
+        g_int = self._newtonian_field(
+            self._root, target, excluded=frozenset({agent_id})
+        )
         g_tot = [gi + ge for gi, ge in zip(g_int, external_field)]
         coupling = _norm(g_tot) / target.context_scale
         if coupling <= 0.0:
@@ -471,12 +480,16 @@ class TopologyGraph:
         """
         report: List[Dict[str, object]] = []
         for agent in sorted(self.agents, key=lambda a: a.agent_id):
-            g_int = self._newtonian_field(self._root, agent, excluded=frozenset({agent.agent_id}))
+            g_int = self._newtonian_field(
+                self._root, agent, excluded=frozenset({agent.agent_id})
+            )
             g_ext_norm = _norm(external_field)
             int_coupling = _norm(g_int) / agent.context_scale
             ext_coupling = g_ext_norm / agent.context_scale
             screened = ext_coupling >= int_coupling
-            amplification = far_field_monopole_ratio(ext_coupling) if ext_coupling > 0.0 else 1.0
+            amplification = (
+                far_field_monopole_ratio(ext_coupling) if ext_coupling > 0.0 else 1.0
+            )
             report.append(
                 {
                     "agent_id": agent.agent_id,
