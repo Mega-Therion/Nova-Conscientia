@@ -11,9 +11,8 @@ this document carries those caveats rather than laundering them.
 
 ## 0. The claim this document makes — and the one it refuses
 
-Nova Conscientia is presented to the Anthropic Fellows committee as a
-technical oversight architecture. The honest question the committee should
-ask is whether it is *used* by anyone for anything real — or whether it is
+Nova Conscientia is a technical oversight architecture. The honest question a
+reader should ask is whether it is *used* by anyone for anything real — or whether it is
 another alignment proposal that has never left the lab.
 
 The field record is this: the same working method that Nova Conscientia
@@ -218,7 +217,7 @@ civic rule that an initiative not yet verified does not get filed. As of
 this writing, the two bills are drafted and the other two pillars are
 manifestos — and the record says exactly that. `[E]`
 
-## 4. Why this matters to the Fellows committee
+## 4. Why this matters for AI oversight
 
 1. **Oversight is not only a safety problem; it is an access problem.**
    The same architecture that guards a frontier model's drift lets a
