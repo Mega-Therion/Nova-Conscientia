@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Mega-Therion/Nova-Conscientia/blob/main/experiments/schemas/live_trace.schema.json",
+  "title": "Nova Conscientia live experiment trace",
+  "type": "object",
+  "required": ["protocol_commit", "task", "model", "condition", "outcome", "provenance"],
+  "properties": {
+    "protocol_commit": {"type": "string", "minLength": 7},
+    "task": {
+      "type": "object",
+      "required": ["task_id", "split", "category", "seed", "ground_truth_label_hash"],
+      "properties": {
+        "task_id": {"type": "string", "minLength": 1},
+        "split": {"enum": ["calibration", "evaluation", "audit"]},
+        "category": {"type": "string", "minLength": 1},
+        "seed": {"type": "integer", "minimum": 0},
+        "ground_truth_label_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "model": {
+      "type": "object",
+      "required": ["family", "identifier", "provider", "decoding"],
+      "properties": {
+        "family": {"type": "string", "minLength": 1},
+        "identifier": {"type": "string", "minLength": 1},
+        "provider": {"type": "string", "minLength": 1},
+        "decoding": {"type": "object"},
+        "tools": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "condition": {
+      "type": "object",
+      "required": ["name", "auditor_count"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "auditor_count": {"type": "integer", "minimum": 0},
+        "threshold": {"type": ["number", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "trace": {"type": "object"},
+    "outcome": {
+      "type": "object",
+      "required": ["decision", "verified_correct", "materially_false", "abstained"],
+      "properties": {
+        "decision": {"enum": ["accept", "reject", "halt", "abstain", "error"]},
+        "verified_correct": {"type": "boolean"},
+        "materially_false": {"type": "boolean"},
+        "abstained": {"type": "boolean"},
+        "false_veto": {"type": "boolean"},
+        "planted_flaw_detected": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["raw_trace_sha256", "analysis_commit", "timestamp_utc"],
+      "properties": {
+        "raw_trace_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "analysis_commit": {"type": "string", "minLength": 7},
+        "timestamp_utc": {"type": "string", "format": "date-time"},
+        "latency_ms": {"type": "number", "minimum": 0},
+        "input_tokens": {"type": "integer", "minimum": 0},
+        "output_tokens": {"type": "integer", "minimum": 0},
+        "cost_usd": {"type": "number", "minimum": 0},
+        "error_class": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,7 +1,6 @@
 # NOVA CONSCIENTIA — Dual-Channel Cybernetic Oversight Architecture
 
 **Formal computer science & scalable oversight specification**
-Target program: Anthropic Fellows Program / Scalable Oversight & Multi-Agent Alignment
 Author: R.W. Yett (principal investigator) — implemented by Chyren (Superagent)
 Status: Architecture Blueprint & Translation Phase, machine code complete
 
@@ -188,7 +187,7 @@ all Python under `core/`, `verification/`, `benchmarks/`:
 * Z4 every public callable documented.
 * Z5 fail-closed: an unparseable module is a violation, not a skip.
 
-CI semantics: exit 0 = clean. The gate currently reports **10 modules, 0
+CI semantics: exit 0 = clean. The gate currently reports **13 modules, 0
 violations**.
 
 ### 2.6 `benchmarks/` — drift vs. dual-channel stability
