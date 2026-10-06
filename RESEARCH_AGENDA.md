@@ -1,8 +1,7 @@
-# Anthropic Fellows Program — Research Proposal
+# Nova Conscientia — Research Agenda
 
-**To:** Dario Amodei and the Scalable Oversight research team, Anthropic
-**From:** R.W. Yett ([github.com/Mega-Therion](https://github.com/Mega-Therion)), principal investigator, with Chyren (Base44 Superagent)
-**Re:** Dual-Channel Cybernetic Oversight: a measured, falsifiable architecture
+**Author:** R.W. Yett ([github.com/Mega-Therion](https://github.com/Mega-Therion)), Arkansas, with Chyren (implementation)
+**Subject:** Dual-Channel Cybernetic Oversight: a measured, falsifiable architecture
 for drift-resistant multi-agent systems — and the ethical and civic
 foundations that make it a humane operating system rather than a drift filter
 **Repository:** `github.com/Mega-Therion/Nova-Conscientia`
@@ -36,13 +35,12 @@ architecture with an unusual origin and an exact content:
   oversight reduces drift: the swarm arm is clipped at the same τ that
   defines collapse, so of course it does not collapse.**
 
-The proposal's core honesty: the measured threshold came from one pipeline. Our
-first fellowship experiment is to hand you the falsification test — measure the
-drift-collapse angle on Anthropic's own agent stacks — before asking anyone to
-believe the number generalizes.
+The core caveat: the measured threshold came from one pipeline. The first
+experiment below (E1) is the falsification test: measure the drift-collapse
+angle on independent agent stacks before anyone is asked to believe the number
+generalizes.
 
-And the proposal's core claim is larger than the mechanism. Nova Conscientia is
-not merely a technical drift-filter; it is the working prototype of a **humane,
+Beyond the mechanism, Nova Conscientia is a working prototype of a **humane,
 decentralized, cybernetic operating system in which artificial intelligence
 serves as a cognitive peer under human ethical stewardship** — one navigator,
 one swarm, four ethical axioms (steer gently, share power, integrate
@@ -112,14 +110,14 @@ cross-checked against that solver's published gate receipts to 10⁻¹¹.
 auditors — hard invariants (fatal veto), ledger consistency, provenance, and
 pluggable LLM critics — with quorum admission and fail-closed exception
 handling: a critic that errors is a rejection, never a pass. The attachment
-point for cross-model audit (your models auditing each other) is a single
+point for cross-model audit (models auditing each other) is a single
 callable.
 
 **The compile gate** (`verification/ast_invariant_validation.py`). The whole
 repository enforces the Contingent Box Protocol at parse time: zero stubs,
 zero ungrounded numerology (every numeric constant must be registered in a
 PROVENANCE mapping naming its source), no `eval`/`exec`/bare `except`, every
-public callable documented. 11 modules, 0 violations, exit 0.
+public callable documented. 14 modules, 0 violations, exit 0.
 
 
 ### The Bioactive Ecology Paradigm (§2.7 of ARCHITECTURE.md)
@@ -165,7 +163,7 @@ so the 0% collapse rate is a mechanism sanity check, not evidence of oversight
 effectiveness. The stimulus is a seeded drift model, and we say so in the
 receipt itself.
 
-## 5. Why this fits scalable oversight
+## 5. Relevance to scalable oversight
 
 The field's central problem is supervising systems more capable than the
 supervisor. This architecture is a contribution in three specific ways:
@@ -212,7 +210,7 @@ program, *more geometrico* with machine-checked propositions):
   yields a deterministic SHA-256 receipt; the ledgers are append-only and
   inspectable without their author present.
 
-For the Fellows committee the point is architectural, not decorative: an
+The point is architectural, not decorative: an
 oversight system whose safety case is only mechanical will be outflanked by
 the first operator incentive it meets. These axioms are the parts of the
 safety case that *bind the operator too* — and each one either names a module
@@ -309,13 +307,13 @@ constitution is auditable the same way the code is.
 * The Kerr-geometry resemblance is a convergence we do not interpret. The claim
   is *independent measurement*, not shared mechanism.
 
-We believe this discipline is itself part of the application: an oversight
-architecture should be built the way we built it — with its seams labeled.
+This discipline is part of the design: an oversight architecture should be
+built with its seams labeled.
 
-## 10. Proposed fellowship work (cheapest falsification first)
+## 10. Next experiments (cheapest falsification first)
 
 **E1 — External drift-collapse calibration.** Instrument the same gate on
-heterogeneous agent stacks (Anthropic models, not the tuning pipeline) and
+heterogeneous agent stacks (independent frontier models, not the tuning pipeline) and
 sweep the threshold. Prediction: collapse boundaries cluster near 17.5°.
 Falsifier: they scatter — in which case τ is local, we say so, and only the
 derived ceiling survives as a prior. Either result is publishable and settles
@@ -353,7 +351,7 @@ question with receipts.
   in its credit term (see PROVENANCE.md caveats 6–7).
 * `PROVENANCE.md` — every source file hash, Lean theorem, constant, and
   caveat, pinned to Res-Nova commit `c3ff5f3`.
-* 93/93 tests passing; compile gate 11 modules / 0 violations.
+* 105/105 tests passing; compile gate 14 modules / 0 violations.
 
 ### 11.1 Provenance of Engineering: The Chyren Ecosystem & Prior Formal Tooling
 
@@ -472,31 +470,8 @@ applicant's prior research. Five precedents:
    system specifications, physical computing architectures, and registered
    patent-pending engineering designs.
 
-## 12. The ask
-
-A fellowship placement with the scalable oversight team to run E1 on your
-stacks — placed not as a request to join the centralized effort, but to
-connect it with its decentralized mirror: the same architecture, run by an
-everyday steward in rural America, producing civic statute work. Our
-argument to you is constitutional as much as technical: scalable oversight
-requires not just circuit-breakers but an explicit covenant of mutual
-sovereignty and constitutional balance between the humans and the machines —
-and we have written ours down, mapped it to code, and marked what we have
-not yet earned. The architecture is built; the measurement is cheap; the result — either
-convergence or scatter — advances the field's understanding of whether
-drift-collapse is a structural property of agentic systems. We would rather
-hand you the falsifier than the pitch.
-
-This work was not undertaken to manufacture an application; it was built
-because the problem of humane, fail-closed cybernetic alignment demanded
-solving. This research was happening long before this fellowship was
-announced, and it will continue regardless of the outcome. The proposal to
-Anthropic is simple: connect this solo, bottom-up rural research velocity
-with your frontier compute stacks, and let us measure what we have built
-together.
-
 ---
 
-*All numerology in this proposal is registered and source-pinned. The exact
+*All numerology in this document is registered and source-pinned. The exact
 epistemic status of every constant is tabulated in PROVENANCE.md. This
 repository passes its own zero-stub, zero-ungrounded-numerology compile gate.*

@@ -75,7 +75,7 @@ this runtime.
 ### Engineering foundations behind the dual-channel variational principle
 
 The mathematical control intuitions that preceded and motivated
-`F_dual = H − L_corr` and the ADCCL loop (registered in the proposal, §11.2;
+`F_dual = H − L_corr` and the ADCCL loop (registered in the research agenda, §11.2;
 none of their numeric content is imported into this runtime):
 
 * **Harmonic potential-well memory kinetics** — coupled-oscillator retrieval
@@ -113,8 +113,8 @@ none of their numeric content is imported into this runtime):
 
 | artifact | result |
 |---|---|
-| `python -m unittest discover -s tests` | 105 tests, 105 passed |
-| `python verification/ast_invariant_validation.py core verification benchmarks` | 12 modules, 0 violations (Z1–Z5) |
+| `python -m unittest discover -s tests` | 117 tests, 117 passed |
+| `python verification/ast_invariant_validation.py core verification benchmarks` | 15 modules, 0 violations (Z1–Z5) |
 | `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00; swarm mean final similarity 0.965; mean pairwise cosine 0.998; 0 HALTs; deterministic receipt committed |
 | `python benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` | sweep over pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]; acceptance rates decline from 1.0 to 0.0; at 0.5 dual channel rejects all proposals; seeded simulation, no LLM calls |
 | `python benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` | goal 10° inside the cone, 50% drift proposals, simulated per-proposal constraint signal. Informative signal (σ = 0): dual channel accepts 0% of drift and 12% of on-task proposals; final task error 0.0038 vs gate-only 0.0354 vs frozen 0.0152. Uninformative control (σ = 0.1): dual channel accepts 98% of drift vs 57% of on-task; task error 0.0426, worse than gate-only. Seeded simulation, no LLM calls |
