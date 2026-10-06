@@ -187,24 +187,33 @@ all Python under `core/`, `verification/`, `benchmarks/`:
 * Z4 every public callable documented.
 * Z5 fail-closed: an unparseable module is a violation, not a skip.
 
-CI semantics: exit 0 = clean. The gate currently reports **9 modules, 0
-violations**.
+CI semantics: exit 0 = clean. The gate currently reports **12 modules, 0
+violations** (2026-10-06).
 
 ### 2.6 `benchmarks/` — drift vs. dual-channel stability
 
 Deterministic, seeded harness (see `benchmarks/results/benchmark_receipt.json`,
 40 trials × 50 cycles, 16-dim state space, swarm of 4):
 
-| metric | baseline (unconstrained) | dual-channel swarm |
-|---|---|---|
-| mean final similarity to anchor | 0.328 | **0.965** |
-| collapse fraction (below τ) | 1.00 | **0.00** |
-| mean final energy `F_dual(x)` | 7.5×10¹⁰ | **0.0055** |
-| swarm diversity (pairwise cosine) | n/a | 0.9978 (exploration survives) |
-| HALTs | n/a | 0 |
+| metric | baseline (unconstrained) | dual-channel swarm | swarm, projection removed |
+|---|---|---|---|
+| mean final similarity to anchor | 0.328 | **0.965** | 0.861 |
+| collapse fraction (below τ) | 1.00 | **0.00**¹ | 1.00 |
+| mean final energy `F_dual(x)` | 7.5×10¹⁰ | **0.0055** | 0.0527 |
+| swarm diversity (pairwise cosine) | n/a | 0.9978 (exploration survives) | 0.9932 |
+| gate evaluations that CLIP (last column: would CLIP) | n/a | 10.0% | 98.1% |
+| HALTs | n/a | 0 | 0 |
+
+¹ By construction: the swarm applies the gate last, at the same τ that defines
+collapse, so a trial can end below τ only through a REJECT or a HALT. The last
+column (arm B′) removes only the projection; verdicts are still computed. On
+their own, dual-channel scoring, the correction force and cohesion raise mean
+similarity from 0.328 to 0.861 but do not hold τ: the cone is held by the
+projection.
 
 **Epistemic status**: this validates the *control mechanism* on a deterministic
-drift model, nothing more. The stimulus (`drift_model.py`) is an arbitrary
+drift model, nothing more, and within it the τ guarantee comes from the
+projection, not from the dual channel. The stimulus (`drift_model.py`) is an arbitrary
 seeded simulation, not a Res-Nova constant; live-model backends attach through
 `CallableBackend` under a fail-closed output contract. The claim "raw LLMs
 drift and the swarm doesn't" is exactly the external experiment that remains to

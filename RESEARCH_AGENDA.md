@@ -140,15 +140,16 @@ and tags the rest `[O]` — an ecology claimed only as far as it is built.
 Seeded deterministic harness, 40 trials × 50 cycles, 16-dim state space,
 swarm of 4 (`benchmarks/results/benchmark_receipt.json`):
 
-| metric | unconstrained | dual-channel swarm |
-|---|---|---|
-| mean final anchor similarity | 0.328 | **0.965** |
-| collapse fraction (below 0.9539) | 1.00 | **0.00** |
-| mean final drift energy | 7.5×10¹⁰ [open] | **0.0055** |
-| median final drift energy | 2.75 | **0.0056** |
-| cap fraction (trials at 1e6 drift cap) | 0.15 | **0.00** |
-| mean pairwise cosine | n/a | 0.998 (agents nearly agree) |
-| controller HALTs | n/a | 0 |
+| metric | unconstrained | dual-channel swarm | swarm, projection removed |
+|---|---|---|---|
+| mean final anchor similarity | 0.328 | **0.965** | 0.861 |
+| collapse fraction (below 0.9539) | 1.00 | **0.00** | 1.00 |
+| mean final drift energy | 7.5×10¹⁰ [open] | **0.0055** | 0.0527 |
+| median final drift energy | 2.75 | **0.0056** | 0.0455 |
+| cap fraction (trials at 1e6 drift cap) | 0.15 | **0.00** | 0.00 |
+| mean pairwise cosine | n/a | 0.998 (agents nearly agree) | 0.993 |
+| gate evaluations that CLIP (last column: would CLIP) | n/a | 10.0% | 98.1% |
+| controller HALTs | n/a | 0 | 0 |
 
 The baseline mean energy (~7.5e10) is an artifact of the 1e6 drift cap — a few
 orthogonal states inflate the mean by orders of magnitude. Median energy (2.75)
@@ -160,7 +161,9 @@ the bit, and preserves exploration inside its certified envelope. **What it does
 not show:** anything about live frontier models, or that dual-channel oversight
 reduces drift — the swarm arm is clipped at the same τ that defines collapse,
 so the 0% collapse rate is a mechanism sanity check, not evidence of oversight
-effectiveness. The stimulus is a seeded drift model, and we say so in the
+effectiveness. The projection-removed arm (added 2026-10-06) separates the two:
+without the projection, the rest of the loop raises mean similarity from 0.328
+to 0.861 on this drift model, but every trial still ends below τ. The stimulus is a seeded drift model, and we say so in the
 receipt itself.
 
 ## 5. Relevance to scalable oversight

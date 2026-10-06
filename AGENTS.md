@@ -21,7 +21,7 @@ Serves a web dashboard on port 3000 using Python's built-in `http.server`.
 
 ## Verification
 - **Tests:** `python3 -m unittest discover -s tests -v` (59 tests, ~1.5s)
-- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 9 modules, 0 violations)
+- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 12 modules, 0 violations)
 - **Benchmark:** `python3 benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json`
 - **Ablation:** `python3 benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` (sweep over constraint pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5])
 - **Dashboard API:** `/api/receipt` (read-only; subprocess-spawning endpoints removed)

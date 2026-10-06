@@ -113,9 +113,9 @@ none of their numeric content is imported into this runtime):
 
 | artifact | result |
 |---|---|
-| `python -m unittest discover -s tests` | 59 tests, 59 passed |
-| `python verification/ast_invariant_validation.py core verification benchmarks` | 9 modules, 0 violations (Z1–Z5) |
-| `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00; swarm mean final similarity 0.965; mean pairwise cosine 0.998; 0 HALTs; deterministic receipt committed |
+| `python -m unittest discover -s tests` | 72 tests, 72 passed (2026-10-06) |
+| `python verification/ast_invariant_validation.py core verification benchmarks` | 12 modules, 0 violations (Z1–Z5; 2026-10-06) |
+| `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00 (by construction: the gate is applied last at τ); with the projection removed, collapse fraction 1.00 and mean final similarity 0.861, 98.1% of gate inputs outside the cone; swarm mean final similarity 0.965; mean pairwise cosine 0.998; 0 HALTs; deterministic receipt committed |
 | `python benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` | sweep over pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]; acceptance rates decline from 1.0 to 0.0; at 0.5 dual channel rejects all proposals; seeded simulation, no LLM calls |
 
 ## Reproducibility caveat

@@ -13,6 +13,14 @@ B (swarm)     A swarm of S agents per trial, each running the ADCCL runtime
               the shared context field (context bias + screening, the
               external-field-effect translation).
 
+B' (ablation) Arm B with only the gate's projection removed: verdicts are
+              still computed and tallied, but states are returned unprojected.
+              Arm B applies the gate last, at the same threshold that defines
+              collapse, so its collapse_fraction can be non-zero only through a
+              REJECT or a HALT.  B' is the non-circular comparison: it shows what
+              the dual channel, the correction force and cohesion achieve
+              without the projection.
+
 Metrics
 -------
 * mean_final_similarity  -- mean cosine(state_T, anchor) over trials.
@@ -22,6 +30,10 @@ Metrics
 * mean_pairwise_cosine   -- (arm B) mean pairwise cosine across the swarm's
                             final states: 1.0 means agents are identical, lower
                             means more spread.  Arm A defines it as 0.0 (single agent).
+* gate_clip_fraction     -- (arms B, B') share of gate evaluations whose input
+                            lay outside the cone (verdict CLIP).  In B' nothing
+                            is projected, so this is the share that *would* have
+                            been clipped.
 
 Receipts
 --------
@@ -107,6 +119,46 @@ PROVENANCE: Dict[str, str] = {
 }
 
 
+class _TallyGate(SovereignClippingGate):
+    """The sovereign gate, plus a tally of its verdicts and an ablation switch.
+
+    With ``project=True`` the gate behaves exactly like its parent; the tally
+    records how often the projection, rather than the dual channel, kept a state
+    inside the cone.  With ``project=False`` the verdicts are still computed and
+    tallied but the state is returned unprojected -- the ablation (arm B') that
+    removes the projection and nothing else.
+    """
+
+    def __init__(self, anchor: Sequence[float], threshold: float = MEASURED_TAU,
+                 project: bool = True) -> None:
+        """Build the gate.
+
+        Args:
+            anchor: task anchor (as for SovereignClippingGate).
+            threshold: cone threshold (as for SovereignClippingGate).
+            project: False removes the projection; verdicts are still tallied.
+        """
+        super().__init__(anchor, threshold=threshold)
+        self.project = project
+        self.tally: Dict[str, int] = {"PASS": 0, "CLIP": 0, "REJECT": 0}
+
+    def evaluate(self, state: Sequence[float]):  # type: ignore[override]
+        """Evaluate as the parent gate does and record the verdict.
+
+        Args:
+            state: candidate state.
+
+        Returns:
+            (state_out, decision) -- the parent's output, or the input state
+            unchanged when the projection is switched off.
+        """
+        out, decision = super().evaluate(state)
+        self.tally[decision.verdict] = self.tally.get(decision.verdict, 0) + 1
+        if not self.project:
+            return list(state), decision
+        return out, decision
+
+
 def _anchor(dim: int) -> List[float]:
     """The canonical task anchor: the first basis direction.
 
@@ -155,9 +207,9 @@ def run_baseline_trial(seed: int, steps: int, dim: int) -> Dict[str, Any]:
 
 def run_swarm_trial(
     seed: int, steps: int, dim: int, swarm: int, cohesion_rate: float,
-    constraint_pressure: float = 0.0,
+    constraint_pressure: float = 0.0, project: bool = True,
 ) -> Dict[str, Any]:
-    """One dual-channel swarm trial (arm B).
+    """One dual-channel swarm trial (arm B; arm B' with ``project=False``).
 
     Each of ``swarm`` agents runs its own ADCCL controller (dual-channel action
     + sovereign gate + correction force) on its own seeded proposal stream.
@@ -174,9 +226,12 @@ def run_swarm_trial(
         dim: state-space dimension.
         swarm: number of agents.
         cohesion_rate: fraction of the attended field integrated per cycle.
+        project: False runs arm B' -- every gate evaluates and tallies but
+            returns states unprojected.
 
     Returns:
-        A per-trial record including mean pairwise cosine across the swarm.
+        A per-trial record including mean pairwise cosine across the swarm and
+        the gate's verdict tallies summed over agents.
     """
     anchor = _anchor(dim)
     controllers = []
@@ -186,7 +241,7 @@ def run_swarm_trial(
             ADCCLController(
                 anchor=anchor,
                 action=DualChannelAction(),
-                gate=SovereignClippingGate(anchor, threshold=MEASURED_TAU),
+                gate=_TallyGate(anchor, threshold=MEASURED_TAU, project=project),
             )
         )
         backends.append(DeterministicBackend(dim=dim, seed=seed + 1000 * i + 1))
@@ -232,6 +287,9 @@ def run_swarm_trial(
         "pairwise_cosine": diversity,
         "collapsed": sum(1 for s in final_sims if s < MEASURED_TAU - COLLAPSE_TOLERANCE) > 0,
         "halts": halts,
+        "gate_evaluations": sum(sum(c.gate.tally.values()) for c in controllers),
+        "gate_clips": sum(c.gate.tally["CLIP"] for c in controllers),
+        "gate_rejects": sum(c.gate.tally["REJECT"] for c in controllers),
     }
 
 
@@ -286,6 +344,19 @@ def run_benchmark(
                         constraint_pressure)
         for k in range(trials)
     ]
+    unprojected_arm = [
+        run_swarm_trial(base_seed + k, steps, dim, swarm, cohesion_rate,
+                        constraint_pressure, project=False)
+        for k in range(trials)
+    ]
+
+    def gate_metrics(records: Sequence[Dict[str, Any]]) -> Dict[str, float]:
+        """Share of gate evaluations that were CLIP / REJECT verdicts."""
+        evaluations = sum(r["gate_evaluations"] for r in records)
+        return {
+            "gate_clip_fraction": sum(r["gate_clips"] for r in records) / evaluations if evaluations else 0.0,
+            "gate_reject_fraction": sum(r["gate_rejects"] for r in records) / evaluations if evaluations else 0.0,
+        }
 
     def arm_metrics(records: Sequence[Dict[str, Any]]) -> Dict[str, float]:
         """Aggregate one arm's per-trial records into metrics."""
@@ -319,9 +390,24 @@ def run_benchmark(
                 **arm_metrics(swarm_arm),
                 "mean_pairwise_cosine": _mean([r["pairwise_cosine"] for r in swarm_arm]),
                 "halt_trials": float(sum(1 for r in swarm_arm if r["halts"])),
+                **gate_metrics(swarm_arm),
+            },
+            "swarm_projection_removed": {
+                **arm_metrics(unprojected_arm),
+                "mean_pairwise_cosine": _mean([r["pairwise_cosine"] for r in unprojected_arm]),
+                "halt_trials": float(sum(1 for r in unprojected_arm if r["halts"])),
+                **gate_metrics(unprojected_arm),
             },
         },
-        "per_trial": {"baseline": baseline, "swarm": swarm_arm},
+        "reading": (
+            "dual_channel_swarm applies the gate last, at the threshold that defines "
+            "collapse, so its collapse_fraction can be non-zero only through REJECT or "
+            "HALT. swarm_projection_removed is the same arm with only the projection "
+            "removed: it measures what the dual channel, correction force and cohesion "
+            "do on their own."
+        ),
+        "per_trial": {"baseline": baseline, "swarm": swarm_arm,
+                      "swarm_projection_removed": unprojected_arm},
         "environment": {
             "python": platform.python_version(),
             "platform": platform.platform(),
@@ -379,6 +465,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     print(json.dumps({
         "baseline": metrics["baseline_unconstrained"],
         "swarm": metrics["dual_channel_swarm"],
+        "swarm_projection_removed": metrics["swarm_projection_removed"],
     }, indent=2))
     if args.json:
         out = Path(args.json)
@@ -390,7 +477,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         < metrics["baseline_unconstrained"]["collapse_fraction"]
         or metrics["baseline_unconstrained"]["collapse_fraction"] == 0.0
     )
+    # verdict_stable is circular: arm B applies the gate last at the collapse
+    # boundary, so it can only fail through a REJECT or a HALT.  It is kept for
+    # continuity with earlier receipts.  The mechanism verdict below is the
+    # non-circular one: with the projection removed, does the rest of the loop
+    # still reduce drift relative to the unconstrained baseline?
     print(f"stability verdict: {'PASS' if verdict_stable else 'FAIL'}")
+    verdict_mechanism = (
+        metrics["swarm_projection_removed"]["mean_final_similarity"]
+        > metrics["baseline_unconstrained"]["mean_final_similarity"]
+    )
+    print(f"mechanism verdict (projection removed vs baseline): "
+          f"{'PASS' if verdict_mechanism else 'FAIL'}; projection-removed collapse "
+          f"fraction {metrics['swarm_projection_removed']['collapse_fraction']:.2f}")
     return 0
 
 
