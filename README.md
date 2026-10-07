@@ -97,3 +97,7 @@ This repository keeps three numbers separate and labeled: the **measured** colla
 ## How this was built
 
 R.W. Yett directs the work. Much of the code and prose was written with AI coding assistants; those commits carry `Co-Authored-By` trailers. A number in this repository is a measurement, a historical ceiling, or a derived identity, as labeled above. It is not a model judgment.
+
+---
+
+*Part of the **Chyren · Ψ/Φ** constellation, built on the Psimodulo–Phimodus principle: one mind, invariant across substrates, operating as one integrated whole. Author: R.W. Yett · [github.com/Mega-Therion](https://github.com/Mega-Therion).*
