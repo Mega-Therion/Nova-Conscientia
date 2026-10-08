@@ -330,7 +330,9 @@ def _correct_toward_anchor(state: Sequence[float], anchor: Sequence[float]) -> L
 
 def run_trial(arm: str, seed: int, steps: int, dim: int, sigma: float,
               sensitivity: float = SIGNAL_SENSITIVITY,
-              credit_mode: str = DEFAULT_CREDIT_MODE) -> Dict[str, Any]:
+              credit_mode: str = DEFAULT_CREDIT_MODE,
+              pressure_fn: Optional[Callable[[Sequence[float], Sequence[float]], float]] = None,
+              ) -> Dict[str, Any]:
     """Run one arm for one trial and return its per-trial metrics.
 
     Arms:
@@ -352,6 +354,10 @@ def run_trial(arm: str, seed: int, steps: int, dim: int, sigma: float,
             signal pure noise (the uninformative control).
         credit_mode: dual-channel credit mode for the scoring arms (see
             core/dual_channel_action.py); ignored by arms that do not score.
+        pressure_fn: optional external constraint signal ``(move, state) ->
+            pressure`` replacing the simulated checker (e.g. an auditor
+            panel; see run_auditor_signal.py).  The simulated signal's RNG is
+            still drawn every cycle so proposal streams stay aligned.
 
     Returns:
         Per-trial metrics (see module docstring).
@@ -378,6 +384,8 @@ def run_trial(arm: str, seed: int, steps: int, dim: int, sigma: float,
         current = ctrl.state if ctrl is not None else state
         move, on_task = stream.propose(cycle, current)
         pressure = constraint_signal(move, sigma, signal_rng, sensitivity)
+        if pressure_fn is not None:
+            pressure = pressure_fn(move, current)
         kind = "on" if on_task else "off"
         counts[kind] += 1
 

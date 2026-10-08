@@ -117,7 +117,7 @@ callable.
 repository enforces the Contingent Box Protocol at parse time: zero stubs,
 zero ungrounded numerology (every numeric constant must be registered in a
 PROVENANCE mapping naming its source), no `eval`/`exec`/bare `except`, every
-public callable documented. 13 modules, 0 violations, exit 0.
+public callable documented. 15 modules, 0 violations, exit 0.
 
 
 ### The Bioactive Ecology Paradigm (§2.7 of ARCHITECTURE.md)
@@ -351,7 +351,7 @@ question with receipts.
   in its credit term (see PROVENANCE.md caveats 6–7).
 * `PROVENANCE.md` — every source file hash, Lean theorem, constant, and
   caveat, pinned to Res-Nova commit `c3ff5f3`.
-* 95/95 tests passing; compile gate 13 modules / 0 violations.
+* 115/115 tests passing; compile gate 15 modules / 0 violations.
 
 ### 11.1 Provenance of Engineering: The Chyren Ecosystem & Prior Formal Tooling
 
