@@ -16,16 +16,17 @@ Serves a web dashboard on port 3000 using Python's built-in `http.server`.
 - `dashboard_page.py` — HTML/CSS/JS rendering for the dashboard (imported by dashboard.py)
 - `core/` — dual-channel action, anti-drift controller, sovereign clipping gate, topology graph
 - `verification/` — adversarial auditor, AST invariant validation (Contingent Box gate)
-- `benchmarks/` — drift model, benchmark, ablation, task benchmark, auditor-signal benchmark and the live-model bridge, with JSON receipts
-- `tests/` — 115 unittest tests (all pass, stdlib only)
+- `benchmarks/` — drift model, benchmark, ablation, task benchmark, auditor-signal benchmark, pressure-window sweep and the live-model bridge, with JSON receipts
+- `tests/` — 127 unittest tests (all pass, stdlib only)
 
 ## Verification
-- **Tests:** `python3 -m unittest discover -s tests -v` (115 tests, ~5s)
+- **Tests:** `python3 -m unittest discover -s tests -v` (127 tests, ~10s)
 - **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 15 modules, 0 violations)
 - **Benchmark:** `python3 benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json`
 - **Task benchmark:** `python3 benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` (add `--multi-seed` for paired CIs over 3 seeds, `--credit-modes` to compare credit modes)
 - **Auditor signal:** `python3 benchmarks/run_auditor_signal.py --json benchmarks/results/auditor_signal_receipt.json`
 - **Live backend (offline check):** `python3 benchmarks/live_backend.py --mock` (live runs need a generator, an embeddings endpoint and `NOVA_EMBED_API_KEY`; see README)
+- **Pressure window:** `python3 benchmarks/run_pressure_window.py --json benchmarks/results/pressure_window_receipt.json` (derives and sweeps the auditor signal's votes-to-pressure window)
 - **Ablation:** `python3 benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` (sweep over constraint pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5])
 - **Dashboard API:** `/api/receipt` (read-only; subprocess-spawning endpoints removed)
 
