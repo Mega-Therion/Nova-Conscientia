@@ -16,24 +16,25 @@ Serves a web dashboard on port 3000 using Python's built-in `http.server`.
 - `dashboard_page.py` — HTML/CSS/JS rendering for the dashboard (imported by dashboard.py)
 - `core/` — dual-channel action, anti-drift controller, sovereign clipping gate, topology graph
 - `verification/` — adversarial auditor, AST invariant validation (Contingent Box gate)
-- `benchmarks/` — drift model + benchmark harness + ablation harness + task benchmark with JSON receipts
-- `tests/` — 105 unittest tests (all pass, stdlib only)
+- `benchmarks/` — drift model, benchmark, ablation, task benchmark, auditor-signal benchmark and the live-model bridge, with JSON receipts
+- `tests/` — 115 unittest tests (all pass, stdlib only)
 
 ## Verification
-- **Tests:** `python3 -m unittest discover -s tests -v` (105 tests, ~5s)
-- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 14 modules, 0 violations)
+- **Tests:** `python3 -m unittest discover -s tests -v` (115 tests, ~5s)
+- **Contingent Box gate:** `python3 verification/ast_invariant_validation.py` (checks 15 modules, 0 violations)
 - **Benchmark:** `python3 benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json`
 - **Task benchmark:** `python3 benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` (add `--multi-seed` for paired CIs over 3 seeds, `--credit-modes` to compare credit modes)
 - **Auditor signal:** `python3 benchmarks/run_auditor_signal.py --json benchmarks/results/auditor_signal_receipt.json`
+- **Live backend (offline check):** `python3 benchmarks/live_backend.py --mock` (live runs need a generator, an embeddings endpoint and `NOVA_EMBED_API_KEY`; see README)
 - **Ablation:** `python3 benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` (sweep over constraint pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5])
 - **Dashboard API:** `/api/receipt` (read-only; subprocess-spawning endpoints removed)
 
 ## Key Facts
-- Python 3.12 (slim Docker image)
-- No external secrets or credentials needed
+- Python 3.12 (slim Docker image); CI (`.github/workflows/ci.yml`) runs the tests, the gate and the benchmark-receipt check on every PR
+- No secrets needed for anything except an optional live-model run (`NOVA_EMBED_API_KEY`, see README)
 - No database, no cache, no external services
 - The dashboard is a static page; only `/api/receipt` is served (read-only)
-- Benchmark receipt is committed at `benchmarks/results/benchmark_receipt.json`
-- Ablation receipt is at `benchmarks/results/ablation_receipt.json`
-- The diversity metric is renamed `mean_pairwise_cosine` (was `mean_swarm_diversity`)
-- GateLedger.entries is now an immutable tuple property (append-only enforced)
+- Committed receipts in `benchmarks/results/`: `benchmark_receipt.json`, `ablation_receipt.json`, `task_benchmark_receipt.json`, `task_bootstrap_receipt.json`, `task_credit_modes_receipt.json`, `auditor_signal_receipt.json`
+- Swarm agreement metric: `mean_pairwise_cosine` in receipts (`pairwise_cosine` per trial); it was `mean_swarm_diversity`, which misdescribed it
+- `GateLedger.entries` and `ADCCLController.ledger` are read-only tuples (append-only enforced)
+- Epistemic tags: PROVENANCE.md's constant register uses `[E]/[C]/[D]/[P]`; claims elsewhere use `[thm]/[emp]/[conj]/[open]`. Never upgrade a tag; simulated results are at most `[conj]`
