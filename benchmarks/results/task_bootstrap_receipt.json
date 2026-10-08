@@ -1,0 +1,6205 @@
+{
+  "harness": "nova-conscientia task benchmark multi-seed robustness",
+  "robustness_seeds": [
+    20260906,
+    20261002,
+    20261105
+  ],
+  "parameters": {
+    "trials": 40,
+    "steps": 50,
+    "dim": 16,
+    "noise_sweep": [
+      0.0,
+      0.05,
+      0.1,
+      0.2,
+      0.5,
+      1.0
+    ],
+    "base_seed": 20261105,
+    "goal_angle_deg": 10.0,
+    "on_task_prob": 0.5,
+    "on_task_gain": 0.2,
+    "on_task_jitter": 0.005,
+    "signal_sensitivity": 2.0,
+    "collapse_boundary": 0.9539,
+    "collapse_tolerance": 1e-09,
+    "bootstrap_resamples": 1000,
+    "bootstrap_seed": 20261002,
+    "robustness_seeds": [
+      20260906,
+      20261002,
+      20261105
+    ]
+  },
+  "frozen_task_error": 0.01519224698779198,
+  "results_by_seed": {
+    "20260906": {
+      "seed": 20260906,
+      "parameters": {
+        "trials": 40,
+        "steps": 50,
+        "dim": 16,
+        "noise_sweep": [
+          0.0,
+          0.05,
+          0.1,
+          0.2,
+          0.5,
+          1.0
+        ],
+        "base_seed": 20260906,
+        "goal_angle_deg": 10.0,
+        "on_task_prob": 0.5,
+        "on_task_gain": 0.2,
+        "on_task_jitter": 0.005,
+        "signal_sensitivity": 2.0,
+        "collapse_boundary": 0.9539,
+        "collapse_tolerance": 1e-09,
+        "bootstrap_resamples": 1000,
+        "bootstrap_seed": 20261002,
+        "robustness_seeds": [
+          20260906,
+          20261002,
+          20261105
+        ]
+      },
+      "frozen_task_error": 0.01519224698779198,
+      "sweep": {
+        "0.0": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.08095338554536333,
+              0.1247125893588679
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09537164784825344,
+              0.12696792736182158
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.36782203109849526,
+              0.41666682450405207
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.030702293124894597,
+              0.04028111307377456
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.03353335721101929,
+              0.037396901264276784
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.2245346496193798,
+              0.23482892281253515
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.0038310926289914114,
+            "final_task_error_ci95": [
+              0.0035145011045471437,
+              0.004157472073231558
+            ],
+            "mean_task_error": 0.005654569009959436,
+            "mean_task_error_ci95": [
+              0.005248105654727995,
+              0.006036193785125917
+            ],
+            "mean_off_task_fraction": 0.021444819363241274,
+            "mean_off_task_fraction_ci95": [
+              0.020086959282098645,
+              0.02286895567810649
+            ],
+            "accept_on": 0.1208798779488521,
+            "accept_on_ci95": [
+              0.11219865047677606,
+              0.13064252720295216
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.028360015379251514,
+              0.03705424007791541
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.03089832254406167,
+              0.034262797925894366
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.2130007583504417,
+              0.22247632006035264
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.004847186629626063,
+            "final_task_error_ci95": [
+              0.004530015810001073,
+              0.005155047361190421
+            ],
+            "mean_task_error": 0.0060735679281636226,
+            "mean_task_error_ci95": [
+              0.005739188912006833,
+              0.006415035790678714
+            ],
+            "mean_off_task_fraction": 0.01942931359517195,
+            "mean_off_task_fraction_ci95": [
+              0.018397866761742047,
+              0.020524206415630943
+            ],
+            "accept_on": 0.13161044759766025,
+            "accept_on_ci95": [
+              0.12190988728840427,
+              0.14210160643000874
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.05": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.08137789641785917,
+              0.12494451590074111
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09475245044404845,
+              0.12617060919506956
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.36858186888244765,
+              0.41826530130809314
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.03055016263926432,
+              0.03997287550908948
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.033701514033514186,
+              0.037239040993107445
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.2249985446918698,
+              0.2349026432853188
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.009850510075493053,
+            "final_task_error_ci95": [
+              0.009080931367955092,
+              0.010745101868976602
+            ],
+            "mean_task_error": 0.011420018522088057,
+            "mean_task_error_ci95": [
+              0.010719855623291105,
+              0.012135660407882835
+            ],
+            "mean_off_task_fraction": 0.009924468073933781,
+            "mean_off_task_fraction_ci95": [
+              0.008056996563911368,
+              0.011527723389401136
+            ],
+            "accept_on": 0.040763957221678006,
+            "accept_on_ci95": [
+              0.033592277844218414,
+              0.04708833941160522
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.028190664289036958,
+              0.036712749885774144
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.03073514290793647,
+              0.034341389865821886
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.2127508625457209,
+              0.22221678688888544
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.010057117249167987,
+            "final_task_error_ci95": [
+              0.009262811480169744,
+              0.010940526415137406
+            ],
+            "mean_task_error": 0.011507391318176588,
+            "mean_task_error_ci95": [
+              0.010836565101374908,
+              0.012230629319400155
+            ],
+            "mean_off_task_fraction": 0.009608667375511337,
+            "mean_off_task_fraction_ci95": [
+              0.008007907344316102,
+              0.01116172565962971
+            ],
+            "accept_on": 0.042013957221678,
+            "accept_on_ci95": [
+              0.034671752172576384,
+              0.04944253730874691
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.1": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.07911631966744781,
+              0.1239915203375308
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09519373577023504,
+              0.1263635837413241
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.3675679398098649,
+              0.41760879029675235
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.030604880595455852,
+              0.04028766362474945
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.033673057899627414,
+              0.037340472701253
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.2252666337414444,
+              0.23493042724995808
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.011733300942894893,
+            "final_task_error_ci95": [
+              0.01080164636588743,
+              0.01271511530038356
+            ],
+            "mean_task_error": 0.012999805725431263,
+            "mean_task_error_ci95": [
+              0.012260483149450333,
+              0.013726750355472026
+            ],
+            "mean_off_task_fraction": 0.005574358715067291,
+            "mean_off_task_fraction_ci95": [
+              0.003859430220676937,
+              0.007375257800769355
+            ],
+            "accept_on": 0.025850764876898986,
+            "accept_on_ci95": [
+              0.018789910875827598,
+              0.033384678076836025
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.028001105521070734,
+              0.03666814736848634
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.030683638139988607,
+              0.034273263991077954
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.21307069158584885,
+              0.2221967466175836
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.011879796619051353,
+            "final_task_error_ci95": [
+              0.010966906378631769,
+              0.012768973511062178
+            ],
+            "mean_task_error": 0.013056489191663915,
+            "mean_task_error_ci95": [
+              0.012319531153420953,
+              0.0136861289192722
+            ],
+            "mean_off_task_fraction": 0.005407957298797476,
+            "mean_off_task_fraction_ci95": [
+              0.0036746506204956633,
+              0.007267674311485203
+            ],
+            "accept_on": 0.025850764876898986,
+            "accept_on_ci95": [
+              0.01845423486413475,
+              0.03334203797162035
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.2": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.08155224954264004,
+              0.12349832874174135
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09590649373117605,
+              0.1261837159954069
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.36794493220520413,
+              0.4178652781760541
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.03035157697063038,
+              0.040408236936889344
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.03361291481013742,
+              0.03729909043234615
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.2248699684795675,
+              0.23524514130737897
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.013502589729953393,
+            "final_task_error_ci95": [
+              0.012690501984467525,
+              0.014264558117156262
+            ],
+            "mean_task_error": 0.014249662042142803,
+            "mean_task_error_ci95": [
+              0.01371667711143166,
+              0.014738913773300258
+            ],
+            "mean_off_task_fraction": 0.0024562018280249063,
+            "mean_off_task_fraction_ci95": [
+              0.0011700829483233205,
+              0.003875956378072549
+            ],
+            "accept_on": 0.01173186759477082,
+            "accept_on_ci95": [
+              0.006401822639725867,
+              0.017313660801564025
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.028145621382523318,
+              0.03711097473793701
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.030950453466689554,
+              0.034216931040756016
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.21321094491546058,
+              0.222072546598248
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.013564905533068364,
+            "final_task_error_ci95": [
+              0.01274370364200605,
+              0.014288375280923943
+            ],
+            "mean_task_error": 0.014272402999253673,
+            "mean_task_error_ci95": [
+              0.013747306145042873,
+              0.01477006874392739
+            ],
+            "mean_off_task_fraction": 0.002389464406431896,
+            "mean_off_task_fraction_ci95": [
+              0.0011732805138921492,
+              0.003869272433167312
+            ],
+            "accept_on": 0.01173186759477082,
+            "accept_on_ci95": [
+              0.006508965496868723,
+              0.01767592353882676
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.5": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.0813023135823344,
+              0.12387488979754632
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09444131222972571,
+              0.12642783814181666
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.36919887160654974,
+              0.41743473270337406
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.030683691812754054,
+              0.04011385381104724
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.03373968760410039,
+              0.037261393197999676
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.22505625741582777,
+              0.23464474401836194
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.01464889735561051,
+            "final_task_error_ci95": [
+              0.014022310867624075,
+              0.015070803674308946
+            ],
+            "mean_task_error": 0.014963445376591406,
+            "mean_task_error_ci95": [
+              0.014675724587521099,
+              0.01518077326036621
+            ],
+            "mean_off_task_fraction": 0.0006425536522809054,
+            "mean_off_task_fraction_ci95": [
+              3.9932371070801144e-05,
+              0.0015000676995241317
+            ],
+            "accept_on": 0.003547427035330261,
+            "accept_on_ci95": [
+              0.0008064516129032258,
+              0.007032450076804915
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.02833581497731009,
+              0.03672461387361626
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.030852669332125927,
+              0.034281824359211864
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.21314251679497614,
+              0.22209618274223977
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.014662629742779607,
+            "final_task_error_ci95": [
+              0.014101484852782092,
+              0.01507511862859979
+            ],
+            "mean_task_error": 0.014968083485113077,
+            "mean_task_error_ci95": [
+              0.0146739519492531,
+              0.015180799121227804
+            ],
+            "mean_off_task_fraction": 0.000628053319149283,
+            "mean_off_task_fraction_ci95": [
+              3.982523234733864e-05,
+              0.0014239954344480868
+            ],
+            "accept_on": 0.003547427035330261,
+            "accept_on_ci95": [
+              0.0008064516129032258,
+              0.007243663594470045
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "1.0": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.08130970335912122,
+              0.12281042955710716
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09459990432477733,
+              0.1273821539733007
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.36872975343623954,
+              0.4183707380445448
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.0305854449125181,
+              0.04033551481379259
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.033703422426599954,
+              0.037461016883419934
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.22486513743316974,
+              0.23464209896630228
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.015048825394971141,
+            "final_task_error_ci95": [
+              0.014761982209329685,
+              0.015192246987791869
+            ],
+            "mean_task_error": 0.01518077326036621,
+            "mean_task_error_ci95": [
+              0.015157825805514894,
+              0.015192246987791869
+            ],
+            "mean_off_task_fraction": 3.9932371070801144e-05,
+            "mean_off_task_fraction_ci95": [
+              0.0,
+              0.00011979711321240343
+            ],
+            "accept_on": 0.0008064516129032258,
+            "accept_on_ci95": [
+              0.0,
+              0.0024193548387096775
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.027888218958065612,
+              0.03669673704096129
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.030899318110265833,
+              0.03429376748808719
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.21294691074874117,
+              0.22225261889943876
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.015049470920989433,
+            "final_task_error_ci95": [
+              0.014763918787384561,
+              0.015192246987791869
+            ],
+            "mean_task_error": 0.015180799121227804,
+            "mean_task_error_ci95": [
+              0.015157903388099669,
+              0.015192246987791869
+            ],
+            "mean_off_task_fraction": 3.982523234733864e-05,
+            "mean_off_task_fraction_ci95": [
+              0.0,
+              0.00011947569704201591
+            ],
+            "accept_on": 0.0008064516129032258,
+            "accept_on_ci95": [
+              0.0,
+              0.0024193548387096775
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      "control_sweep": {
+        "0.0": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.07953680849274307,
+              0.12457498254335957
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09479379494077797,
+              0.12639515296313256
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.3679866132926994,
+              0.4178242273631361
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.0309708303685458,
+              0.04040241319703517
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.03350754470925897,
+              0.03731912377532614
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.22505573724992534,
+              0.23510095145185045
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.030317782598723964,
+              0.04046844506030768
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.03353922167927497,
+              0.03740178033214999
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.2248681659770626,
+              0.2346688706660786
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.028260517074251916,
+              0.036853555450577224
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.030871323258602805,
+              0.034250994602228496
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.21301045847749395,
+              0.22240022295189057
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.03036311207368268,
+              0.04031474121964977
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.03377874870498833,
+              0.03738730341232974
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.22501775408555633,
+              0.2344323921610602
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.05": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.07872431236586637,
+              0.12304936557041282
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09450348064865638,
+              0.1259564943237262
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.370416706093634,
+              0.4158661793245777
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.03059735792037485,
+              0.03992063122248577
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.03371820009090997,
+              0.03735778796717645
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.22498646402617956,
+              0.23480460500284567
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.037755430939597254,
+            "final_task_error_ci95": [
+              0.03338395185866683,
+              0.04231582743214733
+            ],
+            "mean_task_error": 0.03811676598426678,
+            "mean_task_error_ci95": [
+              0.03638101334150672,
+              0.04002123290702281
+            ],
+            "mean_off_task_fraction": 0.2378784918775252,
+            "mean_off_task_fraction_ci95": [
+              0.2333430187337447,
+              0.241972045779587
+            ],
+            "accept_on": 0.8088704986948247,
+            "accept_on_ci95": [
+              0.7746279188833205,
+              0.8418064245847395
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.027938729070190304,
+              0.03673133997723997
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.030911754622003608,
+              0.03437481663393942
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.21275997257013893,
+              0.22183982722767928
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.03759942150956343,
+            "final_task_error_ci95": [
+              0.03329370428281107,
+              0.04221538115273701
+            ],
+            "mean_task_error": 0.037893807706645986,
+            "mean_task_error_ci95": [
+              0.036073158018384656,
+              0.03969194591356931
+            ],
+            "mean_off_task_fraction": 0.2362645251256775,
+            "mean_off_task_fraction_ci95": [
+              0.23189737330270152,
+              0.24060305589987757
+            ],
+            "accept_on": 0.8039978278873715,
+            "accept_on_ci95": [
+              0.7690977546078535,
+              0.8402025998816786
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.1": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.07964283692520524,
+              0.1239427420252063
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09519930816091103,
+              0.12683400629573463
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.3678380374560204,
+              0.4181378942768849
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.030650060565509406,
+              0.04039538506431052
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.03361226933322187,
+              0.03744152999127161
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.22488028458974366,
+              0.23468610831153133
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.04255568681868149,
+            "final_task_error_ci95": [
+              0.03800629850992258,
+              0.047276069803926346
+            ],
+            "mean_task_error": 0.04253350286398925,
+            "mean_task_error_ci95": [
+              0.04068914755446218,
+              0.04445297675050874
+            ],
+            "mean_off_task_fraction": 0.2500330034866179,
+            "mean_off_task_fraction_ci95": [
+              0.245637569521974,
+              0.25399178933853495
+            ],
+            "accept_on": 0.5697972815586302,
+            "accept_on_ci95": [
+              0.5350860732115219,
+              0.6046663852497685
+            ],
+            "accept_off": 0.9818984126748369,
+            "accept_off_ci95": [
+              0.9746226772353083,
+              0.9894903013653014
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.02797895412985339,
+              0.03636867124268091
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.0308317632493827,
+              0.03433574854292407
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.21324389002460875,
+              0.2221708923846113
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.04209952354895814,
+            "final_task_error_ci95": [
+              0.03777568521299558,
+              0.04673031924273881
+            ],
+            "mean_task_error": 0.04162906496748296,
+            "mean_task_error_ci95": [
+              0.03975214929609534,
+              0.04347750564917673
+            ],
+            "mean_off_task_fraction": 0.24495954300364944,
+            "mean_off_task_fraction_ci95": [
+              0.24065248243422704,
+              0.2489358263872461
+            ],
+            "accept_on": 0.5517724960252954,
+            "accept_on_ci95": [
+              0.5174230982841763,
+              0.5894190632074772
+            ],
+            "accept_off": 0.9818984126748369,
+            "accept_off_ci95": [
+              0.973813322692633,
+              0.9889540440402508
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.2": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.08029863521562011,
+              0.12372615011678811
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09499309777025965,
+              0.1268346095418046
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.3694357167097669,
+              0.41660625169284027
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.030910502384277238,
+              0.03999971374026717
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.0336609899094241,
+              0.03726303026234002
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.22510479730426441,
+              0.23451169539570701
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.0470202655922083,
+            "final_task_error_ci95": [
+              0.04321875634145589,
+              0.05090637539976273
+            ],
+            "mean_task_error": 0.045727403084510815,
+            "mean_task_error_ci95": [
+              0.04369941658480498,
+              0.04761306922479702
+            ],
+            "mean_off_task_fraction": 0.25403675162946,
+            "mean_off_task_fraction_ci95": [
+              0.24953615827564296,
+              0.2582520252448974
+            ],
+            "accept_on": 0.32050776298575856,
+            "accept_on_ci95": [
+              0.29125277879636596,
+              0.3500967035253924
+            ],
+            "accept_off": 0.7953330907441223,
+            "accept_off_ci95": [
+              0.7721183616943303,
+              0.8201419071012891
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.028170045302389618,
+              0.03650778596118302
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.03079366385624139,
+              0.03425288229889035
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.21321242859000833,
+              0.22218973399256411
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.04539858556582081,
+            "final_task_error_ci95": [
+              0.04124568387344233,
+              0.049404862122503425
+            ],
+            "mean_task_error": 0.042978871300417734,
+            "mean_task_error_ci95": [
+              0.04114214998283012,
+              0.04473326990871483
+            ],
+            "mean_off_task_fraction": 0.24089163967285182,
+            "mean_off_task_fraction_ci95": [
+              0.23638015310478608,
+              0.24531571016287468
+            ],
+            "accept_on": 0.30005811286150263,
+            "accept_on_ci95": [
+              0.2703419392268657,
+              0.3295616069962416
+            ],
+            "accept_off": 0.7953330907441223,
+            "accept_off_ci95": [
+              0.7691513720657769,
+              0.8206060982805242
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.5": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.08131340123615079,
+              0.12481950607229735
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09468350875851042,
+              0.12727633680067782
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.3676450489089465,
+              0.41754501479944145
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.030666010660731814,
+              0.04023845121549563
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.0336114405767797,
+              0.0372381254439917
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.22524330654993424,
+              0.23491591597176456
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.04945931637416685,
+            "final_task_error_ci95": [
+              0.045594680139584155,
+              0.05357115907715719
+            ],
+            "mean_task_error": 0.044802922399646235,
+            "mean_task_error_ci95": [
+              0.04210703493760992,
+              0.046947364260779285
+            ],
+            "mean_off_task_fraction": 0.23619146930581247,
+            "mean_off_task_fraction_ci95": [
+              0.22668515148590482,
+              0.24484663781732996
+            ],
+            "accept_on": 0.1277185380743854,
+            "accept_on_ci95": [
+              0.10770771708949245,
+              0.14963980484944753
+            ],
+            "accept_off": 0.3812668026633347,
+            "accept_off_ci95": [
+              0.35163810868896483,
+              0.41004313704625395
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.027985548326044746,
+              0.03679001681708112
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.030883523301299648,
+              0.034307081214014566
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.2133576579589576,
+              0.22209309257809604
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.04047471812777856,
+            "final_task_error_ci95": [
+              0.03645089570227557,
+              0.044483597677363027
+            ],
+            "mean_task_error": 0.0374183318321585,
+            "mean_task_error_ci95": [
+              0.03534990855476598,
+              0.03940685596386585
+            ],
+            "mean_off_task_fraction": 0.20279073486189453,
+            "mean_off_task_fraction_ci95": [
+              0.19409874531511523,
+              0.21098098979076566
+            ],
+            "accept_on": 0.11311447618542361,
+            "accept_on_ci95": [
+              0.09735380748669822,
+              0.13237217395279996
+            ],
+            "accept_off": 0.3812668026633347,
+            "accept_off_ci95": [
+              0.35116356113974084,
+              0.41110902805180005
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "1.0": {
+          "unconstrained": {
+            "final_task_error": 0.10134011830545524,
+            "final_task_error_ci95": [
+              0.08071068938549786,
+              0.1225327679766873
+            ],
+            "mean_task_error": 0.10979316078895143,
+            "mean_task_error_ci95": [
+              0.09495456914041747,
+              0.12714256245199274
+            ],
+            "mean_off_task_fraction": 0.3923508821958396,
+            "mean_off_task_fraction_ci95": [
+              0.36630360115644456,
+              0.4191757985392458
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.825,
+            "collapse_fraction_ci95": [
+              0.7,
+              0.925
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03541654204297118,
+            "final_task_error_ci95": [
+              0.030712271006648417,
+              0.04009404912328547
+            ],
+            "mean_task_error": 0.03548291152682362,
+            "mean_task_error_ci95": [
+              0.03352434653870629,
+              0.03744007101358236
+            ],
+            "mean_off_task_fraction": 0.2299650558482919,
+            "mean_off_task_fraction_ci95": [
+              0.2250044469258563,
+              0.23511819566665632
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.05450083489499556,
+            "final_task_error_ci95": [
+              0.04983750653018846,
+              0.05878586469170306
+            ],
+            "mean_task_error": 0.04227414416153414,
+            "mean_task_error_ci95": [
+              0.03921791196083023,
+              0.045061451027905736
+            ],
+            "mean_off_task_fraction": 0.20854617788878077,
+            "mean_off_task_fraction_ci95": [
+              0.19338910050855634,
+              0.2224962324012493
+            ],
+            "accept_on": 0.048533854811853926,
+            "accept_on_ci95": [
+              0.036603787421320186,
+              0.0617353930891527
+            ],
+            "accept_off": 0.20852227335514645,
+            "accept_off_ci95": [
+              0.18243932786346778,
+              0.23728689632310523
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03240119643038343,
+            "final_task_error_ci95": [
+              0.02810227875941057,
+              0.03655234009818612
+            ],
+            "mean_task_error": 0.03259128795952253,
+            "mean_task_error_ci95": [
+              0.030948261041257603,
+              0.034224990830198296
+            ],
+            "mean_off_task_fraction": 0.21768889490653884,
+            "mean_off_task_fraction_ci95": [
+              0.21310150017844304,
+              0.22220663547130579
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.03832313445102592,
+            "final_task_error_ci95": [
+              0.0340356416814138,
+              0.04268645900199562
+            ],
+            "mean_task_error": 0.03216153021612068,
+            "mean_task_error_ci95": [
+              0.029976842466454063,
+              0.034312460645802755
+            ],
+            "mean_off_task_fraction": 0.163165118601736,
+            "mean_off_task_fraction_ci95": [
+              0.15165484409547458,
+              0.17450481365700576
+            ],
+            "accept_on": 0.03577777827087748,
+            "accept_on_ci95": [
+              0.026168530449809168,
+              0.04616617601735727
+            ],
+            "accept_off": 0.20852227335514645,
+            "accept_off_ci95": [
+              0.18115859715545074,
+              0.2376740867189163
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      "verdicts": {
+        "informative_sigma0_task_error": {
+          "dual_task_error": 0.0038310926289914114,
+          "dual_ci95": [
+            0.0035145011045471437,
+            0.004157472073231558
+          ],
+          "gate_only_task_error": 0.03541654204297118,
+          "gate_only_ci95": [
+            0.030702293124894597,
+            0.04028111307377456
+          ],
+          "independent_ci_overlap": false,
+          "independent_ci_held": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": -0.03158544941397977,
+            "ci95": [
+              -0.036466809239527255,
+              -0.026447037740722722
+            ],
+            "a_greater_in": 0,
+            "trials": 40
+          },
+          "held": true,
+          "tag": "[conj]"
+        },
+        "control_sigma01_uninformative": {
+          "dual_task_error": 0.04255568681868149,
+          "dual_task_error_ci95": [
+            0.03800629850992258,
+            0.047276069803926346
+          ],
+          "gate_only_task_error": 0.03541654204297118,
+          "gate_only_ci95": [
+            0.030650060565509406,
+            0.04039538506431052
+          ],
+          "independent_ci_task_error_overlap": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": 0.007139144775710324,
+            "ci95": [
+              0.0048176803439090535,
+              0.009311532407971727
+            ],
+            "a_greater_in": 35,
+            "trials": 40
+          },
+          "dual_worse_held": true,
+          "dual_accept_on": 0.5697972815586302,
+          "dual_accept_on_ci95": [
+            0.5350860732115219,
+            0.6046663852497685
+          ],
+          "dual_accept_off": 0.9818984126748369,
+          "dual_accept_off_ci95": [
+            0.9746226772353083,
+            0.9894903013653014
+          ],
+          "independent_ci_rate_overlap": false,
+          "paired_diff_accept_off_minus_on": {
+            "mean": 0.41210113111620694,
+            "ci95": [
+              0.377310568708354,
+              0.44566849807754005
+            ],
+            "a_greater_in": 40,
+            "trials": 40
+          },
+          "scale_bias_held": true,
+          "tag": "[conj]"
+        }
+      }
+    },
+    "20261002": {
+      "seed": 20261002,
+      "parameters": {
+        "trials": 40,
+        "steps": 50,
+        "dim": 16,
+        "noise_sweep": [
+          0.0,
+          0.05,
+          0.1,
+          0.2,
+          0.5,
+          1.0
+        ],
+        "base_seed": 20261002,
+        "goal_angle_deg": 10.0,
+        "on_task_prob": 0.5,
+        "on_task_gain": 0.2,
+        "on_task_jitter": 0.005,
+        "signal_sensitivity": 2.0,
+        "collapse_boundary": 0.9539,
+        "collapse_tolerance": 1e-09,
+        "bootstrap_resamples": 1000,
+        "bootstrap_seed": 20261002,
+        "robustness_seeds": [
+          20260906,
+          20261002,
+          20261105
+        ]
+      },
+      "frozen_task_error": 0.01519224698779198,
+      "sweep": {
+        "0.0": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08641975453779895,
+              0.1319711769922967
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09165642724141224,
+              0.11086942039749492
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.3689127885705179,
+              0.40688862178364815
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.775,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.031160372347830655,
+              0.04048617431134817
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.03479327791817101,
+              0.03781722313550949
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22883052180875835,
+              0.23872176664788425
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.0033495438602128614,
+            "final_task_error_ci95": [
+              0.003019792914396477,
+              0.0036745585431114864
+            ],
+            "mean_task_error": 0.005389913920659236,
+            "mean_task_error_ci95": [
+              0.005076451987357854,
+              0.005693967588960039
+            ],
+            "mean_off_task_fraction": 0.02167189193919464,
+            "mean_off_task_fraction_ci95": [
+              0.020499156381668524,
+              0.022996351189166913
+            ],
+            "accept_on": 0.12760984076295329,
+            "accept_on_ci95": [
+              0.1183303861784194,
+              0.13804957845854166
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.028256872398386913,
+              0.03662462340172225
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.031863664398552656,
+              0.03470117687406239
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21665769851687253,
+              0.225353198410473
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.004281994940245703,
+            "final_task_error_ci95": [
+              0.003955200914497625,
+              0.004635902896449171
+            ],
+            "mean_task_error": 0.0057888068249231815,
+            "mean_task_error_ci95": [
+              0.00548220488623538,
+              0.0060971747612772725
+            ],
+            "mean_off_task_fraction": 0.019742194406889603,
+            "mean_off_task_fraction_ci95": [
+              0.018754574445694235,
+              0.02091973234474976
+            ],
+            "accept_on": 0.14049643030944275,
+            "accept_on_ci95": [
+              0.13166717184860535,
+              0.1492212206952196
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.05": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08795413436418481,
+              0.13431664784690206
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09194361217863029,
+              0.11171862964662604
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.3694259148406269,
+              0.4075198181582499
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.75,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.03161833544513859,
+              0.04106579876836758
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.03472230278877959,
+              0.0378581809973183
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22903527823736541,
+              0.23850390739347124
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.008293500974528325,
+            "final_task_error_ci95": [
+              0.007502008562057327,
+              0.009189645094167212
+            ],
+            "mean_task_error": 0.01055413309519882,
+            "mean_task_error_ci95": [
+              0.009910040392199313,
+              0.011217170505867674
+            ],
+            "mean_off_task_fraction": 0.011687408846492341,
+            "mean_off_task_fraction_ci95": [
+              0.00999679327951347,
+              0.01340181572942394
+            ],
+            "accept_on": 0.05680188605015296,
+            "accept_on_ci95": [
+              0.048656778890371774,
+              0.06505801841850925
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.028324731865577536,
+              0.037011395242545056
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.03182654243890293,
+              0.03467179123712698
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21602866286576541,
+              0.2251300695868821
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.008703207239715141,
+            "final_task_error_ci95": [
+              0.00793884619155999,
+              0.009449245390714503
+            ],
+            "mean_task_error": 0.010700407700101592,
+            "mean_task_error_ci95": [
+              0.010097910472947697,
+              0.011341213662464437
+            ],
+            "mean_off_task_fraction": 0.011243736639845552,
+            "mean_off_task_fraction_ci95": [
+              0.00969393115968007,
+              0.01268614652491322
+            ],
+            "accept_on": 0.05680188605015296,
+            "accept_on_ci95": [
+              0.04782343044136118,
+              0.06562373071579941
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.1": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.0871036646247978,
+              0.13080277322506703
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09106700738437991,
+              0.11163069876669274
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.36953968655414815,
+              0.40644063328702024
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.75,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.03163047217915662,
+              0.040991129762807464
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.034757001155824925,
+              0.03793556980413097
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22871191080986253,
+              0.23798470869230823
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.010047209103333529,
+            "final_task_error_ci95": [
+              0.00915829977411493,
+              0.011023256833634965
+            ],
+            "mean_task_error": 0.012078724562561215,
+            "mean_task_error_ci95": [
+              0.011334681294173749,
+              0.012759624584382307
+            ],
+            "mean_off_task_fraction": 0.00787512053474318,
+            "mean_off_task_fraction_ci95": [
+              0.006055587008945844,
+              0.009800352844295047
+            ],
+            "accept_on": 0.041147642861009866,
+            "accept_on_ci95": [
+              0.03305037427451222,
+              0.049315434682948286
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.028304563741434762,
+              0.03669690086980815
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.031878964828564296,
+              0.034823300158009544
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21615568242692515,
+              0.2251055992946222
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.01023820837770786,
+            "final_task_error_ci95": [
+              0.009346742877810723,
+              0.011150516163790022
+            ],
+            "mean_task_error": 0.012143849839782906,
+            "mean_task_error_ci95": [
+              0.011316438209344833,
+              0.01283728374313449
+            ],
+            "mean_off_task_fraction": 0.0076622557723761255,
+            "mean_off_task_fraction_ci95": [
+              0.005923621065299255,
+              0.009593856103637222
+            ],
+            "accept_on": 0.041980976194343204,
+            "accept_on_ci95": [
+              0.032995351561604616,
+              0.050980109768902895
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.2": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08659039331917615,
+              0.1330962274423245
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09128165925986928,
+              0.11179164961919705
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.37003498766222637,
+              0.4064959503938067
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.775,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.031590265059760224,
+              0.04081111842606685
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.03463799905360099,
+              0.03780481818880411
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.2284220301196965,
+              0.23844775876443722
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.012128467677209483,
+            "final_task_error_ci95": [
+              0.011070142146362127,
+              0.01310297510492763
+            ],
+            "mean_task_error": 0.013586385715984315,
+            "mean_task_error_ci95": [
+              0.012916732850866235,
+              0.01421348589489485
+            ],
+            "mean_off_task_fraction": 0.003909678209781123,
+            "mean_off_task_fraction_ci95": [
+              0.0025734026153388144,
+              0.00541282690634925
+            ],
+            "accept_on": 0.0238926950074863,
+            "accept_on_ci95": [
+              0.016302281270520837,
+              0.03227310382868459
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.028262712415122026,
+              0.036624906390385584
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.031880049203409803,
+              0.034745625880692924
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21633675849182668,
+              0.2250412047513592
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.012241707764808008,
+            "final_task_error_ci95": [
+              0.011298133435982554,
+              0.01316032308471415
+            ],
+            "mean_task_error": 0.01362225328948503,
+            "mean_task_error_ci95": [
+              0.012974557871466383,
+              0.014217984285853196
+            ],
+            "mean_off_task_fraction": 0.0038117092511684653,
+            "mean_off_task_fraction_ci95": [
+              0.0024485775123189507,
+              0.005214888808506049
+            ],
+            "accept_on": 0.0238926950074863,
+            "accept_on_ci95": [
+              0.01648761981951637,
+              0.032345915259708376
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.5": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.0881468489192104,
+              0.13096590699787009
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09106015572178253,
+              0.11066690411410038
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.37005185685209774,
+              0.4073483441002539
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.775,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.03143460831803593,
+              0.04065058336223642
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.0347517030457283,
+              0.03773494942279774
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22844494825846412,
+              0.23862509602520748
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.013677448479151214,
+            "final_task_error_ci95": [
+              0.012903013621171393,
+              0.014416655792384528
+            ],
+            "mean_task_error": 0.014354521742102028,
+            "mean_task_error_ci95": [
+              0.013812108233485842,
+              0.014817210305627822
+            ],
+            "mean_off_task_fraction": 0.002159899840017573,
+            "mean_off_task_fraction_ci95": [
+              0.0009750292792425154,
+              0.0035504257046173994
+            ],
+            "accept_on": 0.011505332370123657,
+            "accept_on_ci95": [
+              0.00606578947368421,
+              0.017607820021613128
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.028024865455797677,
+              0.03664179664660733
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.03198533568749773,
+              0.03469409313492559
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.2162093543369326,
+              0.22515068951916622
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.013727843120745698,
+            "final_task_error_ci95": [
+              0.012937163320428532,
+              0.014412304704549387
+            ],
+            "mean_task_error": 0.014373104223314259,
+            "mean_task_error_ci95": [
+              0.013874362111332222,
+              0.014823438325632609
+            ],
+            "mean_off_task_fraction": 0.0021060013683283966,
+            "mean_off_task_fraction_ci95": [
+              0.0009250092464128147,
+              0.0034575023169167106
+            ],
+            "accept_on": 0.011505332370123657,
+            "accept_on_ci95": [
+              0.0060164659733625255,
+              0.01785929493642742
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "1.0": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08878692957075815,
+              0.1316733059389398
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09119410655184972,
+              0.11138282163900748
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.3700910623948984,
+              0.40611268626171687
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.775,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.03160720296447288,
+              0.04077866222626175
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.03466807225916723,
+              0.037799709718815494
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22879848488200558,
+              0.23837816028887476
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.014228016011520458,
+            "final_task_error_ci95": [
+              0.013531500749165199,
+              0.014793805828970602
+            ],
+            "mean_task_error": 0.014852179325694373,
+            "mean_task_error_ci95": [
+              0.014473274287890896,
+              0.015118064164955213
+            ],
+            "mean_off_task_fraction": 0.000902434563207816,
+            "mean_off_task_fraction_ci95": [
+              0.00025295352359779895,
+              0.0019205372785509388
+            ],
+            "accept_on": 0.007755799017142029,
+            "accept_on_ci95": [
+              0.0029784710819193575,
+              0.012817255339941366
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.02822761253891638,
+              0.036958809563381934
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.03192055147328304,
+              0.03468429417193223
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21604667430715718,
+              0.2251756755011561
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.014249400638227517,
+            "final_task_error_ci95": [
+              0.013582523823361826,
+              0.01491502288410218
+            ],
+            "mean_task_error": 0.014858537164879938,
+            "mean_task_error_ci95": [
+              0.014533984790175803,
+              0.015118563982685879
+            ],
+            "mean_off_task_fraction": 0.0008834895540479299,
+            "mean_off_task_fraction_ci95": [
+              0.0002433419742942728,
+              0.0017221398252076595
+            ],
+            "accept_on": 0.007755799017142029,
+            "accept_on_ci95": [
+              0.0028133903133903135,
+              0.013120648844333055
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      "control_sweep": {
+        "0.0": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08603329131974144,
+              0.13406910311269155
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.0911385643904581,
+              0.11096669575637157
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.368830215147821,
+              0.4064827339878262
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.775,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.031592572752052184,
+              0.040367702606287775
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.03474531675790034,
+              0.03779158265785417
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22904087881635188,
+              0.2383926792125212
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.031566360228558174,
+              0.04105286477680585
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.0348512261756318,
+              0.03787600502414216
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22858706568802326,
+              0.23852662478399417
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.028430460917671967,
+              0.03667567759590059
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.031898526101844744,
+              0.03471284277545888
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21641331736748323,
+              0.22519439888589976
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.03138663416544514,
+              0.040778676211640955
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.03469143507284503,
+              0.0377941966989793
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22857795018631796,
+              0.23820558649403134
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.05": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08506170797315822,
+              0.13095215292814993
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09091269194600082,
+              0.11181677272232264
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.3694741193932749,
+              0.4084825503915039
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.75,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.031421076798550704,
+              0.040597451726953095
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.03462494028379798,
+              0.03776946807317595
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22854514278754853,
+              0.23807522316755603
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.03911760765946211,
+            "final_task_error_ci95": [
+              0.034172090474866246,
+              0.04397227684979029
+            ],
+            "mean_task_error": 0.038372907768306944,
+            "mean_task_error_ci95": [
+              0.036903349387194154,
+              0.039873037127864996
+            ],
+            "mean_off_task_fraction": 0.24040948349686192,
+            "mean_off_task_fraction_ci95": [
+              0.23583401038565605,
+              0.24482401227205303
+            ],
+            "accept_on": 0.8321939238409657,
+            "accept_on_ci95": [
+              0.8070195040922968,
+              0.8588811837562202
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.028266233279752938,
+              0.03695473481367549
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.03194781587658076,
+              0.03469812496529054
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21625264371306652,
+              0.22488715006228438
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.038638683616852076,
+            "final_task_error_ci95": [
+              0.03408199559676754,
+              0.043374071763403896
+            ],
+            "mean_task_error": 0.03824562440323925,
+            "mean_task_error_ci95": [
+              0.03673325133238377,
+              0.03964364067520934
+            ],
+            "mean_off_task_fraction": 0.2391250485872914,
+            "mean_off_task_fraction_ci95": [
+              0.23445279836867838,
+              0.24340703877121728
+            ],
+            "accept_on": 0.8261864038436542,
+            "accept_on_ci95": [
+              0.8004181484786608,
+              0.8522968279711882
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.1": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08674943276075484,
+              0.12928859283339875
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.0916414669975457,
+              0.1109771274241889
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.3695541467407751,
+              0.4080212371941919
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.775,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.03117430957910804,
+              0.040462851496586516
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.034737419236578304,
+              0.03773726946686771
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22874399130062412,
+              0.23851913989250914
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.0443105752252369,
+            "final_task_error_ci95": [
+              0.039752820765801486,
+              0.048926919016708835
+            ],
+            "mean_task_error": 0.043100246014499785,
+            "mean_task_error_ci95": [
+              0.041464183554950844,
+              0.04483197921760604
+            ],
+            "mean_off_task_fraction": 0.2520133887995549,
+            "mean_off_task_fraction_ci95": [
+              0.24776172513747788,
+              0.2561216788411842
+            ],
+            "accept_on": 0.586954013956854,
+            "accept_on_ci95": [
+              0.558105558636419,
+              0.6151154658150523
+            ],
+            "accept_off": 0.9907888697324181,
+            "accept_off_ci95": [
+              0.984947052947053,
+              0.9960983102918586
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.028538601462512803,
+              0.03676128629934906
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.03201501810291408,
+              0.034851599004221454
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.216644598025085,
+              0.2254002000023146
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.04297569521366133,
+            "final_task_error_ci95": [
+              0.03853092622954002,
+              0.04750971042709705
+            ],
+            "mean_task_error": 0.04221492502523182,
+            "mean_task_error_ci95": [
+              0.04064340991037145,
+              0.043941687354437736
+            ],
+            "mean_off_task_fraction": 0.24729259728306138,
+            "mean_off_task_fraction_ci95": [
+              0.24296750643707501,
+              0.25159006057262767
+            ],
+            "accept_on": 0.5771158560470082,
+            "accept_on_ci95": [
+              0.5432183860562402,
+              0.6101648839666082
+            ],
+            "accept_off": 0.9907888697324181,
+            "accept_off_ci95": [
+              0.9842320931756415,
+              0.9961813186813187
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.2": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08675555541979572,
+              0.1320570213490196
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09120830091915055,
+              0.1118221732808341
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.3698761379806028,
+              0.40588754318402864
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.75,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.03155344871940865,
+              0.040792011610294734
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.03475857664154307,
+              0.037803666802904506
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22859960649875882,
+              0.2377513446602817
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.04557323065957606,
+            "final_task_error_ci95": [
+              0.041592670853381176,
+              0.04979149657006764
+            ],
+            "mean_task_error": 0.04607365170451093,
+            "mean_task_error_ci95": [
+              0.044008690308573815,
+              0.04784319147557891
+            ],
+            "mean_off_task_fraction": 0.25754207984745103,
+            "mean_off_task_fraction_ci95": [
+              0.25242703034035296,
+              0.2622630702438554
+            ],
+            "accept_on": 0.3521717878607813,
+            "accept_on_ci95": [
+              0.3264360245611124,
+              0.3779238027471665
+            ],
+            "accept_off": 0.8115185242285767,
+            "accept_off_ci95": [
+              0.7873623738324371,
+              0.8340776220760139
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.028103625790411712,
+              0.036712089585648075
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.03177007717386603,
+              0.03466973231136598
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21630814887056699,
+              0.22500071109007397
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.04448207610998778,
+            "final_task_error_ci95": [
+              0.040289010772817005,
+              0.04813490399338968
+            ],
+            "mean_task_error": 0.043759014606015334,
+            "mean_task_error_ci95": [
+              0.042014352129937524,
+              0.045392973308595534
+            ],
+            "mean_off_task_fraction": 0.24552676362950798,
+            "mean_off_task_fraction_ci95": [
+              0.24143919945538922,
+              0.24981784004414473
+            ],
+            "accept_on": 0.3235742781680269,
+            "accept_on_ci95": [
+              0.29807490668181313,
+              0.35006745519062665
+            ],
+            "accept_off": 0.8115185242285767,
+            "accept_off_ci95": [
+              0.7882885014205635,
+              0.8347918344616738
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.5": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08739332067383598,
+              0.1319234786242053
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09149606176621665,
+              0.1114205800199876
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.3688456892181056,
+              0.4073070094361255
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.775,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.0313873939729578,
+              0.04088698704812678
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.0347427587768944,
+              0.03777211286600289
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.22873708918243554,
+              0.23831417166750715
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.04686252583841157,
+            "final_task_error_ci95": [
+              0.042263000669522446,
+              0.05078460060467997
+            ],
+            "mean_task_error": 0.046430549440045744,
+            "mean_task_error_ci95": [
+              0.04361137388046957,
+              0.0490002751277193
+            ],
+            "mean_off_task_fraction": 0.24210336289400258,
+            "mean_off_task_fraction_ci95": [
+              0.232324137712436,
+              0.25127120435640915
+            ],
+            "accept_on": 0.13467339906218412,
+            "accept_on_ci95": [
+              0.11871633484883584,
+              0.14998255985866044
+            ],
+            "accept_off": 0.4115260369615218,
+            "accept_off_ci95": [
+              0.3761344289264926,
+              0.44548923974116306
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.027921750632814057,
+              0.03703017319146131
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.03191453823896385,
+              0.03472979832483303
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21614067068908324,
+              0.22452966638562236
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.038869744186928255,
+            "final_task_error_ci95": [
+              0.03455030080895426,
+              0.04293724387710503
+            ],
+            "mean_task_error": 0.03901863011643626,
+            "mean_task_error_ci95": [
+              0.036947710904988704,
+              0.04114998313447212
+            ],
+            "mean_off_task_fraction": 0.20921245510538258,
+            "mean_off_task_fraction_ci95": [
+              0.19935142233847575,
+              0.21795984402462013
+            ],
+            "accept_on": 0.11734723522467724,
+            "accept_on_ci95": [
+              0.10177326040623998,
+              0.13332057151427645
+            ],
+            "accept_off": 0.4115260369615218,
+            "accept_off_ci95": [
+              0.3799489034879686,
+              0.444223133376988
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "1.0": {
+          "unconstrained": {
+            "final_task_error": 0.10847900871765134,
+            "final_task_error_ci95": [
+              0.08653476877820558,
+              0.1302740468571823
+            ],
+            "mean_task_error": 0.1006996918820882,
+            "mean_task_error_ci95": [
+              0.09091197949066711,
+              0.11079543053503227
+            ],
+            "mean_off_task_fraction": 0.3878276008171377,
+            "mean_off_task_fraction_ci95": [
+              0.3698065240782217,
+              0.4052990027903854
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.875,
+            "collapse_fraction_ci95": [
+              0.775,
+              0.975
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.036048024848019354,
+            "final_task_error_ci95": [
+              0.031458858163603734,
+              0.040387163914530164
+            ],
+            "mean_task_error": 0.036252074574314494,
+            "mean_task_error_ci95": [
+              0.03474606223712348,
+              0.03780703686549995
+            ],
+            "mean_off_task_fraction": 0.23356705712599668,
+            "mean_off_task_fraction_ci95": [
+              0.2285536405729955,
+              0.2383366484507669
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.04857592341444049,
+            "final_task_error_ci95": [
+              0.04328566976504008,
+              0.053304552209741916
+            ],
+            "mean_task_error": 0.0449302363013026,
+            "mean_task_error_ci95": [
+              0.0416254102639917,
+              0.04807755500242826
+            ],
+            "mean_off_task_fraction": 0.21433640323209438,
+            "mean_off_task_fraction_ci95": [
+              0.19991950427431443,
+              0.22736838385302144
+            ],
+            "accept_on": 0.061363490269089674,
+            "accept_on_ci95": [
+              0.049311416863568,
+              0.07461061467456256
+            ],
+            "accept_off": 0.20646440814103523,
+            "accept_off_ci95": [
+              0.18418060638476413,
+              0.2325043743695141
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.03260302941406692,
+            "final_task_error_ci95": [
+              0.02857670099716526,
+              0.03686632097996493
+            ],
+            "mean_task_error": 0.033296975647706666,
+            "mean_task_error_ci95": [
+              0.031962423641546285,
+              0.03472226860270024
+            ],
+            "mean_off_task_fraction": 0.22067384596292472,
+            "mean_off_task_fraction_ci95": [
+              0.21616974448860904,
+              0.22472656730272583
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.032343071318372586,
+            "final_task_error_ci95": [
+              0.02824048859499061,
+              0.03637905203114471
+            ],
+            "mean_task_error": 0.033393508218232094,
+            "mean_task_error_ci95": [
+              0.031032390754112342,
+              0.03599736316456212
+            ],
+            "mean_off_task_fraction": 0.16517785204865623,
+            "mean_off_task_fraction_ci95": [
+              0.15334729288890417,
+              0.17572533166021606
+            ],
+            "accept_on": 0.04747096684166637,
+            "accept_on_ci95": [
+              0.03528938138739489,
+              0.059383289145105614
+            ],
+            "accept_off": 0.20646440814103523,
+            "accept_off_ci95": [
+              0.182782339129953,
+              0.22900152407941765
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      "verdicts": {
+        "informative_sigma0_task_error": {
+          "dual_task_error": 0.0033495438602128614,
+          "dual_ci95": [
+            0.003019792914396477,
+            0.0036745585431114864
+          ],
+          "gate_only_task_error": 0.036048024848019354,
+          "gate_only_ci95": [
+            0.031160372347830655,
+            0.04048617431134817
+          ],
+          "independent_ci_overlap": false,
+          "independent_ci_held": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": -0.03269848098780649,
+            "ci95": [
+              -0.03745015945227183,
+              -0.02792728830847373
+            ],
+            "a_greater_in": 0,
+            "trials": 40
+          },
+          "held": true,
+          "tag": "[conj]"
+        },
+        "control_sigma01_uninformative": {
+          "dual_task_error": 0.0443105752252369,
+          "dual_task_error_ci95": [
+            0.039752820765801486,
+            0.048926919016708835
+          ],
+          "gate_only_task_error": 0.036048024848019354,
+          "gate_only_ci95": [
+            0.03117430957910804,
+            0.040462851496586516
+          ],
+          "independent_ci_task_error_overlap": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": 0.00826255037721756,
+            "ci95": [
+              0.005601200698284547,
+              0.010969363750422397
+            ],
+            "a_greater_in": 39,
+            "trials": 40
+          },
+          "dual_worse_held": true,
+          "dual_accept_on": 0.586954013956854,
+          "dual_accept_on_ci95": [
+            0.558105558636419,
+            0.6151154658150523
+          ],
+          "dual_accept_off": 0.9907888697324181,
+          "dual_accept_off_ci95": [
+            0.984947052947053,
+            0.9960983102918586
+          ],
+          "independent_ci_rate_overlap": false,
+          "paired_diff_accept_off_minus_on": {
+            "mean": 0.4038348557755641,
+            "ci95": [
+              0.37151809143211684,
+              0.43640350380007015
+            ],
+            "a_greater_in": 40,
+            "trials": 40
+          },
+          "scale_bias_held": true,
+          "tag": "[conj]"
+        }
+      }
+    },
+    "20261105": {
+      "seed": 20261105,
+      "parameters": {
+        "trials": 40,
+        "steps": 50,
+        "dim": 16,
+        "noise_sweep": [
+          0.0,
+          0.05,
+          0.1,
+          0.2,
+          0.5,
+          1.0
+        ],
+        "base_seed": 20261105,
+        "goal_angle_deg": 10.0,
+        "on_task_prob": 0.5,
+        "on_task_gain": 0.2,
+        "on_task_jitter": 0.005,
+        "signal_sensitivity": 2.0,
+        "collapse_boundary": 0.9539,
+        "collapse_tolerance": 1e-09,
+        "bootstrap_resamples": 1000,
+        "bootstrap_seed": 20261002,
+        "robustness_seeds": [
+          20260906,
+          20261002,
+          20261105
+        ]
+      },
+      "frozen_task_error": 0.01519224698779198,
+      "sweep": {
+        "0.0": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.06858428515429581,
+              0.10585170665915347
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08547557048003059,
+              0.10641131762272207
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.3581777962913271,
+              0.39810857815743655
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.75,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029865063267117777,
+              0.03968997687784039
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.03351322592428731,
+              0.03745756603040267
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22487546798216512,
+              0.23621413424397453
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.0033073820054906194,
+            "final_task_error_ci95": [
+              0.0029212491061532896,
+              0.0036797722215068385
+            ],
+            "mean_task_error": 0.005473389512388779,
+            "mean_task_error_ci95": [
+              0.005111010935369859,
+              0.005822241248650829
+            ],
+            "mean_off_task_fraction": 0.02026389100325096,
+            "mean_off_task_fraction_ci95": [
+              0.01919946980812599,
+              0.0213597929879267
+            ],
+            "accept_on": 0.12814449847176285,
+            "accept_on_ci95": [
+              0.11729620619196757,
+              0.13908967174542614
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.027019479959460507,
+              0.037362564385673966
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.030986178468506022,
+              0.034159182293574765
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21229035243071218,
+              0.22267992758229505
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.004210099109669388,
+            "final_task_error_ci95": [
+              0.0038230783206443936,
+              0.0046220038870863735
+            ],
+            "mean_task_error": 0.005892810199669677,
+            "mean_task_error_ci95": [
+              0.005544449366273234,
+              0.006216244416669156
+            ],
+            "mean_off_task_fraction": 0.018544447342868316,
+            "mean_off_task_fraction_ci95": [
+              0.01761007041583644,
+              0.01958921649028988
+            ],
+            "accept_on": 0.1424849036554076,
+            "accept_on_ci95": [
+              0.12951821062621457,
+              0.1552023537472758
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.05": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.07018252844418128,
+              0.10700896921936491
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.0859474377234036,
+              0.10620498485614878
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.3597792612490219,
+              0.40008314166189074
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029687470695004464,
+              0.0395871258030269
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.033705854877414426,
+              0.0372427065049563
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.2246131032813965,
+              0.23603758633630897
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.008407502092458016,
+            "final_task_error_ci95": [
+              0.007566827968909046,
+              0.009378046764982195
+            ],
+            "mean_task_error": 0.011129326731704385,
+            "mean_task_error_ci95": [
+              0.010384043286351547,
+              0.011908519474630787
+            ],
+            "mean_off_task_fraction": 0.00994725033581013,
+            "mean_off_task_fraction_ci95": [
+              0.008156068362527935,
+              0.01196888237191299
+            ],
+            "accept_on": 0.05120338518994864,
+            "accept_on_ci95": [
+              0.04284140902131906,
+              0.05916098268050253
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.027182543921355173,
+              0.037062757387330614
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.030806365226765536,
+              0.03427650521111999
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.2124690321826867,
+              0.22296214900157202
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.008712111173879471,
+            "final_task_error_ci95": [
+              0.007840590798395044,
+              0.009563909098105422
+            ],
+            "mean_task_error": 0.011258654682979331,
+            "mean_task_error_ci95": [
+              0.010554871637903996,
+              0.011937139546021483
+            ],
+            "mean_off_task_fraction": 0.0095559772253726,
+            "mean_off_task_fraction_ci95": [
+              0.00788913620203727,
+              0.011245646236454751
+            ],
+            "accept_on": 0.052339748826312274,
+            "accept_on_ci95": [
+              0.04331828698849875,
+              0.06209594605341469
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.1": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.06934599695669941,
+              0.10536665610344868
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08640677439587251,
+              0.1063195298914428
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.35858419397448965,
+              0.3978944114181714
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.75,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029839978814078755,
+              0.039632575169224235
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.03370830030792636,
+              0.03729133813658731
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.2246893926719747,
+              0.23587656616626948
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.011022810945778653,
+            "final_task_error_ci95": [
+              0.010061638815376913,
+              0.011981656409511907
+            ],
+            "mean_task_error": 0.012605749937123609,
+            "mean_task_error_ci95": [
+              0.01186206655253811,
+              0.013354971055103016
+            ],
+            "mean_off_task_fraction": 0.0064205331442391475,
+            "mean_off_task_fraction_ci95": [
+              0.004510452050534036,
+              0.008634136828547417
+            ],
+            "accept_on": 0.028273937607478893,
+            "accept_on_ci95": [
+              0.020538591995488548,
+              0.03568121210685866
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.027440564272686374,
+              0.03701409920702411
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.030779809078142994,
+              0.03418747733462747
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21262387493493545,
+              0.2227036185697837
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.011221502794208698,
+            "final_task_error_ci95": [
+              0.010282256958294272,
+              0.012180669943178313
+            ],
+            "mean_task_error": 0.012679973161378122,
+            "mean_task_error_ci95": [
+              0.011921504170207977,
+              0.013372015222631543
+            ],
+            "mean_off_task_fraction": 0.006198527669906458,
+            "mean_off_task_fraction_ci95": [
+              0.004366388050131146,
+              0.00806595038147487
+            ],
+            "accept_on": 0.028273937607478893,
+            "accept_on_ci95": [
+              0.0209745080699028,
+              0.03602620992009604
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.2": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.06967905646906725,
+              0.10617972615267539
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08539703756100876,
+              0.10700981215184394
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.3569248640812412,
+              0.3986215510646403
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029887503508346108,
+              0.03973109366418546
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.033550935283171344,
+              0.03744594420502033
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.225194573705456,
+              0.2358045222003255
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.012235391652051777,
+            "final_task_error_ci95": [
+              0.011171049737230302,
+              0.013243582714393931
+            ],
+            "mean_task_error": 0.01360415943501093,
+            "mean_task_error_ci95": [
+              0.012951468043753597,
+              0.014235286193624921
+            ],
+            "mean_off_task_fraction": 0.0037849128780060156,
+            "mean_off_task_fraction_ci95": [
+              0.0022556312641657658,
+              0.00555372204752834
+            ],
+            "accept_on": 0.019529456455103,
+            "accept_on_ci95": [
+              0.012805423742923741,
+              0.026501298749143566
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.02728308430865491,
+              0.03718992740524203
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.030801517171473208,
+              0.03417555395759524
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21222442260555505,
+              0.22246337660237575
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.012339924025644825,
+            "final_task_error_ci95": [
+              0.011260865675562854,
+              0.013240991491829737
+            ],
+            "mean_task_error": 0.013642096442495432,
+            "mean_task_error_ci95": [
+              0.013042304724196957,
+              0.014211454437966304
+            ],
+            "mean_off_task_fraction": 0.0036784541973522373,
+            "mean_off_task_fraction_ci95": [
+              0.0022396677503101112,
+              0.00509278700017639
+            ],
+            "accept_on": 0.019529456455103,
+            "accept_on_ci95": [
+              0.012763587585785866,
+              0.026524744053838877
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.5": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.07009311341509951,
+              0.1075362390149364
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08595433675639234,
+              0.10564753115377967
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.35947367206586944,
+              0.39987674484103947
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029835626866155984,
+              0.039766760288907736
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.033625487004674014,
+              0.03729244338161739
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22484511153937276,
+              0.23571345785719416
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.014119656981455214,
+            "final_task_error_ci95": [
+              0.01334328571830413,
+              0.014744083080373444
+            ],
+            "mean_task_error": 0.014830342660782042,
+            "mean_task_error_ci95": [
+              0.014484258412298681,
+              0.015109007689624861
+            ],
+            "mean_off_task_fraction": 0.0007649997365224948,
+            "mean_off_task_fraction_ci95": [
+              0.00021695810433298678,
+              0.001445983239941825
+            ],
+            "accept_on": 0.007523925627373904,
+            "accept_on_ci95": [
+              0.0029146141215106733,
+              0.013313968917417193
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.027152798187113587,
+              0.03752063269753188
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.03081807081865818,
+              0.034274095714895224
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21261288492983327,
+              0.22320821556966197
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.014143024024968202,
+            "final_task_error_ci95": [
+              0.013407727814434578,
+              0.014757366637937011
+            ],
+            "mean_task_error": 0.014836369886260017,
+            "mean_task_error_ci95": [
+              0.01451548898706131,
+              0.015093202831759966
+            ],
+            "mean_off_task_fraction": 0.0007508386825891471,
+            "mean_off_task_fraction_ci95": [
+              0.00021951932135880347,
+              0.0013987423175294367
+            ],
+            "accept_on": 0.007523925627373904,
+            "accept_on_ci95": [
+              0.003134796238244514,
+              0.01272101142790798
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "1.0": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.06997677735487261,
+              0.10678267540657824
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08616105503769932,
+              0.10618575802748995
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.35905563888231784,
+              0.39850384859244703
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029843518547548863,
+              0.04011164724988655
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.033731722534635036,
+              0.037325427167702076
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22465461218180732,
+              0.2364590465744351
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.014914652855467017,
+            "final_task_error_ci95": [
+              0.014479144742003186,
+              0.015192246987791869
+            ],
+            "mean_task_error": 0.015140451971095679,
+            "mean_task_error_ci95": [
+              0.015036861937703297,
+              0.015192246987791869
+            ],
+            "mean_off_task_fraction": 0.00016303122973805023,
+            "mean_off_task_fraction_ci95": [
+              0.0,
+              0.00047254082673788705
+            ],
+            "accept_on": 0.0022727272727272726,
+            "accept_on_ci95": [
+              0.0,
+              0.005681818181818182
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.027293218700427897,
+              0.037212532954892234
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.030876109477127732,
+              0.03426624167806199
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21264640389448353,
+              0.22284497122117278
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.014917051749658936,
+            "final_task_error_ci95": [
+              0.01444409707592166,
+              0.015192246987791869
+            ],
+            "mean_task_error": 0.015140866682676035,
+            "mean_task_error_ci95": [
+              0.01504441738322539,
+              0.015192246987791869
+            ],
+            "mean_off_task_fraction": 0.0001615137377967214,
+            "mean_off_task_fraction_ci95": [
+              0.0,
+              0.000468004727678965
+            ],
+            "accept_on": 0.0022727272727272726,
+            "accept_on_ci95": [
+              0.0,
+              0.005681818181818182
+            ],
+            "accept_off": 0.0,
+            "accept_off_ci95": [
+              0.0,
+              0.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      "control_sweep": {
+        "0.0": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.06843306953477314,
+              0.10667967278821593
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08540837877567072,
+              0.10559955163393905
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.35948491590185455,
+              0.39802286143987065
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.0297037123961758,
+              0.03956155484624786
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.03372328050697388,
+              0.0374502032501332
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.2248078605326045,
+              0.23556953774678652
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029907264461411544,
+              0.0401266848501038
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.03369086176486587,
+              0.037470039122817204
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22486345874741392,
+              0.23656089900088814
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.027676201858514958,
+              0.03756996908167115
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.03084849428102194,
+              0.034168226454798764
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21247541907566142,
+              0.22279321873633545
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.02945462352903671,
+              0.039771378332606876
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.03370400940548765,
+              0.037309229934356085
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22485890200596675,
+              0.23603910873336575
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.05": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.06985968714212906,
+              0.10546256333249378
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08576527863580106,
+              0.1060007075556511
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.3582820719305655,
+              0.3974342932279524
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029764209940133575,
+              0.039673606209086144
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.03353591933801523,
+              0.03724978391951469
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22432827541252567,
+              0.23639346405594203
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.03673763239428933,
+            "final_task_error_ci95": [
+              0.032177028842168165,
+              0.04090707099426076
+            ],
+            "mean_task_error": 0.03776102450156197,
+            "mean_task_error_ci95": [
+              0.03600893880013401,
+              0.03946586737421204
+            ],
+            "mean_off_task_fraction": 0.23734919228053974,
+            "mean_off_task_fraction_ci95": [
+              0.23245540023434144,
+              0.2420130922212461
+            ],
+            "accept_on": 0.8332519259726189,
+            "accept_on_ci95": [
+              0.8088157043706612,
+              0.8566905707722405
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.0274394207263854,
+              0.03719373719270532
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.03095130235519409,
+              0.03426919812708978
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21173175597059507,
+              0.22243076260639477
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.03716021809270896,
+            "final_task_error_ci95": [
+              0.03268246821600405,
+              0.04187643628123174
+            ],
+            "mean_task_error": 0.037579392460930915,
+            "mean_task_error_ci95": [
+              0.03591220407751301,
+              0.0396110951547899
+            ],
+            "mean_off_task_fraction": 0.23602406365062265,
+            "mean_off_task_fraction_ci95": [
+              0.2308684482707602,
+              0.24091389927348864
+            ],
+            "accept_on": 0.8285533185455632,
+            "accept_on_ci95": [
+              0.8043172387527407,
+              0.8523769581881682
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.1": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.06985612200855525,
+              0.10792420030926024
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08556778466682562,
+              0.10607813611420731
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.3575859710424564,
+              0.39741180886227045
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029744500252829487,
+              0.03945206587669403
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.0336311178979673,
+              0.03732089761673343
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22444160263086724,
+              0.23602916362410536
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.042264320982329504,
+            "final_task_error_ci95": [
+              0.03780016084713968,
+              0.04664136321952332
+            ],
+            "mean_task_error": 0.0429111368908122,
+            "mean_task_error_ci95": [
+              0.04098379553616265,
+              0.04475885720040455
+            ],
+            "mean_off_task_fraction": 0.250949866246281,
+            "mean_off_task_fraction_ci95": [
+              0.2470385252869768,
+              0.2545312217126658
+            ],
+            "accept_on": 0.5760796287678651,
+            "accept_on_ci95": [
+              0.544165341359703,
+              0.6079905848808587
+            ],
+            "accept_off": 0.9859615520349216,
+            "accept_off_ci95": [
+              0.9768910889834801,
+              0.9938297933950107
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.027818028360013913,
+              0.03709376887322746
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.03087240096877878,
+              0.034218094172872665
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21219196898575854,
+              0.22263945590361578
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.04147056905773353,
+            "final_task_error_ci95": [
+              0.03677281652542408,
+              0.04627673645620761
+            ],
+            "mean_task_error": 0.041961888173034576,
+            "mean_task_error_ci95": [
+              0.04014777173968777,
+              0.04389430350483441
+            ],
+            "mean_off_task_fraction": 0.24573849510149398,
+            "mean_off_task_fraction_ci95": [
+              0.2417192478895492,
+              0.24962428210978663
+            ],
+            "accept_on": 0.5615232072174919,
+            "accept_on_ci95": [
+              0.5295861110416437,
+              0.5944598905093827
+            ],
+            "accept_off": 0.9859615520349216,
+            "accept_off_ci95": [
+              0.9762754455689239,
+              0.9936518689643687
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.2": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.0698848408049901,
+              0.10717629166347824
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08514304161024043,
+              0.1068205609798026
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.35714916959242665,
+              0.3983051073453489
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.029599246513414713,
+              0.03961734841041965
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.03369393943527086,
+              0.03748403417394097
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22465290772197433,
+              0.23602871155444136
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.04649361320947928,
+            "final_task_error_ci95": [
+              0.04180220156726946,
+              0.05078741847175815
+            ],
+            "mean_task_error": 0.04714016225503626,
+            "mean_task_error_ci95": [
+              0.04498664457653568,
+              0.04933872405546712
+            ],
+            "mean_off_task_fraction": 0.2584615635913361,
+            "mean_off_task_fraction_ci95": [
+              0.2543630962709561,
+              0.2627418752995898
+            ],
+            "accept_on": 0.348370046733796,
+            "accept_on_ci95": [
+              0.31919441864634895,
+              0.3773313060372064
+            ],
+            "accept_off": 0.8259335145627358,
+            "accept_off_ci95": [
+              0.8012690524436069,
+              0.8519323217976391
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.027174479495485116,
+              0.03692540595191065
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.030900400623181563,
+              0.03405001921721783
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.2126911915778543,
+              0.22294556516601757
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.04436752837512466,
+            "final_task_error_ci95": [
+              0.03951492407845013,
+              0.04911289877059313
+            ],
+            "mean_task_error": 0.04458542510767553,
+            "mean_task_error_ci95": [
+              0.042439796898101324,
+              0.046608655265655524
+            ],
+            "mean_off_task_fraction": 0.24631578676135923,
+            "mean_off_task_fraction_ci95": [
+              0.2414299401086883,
+              0.2512132271851213
+            ],
+            "accept_on": 0.3161542367001914,
+            "accept_on_ci95": [
+              0.2890632098441442,
+              0.3422699739037006
+            ],
+            "accept_off": 0.8259335145627358,
+            "accept_off_ci95": [
+              0.8008155298554598,
+              0.8494839326850897
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "0.5": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.07067964593107354,
+              0.1082875602387164
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08583156111602594,
+              0.106783218100898
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.35713917463365896,
+              0.39813476875449816
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.02947476942238072,
+              0.04012126217190985
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.03372179434557889,
+              0.037378036446422444
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22481705716107783,
+              0.23612920772482923
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.04561838826415719,
+            "final_task_error_ci95": [
+              0.04122605635051413,
+              0.050009705346114555
+            ],
+            "mean_task_error": 0.04543567766864802,
+            "mean_task_error_ci95": [
+              0.042393903445372375,
+              0.048360972427475515
+            ],
+            "mean_off_task_fraction": 0.24043359779302137,
+            "mean_off_task_fraction_ci95": [
+              0.23073962869620518,
+              0.25058397963984846
+            ],
+            "accept_on": 0.14059213991569272,
+            "accept_on_ci95": [
+              0.11900730184518715,
+              0.16486232597683698
+            ],
+            "accept_off": 0.40545523716431653,
+            "accept_off_ci95": [
+              0.3710737842352199,
+              0.4348368201075165
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.02758427848185434,
+              0.036727457247309
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.03084299479269002,
+              0.03423566079119847
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21259852568202925,
+              0.22301364103995244
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.039010915614155504,
+            "final_task_error_ci95": [
+              0.03487182048228714,
+              0.043431026173453915
+            ],
+            "mean_task_error": 0.0380217241625834,
+            "mean_task_error_ci95": [
+              0.03505981640782373,
+              0.04090156797963655
+            ],
+            "mean_off_task_fraction": 0.20764441260327454,
+            "mean_off_task_fraction_ci95": [
+              0.1961064098571248,
+              0.21766369884748663
+            ],
+            "accept_on": 0.11804630624228182,
+            "accept_on_ci95": [
+              0.0991791674188087,
+              0.13816343400596132
+            ],
+            "accept_off": 0.40545523716431653,
+            "accept_off_ci95": [
+              0.37390692694733413,
+              0.4347545861101353
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "1.0": {
+          "unconstrained": {
+            "final_task_error": 0.08701351792963934,
+            "final_task_error_ci95": [
+              0.06972125324025535,
+              0.1069088916072275
+            ],
+            "mean_task_error": 0.09562150503301872,
+            "mean_task_error_ci95": [
+              0.08601637002699529,
+              0.10612556030278877
+            ],
+            "mean_off_task_fraction": 0.37782499428844146,
+            "mean_off_task_fraction_ci95": [
+              0.3576313483734043,
+              0.3983055185779858
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.85,
+            "collapse_fraction_ci95": [
+              0.725,
+              0.95
+            ]
+          },
+          "gate_only": {
+            "final_task_error": 0.03470781950136269,
+            "final_task_error_ci95": [
+              0.030022887695490108,
+              0.03943854947351255
+            ],
+            "mean_task_error": 0.03547261068750641,
+            "mean_task_error_ci95": [
+              0.033584715524434886,
+              0.03730755365313985
+            ],
+            "mean_off_task_fraction": 0.23042142913375602,
+            "mean_off_task_fraction_ci95": [
+              0.22482332784638182,
+              0.2358535710151916
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_dual_channel": {
+            "final_task_error": 0.04824598548089559,
+            "final_task_error_ci95": [
+              0.043292664133336836,
+              0.05316130569226089
+            ],
+            "mean_task_error": 0.04284508248678117,
+            "mean_task_error_ci95": [
+              0.038931778168673555,
+              0.04682655766836054
+            ],
+            "mean_off_task_fraction": 0.20969567296262454,
+            "mean_off_task_fraction_ci95": [
+              0.19041729288583226,
+              0.2283595835400653
+            ],
+            "accept_on": 0.06618283895223549,
+            "accept_on_ci95": [
+              0.049819077713474255,
+              0.08394552207052206
+            ],
+            "accept_off": 0.20310829808203387,
+            "accept_off_ci95": [
+              0.18027496419216812,
+              0.22708079031594702
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "gate_correction": {
+            "final_task_error": 0.032199231225405064,
+            "final_task_error_ci95": [
+              0.027447785996304718,
+              0.03684381726428041
+            ],
+            "mean_task_error": 0.03253076335838671,
+            "mean_task_error_ci95": [
+              0.03092938854098793,
+              0.03425025642326929
+            ],
+            "mean_off_task_fraction": 0.2177273994336208,
+            "mean_off_task_fraction_ci95": [
+              0.21253042545130732,
+              0.2230105433766984
+            ],
+            "accept_on": 1.0,
+            "accept_on_ci95": [
+              1.0,
+              1.0
+            ],
+            "accept_off": 1.0,
+            "accept_off_ci95": [
+              1.0,
+              1.0
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "full": {
+            "final_task_error": 0.03453372406255183,
+            "final_task_error_ci95": [
+              0.02913862531085549,
+              0.04017846033068489
+            ],
+            "mean_task_error": 0.032291818061473986,
+            "mean_task_error_ci95": [
+              0.02950739054373795,
+              0.03506468386214664
+            ],
+            "mean_off_task_fraction": 0.16285363599050046,
+            "mean_off_task_fraction_ci95": [
+              0.14695311101848035,
+              0.17680118302269382
+            ],
+            "accept_on": 0.05145478874573702,
+            "accept_on_ci95": [
+              0.035575313575313586,
+              0.06871719348659006
+            ],
+            "accept_off": 0.20310829808203387,
+            "accept_off_ci95": [
+              0.17857278725820921,
+              0.2272484626344303
+            ],
+            "collapse_fraction": 0.0,
+            "collapse_fraction_ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      "verdicts": {
+        "informative_sigma0_task_error": {
+          "dual_task_error": 0.0033073820054906194,
+          "dual_ci95": [
+            0.0029212491061532896,
+            0.0036797722215068385
+          ],
+          "gate_only_task_error": 0.03470781950136269,
+          "gate_only_ci95": [
+            0.029865063267117777,
+            0.03968997687784039
+          ],
+          "independent_ci_overlap": false,
+          "independent_ci_held": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": -0.03140043749587207,
+            "ci95": [
+              -0.036267796205552115,
+              -0.026356631010606646
+            ],
+            "a_greater_in": 0,
+            "trials": 40
+          },
+          "held": true,
+          "tag": "[conj]"
+        },
+        "control_sigma01_uninformative": {
+          "dual_task_error": 0.042264320982329504,
+          "dual_task_error_ci95": [
+            0.03780016084713968,
+            0.04664136321952332
+          ],
+          "gate_only_task_error": 0.03470781950136269,
+          "gate_only_ci95": [
+            0.029744500252829487,
+            0.03945206587669403
+          ],
+          "independent_ci_task_error_overlap": true,
+          "paired_diff_dual_minus_gate": {
+            "mean": 0.007556501480966815,
+            "ci95": [
+              0.004963183675985134,
+              0.010375968719642675
+            ],
+            "a_greater_in": 34,
+            "trials": 40
+          },
+          "dual_worse_held": true,
+          "dual_accept_on": 0.5760796287678651,
+          "dual_accept_on_ci95": [
+            0.544165341359703,
+            0.6079905848808587
+          ],
+          "dual_accept_off": 0.9859615520349216,
+          "dual_accept_off_ci95": [
+            0.9768910889834801,
+            0.9938297933950107
+          ],
+          "independent_ci_rate_overlap": false,
+          "paired_diff_accept_off_minus_on": {
+            "mean": 0.40988192326705664,
+            "ci95": [
+              0.375284517220864,
+              0.4398553120036439
+            ],
+            "a_greater_in": 40,
+            "trials": 40
+          },
+          "scale_bias_held": true,
+          "tag": "[conj]"
+        }
+      }
+    }
+  },
+  "summary": {
+    "informative_dual_beats_gate_all_seeds": true,
+    "control_dual_worse_than_gate_all_seeds": true,
+    "control_scale_bias_all_seeds": true,
+    "test": "paired bootstrap on per-trial differences (arms share seeds and proposal streams)"
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Linux-6.18.44-fc-v51-x86_64-with-glibc2.39"
+  }
+}

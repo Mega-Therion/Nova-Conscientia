@@ -187,8 +187,8 @@ all Python under `core/`, `verification/`, `benchmarks/`:
 * Z4 every public callable documented.
 * Z5 fail-closed: an unparseable module is a violation, not a skip.
 
-CI semantics: exit 0 = clean. The gate currently reports **12 modules, 0
-violations** (2026-10-06).
+CI semantics: exit 0 = clean. The gate currently reports **16 modules, 0
+violations** (2026-10-08).
 
 ### 2.6 `benchmarks/` — drift vs. dual-channel stability
 

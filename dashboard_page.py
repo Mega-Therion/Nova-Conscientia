@@ -492,22 +492,37 @@ _LEDGER = [
     ("thm", "SHA-256 ledger receipts are deterministic — identical inputs produce identical hashes."),
     ("emp", "Baseline (unconstrained) mean final similarity: 0.3280. Collapse fraction: 100%."),
     ("emp", "Dual-channel swarm mean final similarity: 0.9654. Collapse fraction: 0%."),
-    ("emp", "The gate clips 1,697 of 2,000 proposals. The correction force never fires."),
+    ("emp", "In a single-agent replay of the 40 baseline seeds the gate clips 1,697 of 2,000 "
+            "proposals. In the ADCCL controller the correction force fires only when the dual "
+            "channel rejects a proposal, so at zero constraint pressure it never fires."),
     ("emp", "Swarm mean pairwise cosine: 0.9978 — agents are nearly identical. "
             "Max angular spread inside the cone is ~35°."),
     ("emp", "Baseline energy 7.5×10¹⁰ is dominated by the 1×10⁶ drift cap, not a meaningful quantity."),
-    ("open", "Ablation sweep over constraint pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]: "
-             "acceptance rates decline from 1.0 at low pressure to 0.0 at 0.5, where the "
-             "dual channel rejects all proposals and the dual-channel arms never move. "
-             "No non-frozen regime yet shows a difference between arms. Tagged [open] "
-             "until a non-frozen regime shows a difference."),
+    ("emp", "Constant-pressure ablation over [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]: no arm ever "
+            "collapses, and the dual-channel arms freeze at 0.5. With no task to make progress "
+            "on, this harness cannot tell the arms apart; the task benchmark below can."),
     ("conj", "The 100% vs 0% collapse result is a mechanism sanity check: the swarm arm is "
              "clipped at the same \u03c4 that defines collapse, so of course it does not collapse. "
              "It is not evidence that dual-channel oversight reduces drift."),
     ("conj", "The four-pillar framing (ethics, civic work, charter) maps to the machine code."),
-    ("open", "Does dual-channel oversight reduce drift under real constraint pressure? "
-             "The benchmark applies none."),
-    ("open", "How does the system behave with a live model and an independent drift metric?"),
+    ("conj", "Task benchmark, simulated informative signal (σ = 0): the dual channel rejects "
+             "every drift proposal and reaches task error 0.0038 vs 0.0354 for gate-only "
+             "(frozen agent: 0.0152). Shows the mechanism can use a good signal, not that real "
+             "invariant checkers produce one."),
+    ("conj", "Scale bias: the classic credit H(x) = x\u00b2/2 rewards large moves regardless of "
+             "usefulness. With an uninformative signal the dual channel admits 98% of drift vs 57% "
+             "of on-task proposals and does worse than the gate alone (paired CIs, 3 seeds). The "
+             "running_reference credit mode removes the bias in simulation."),
+    ("conj", "Auditor as signal: the repo's adversarial consensus with three rubric critics "
+             "freezes the agent when unanimity is required (an anchor-only critic rejects every "
+             "move). Fed into the dual channel with running_reference credit, the same votes beat "
+             "gate-only and a frozen agent (task error 0.0050), within a window of the "
+             "votes-to-pressure mapping."),
+    ("open", "Does a real invariant checker on a live model produce a signal informative "
+             "enough for the dual channel to help?"),
+    ("open", "How does the system behave with a live model? The bridge exists "
+             "(benchmarks/live_backend.py) but no live run has been made, and \u03c4 = 0.9539 "
+             "may be far too tight in embedding space."),
 ]
 
 
@@ -545,6 +560,9 @@ _MODULES = [
     ("core/topology_graph.py", "Barnes-Hut swarm attention + Blelloch carry-lookahead routing."),
     ("verification/adversarial_auditor.py", "Multi-agent adversarial consensus. Fail-closed quorum + hard veto."),
     ("verification/ast_invariant_validation.py", "Compile gate: zero stubs, zero ungrounded numerology (Z1–Z5)."),
+    ("benchmarks/run_task_benchmark.py", "Goal-directed task, simulated constraint signal + control, paired CIs, credit modes."),
+    ("benchmarks/run_auditor_signal.py", "The adversarial-consensus critics as the constraint signal."),
+    ("benchmarks/live_backend.py", "Bridge from real model responses to the ADCCL loop (offline-tested)."),
 ]
 
 
@@ -671,7 +689,7 @@ def render_dashboard(receipt: Optional[dict], git_hash: str) -> str:
     <p class="hero-desc">Fail-closed hallucination clipping at τ = 0.9539. Dual-channel
        oversight, anti-drift control, and swarm topology for AI alignment research.</p>
     <div class="hero-badges">
-      <span class="hero-badge teal">59/59 PASS</span>
+      <span class="hero-badge teal">115/115 PASS</span>
       <span class="hero-badge teal">0 Violations</span>
       <span class="hero-badge">git:{git_hash}</span>
     </div>

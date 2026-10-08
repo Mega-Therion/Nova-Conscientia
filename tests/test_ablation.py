@@ -84,8 +84,8 @@ class TestAblationSweep(unittest.TestCase):
                     f"arm '{arm}' should always accept (no scoring) at pressure {p}"
                 )
 
-    def test_movement_tracks_acceptance(self):
-        """When acceptance_rate is 0, mean_movement should also be 0
+    def test_drift_tracks_acceptance(self):
+        """When acceptance_rate is 0, mean_anchor_drift should also be 0
         (the state never leaves the anchor)."""
         sweep = self.receipt["sweep"]
         for p in SWEEP_PRESSURES:
@@ -93,9 +93,9 @@ class TestAblationSweep(unittest.TestCase):
                 m = sweep[str(p)][arm]
                 if m["acceptance_rate"] == 0.0:
                     self.assertEqual(
-                        m["mean_movement"], 0.0,
+                        m["mean_anchor_drift"], 0.0,
                         f"arm '{arm}' at pressure {p}: acceptance is 0 but "
-                        f"movement is non-zero"
+                        f"anchor drift is non-zero"
                     )
 
 

@@ -105,7 +105,7 @@ none of their numeric content is imported into this runtime):
 | equipartition floor θ | 1/√2 = cos 45° | derived [P] | RapidityEquipartition.lean (sinh ψ = 1 ⇒ γ = √2, θ = tanh ψ) |
 | `ν_std`, `L_e`, far-field factor | — | proved/receipted [E] | qumond_pm.py + QUMOND_PM_GATES.json |
 | drift coordinate x = tan α | — | design [D] | Nova Conscientia choice; x = 1 is exactly 45° (ties to equipartition) |
-| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults | — | design [D] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
+| halt energy, opening angle, cohesion rate, drift gain/noise, seeds, quorum defaults, task-benchmark goal angle / on-task mix / signal sensitivity / noise sweep, dual-channel credit modes and `SCALE_FREE_MOMENTUM_FLOOR`, auditor-signal critic limit / subspace share / per-rejection pressures / `FROZEN_TOLERANCE`, live-backend hash dimension / HTTP timeout / step count, pressure-window sweep grid / `DOCUMENTED_WINDOW` (`[conj]`) / bisection iterations | — | design [D] | engineering parameters of this runtime; registered in each module's `PROVENANCE` mapping and enforced by the AST gate (rule Z2) |
 | baseline mean final energy ~7.5e10 | — | artifact [open] | Artifact of the 1e6 drift cap in `drift_coordinate_capped`; median energy is 2.75 and only 15% of trials hit the cap. The mean is dominated by the few capped trials. |
 | gate-only collapse fraction (pre-tolerance) | 0.05 | artifact [open] | Was a floating-point rounding artifact, not real drift: the gate clips to exactly cosine = τ, but IEEE-754 produced 0.9538999999999999, failing a strict < 0.9539 check. Fixed with COLLAPSE_TOLERANCE = 1e-9; real collapse fraction is 0.00. |
 
@@ -113,14 +113,20 @@ none of their numeric content is imported into this runtime):
 
 | artifact | result |
 |---|---|
-| `python -m unittest discover -s tests` | 72 tests, 72 passed (2026-10-06) |
-| `python verification/ast_invariant_validation.py core verification benchmarks` | 12 modules, 0 violations (Z1–Z5; 2026-10-06) |
+| `python -m unittest discover -s tests` | 128 tests, 128 passed (2026-10-08) |
+| `python verification/ast_invariant_validation.py core verification benchmarks` | 16 modules, 0 violations (Z1–Z5; 2026-10-08) |
 | `python benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json` | baseline collapse fraction 1.00 vs swarm 0.00 (by construction: the gate is applied last at τ); with the projection removed, collapse fraction 1.00 and mean final similarity 0.861, 98.1% of gate inputs outside the cone; swarm mean final similarity 0.965; mean pairwise cosine 0.998; 0 HALTs; deterministic receipt committed |
 | `python benchmarks/run_ablation.py --json benchmarks/results/ablation_receipt.json` | sweep over pressures [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]; acceptance rates decline from 1.0 to 0.0; at 0.5 dual channel rejects all proposals; seeded simulation, no LLM calls |
+| `python benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json` | goal 10° inside the cone, 50% drift proposals, simulated per-proposal constraint signal. Informative signal (σ = 0): dual channel accepts 0% of drift and 12% of on-task proposals; final task error 0.0038 vs gate-only 0.0354 vs frozen 0.0152. Uninformative control (σ = 0.1): dual channel accepts 98% of drift vs 57% of on-task; task error 0.0426, worse than gate-only. Seeded simulation, no LLM calls |
+| `python benchmarks/run_task_benchmark.py --multi-seed --json benchmarks/results/task_bootstrap_receipt.json` | 95% bootstrap CIs (1,000 resamples, fixed seeds) on 3 base seeds (20260906, 20261002, 20261105), with **paired** bootstrap CIs on per-trial differences (arms share seeds and proposal streams). Dual − gate-only task error, informative σ = 0: −0.0316 [−0.0365, −0.0264], −0.0327 [−0.0375, −0.0279], −0.0314 [−0.0363, −0.0264]. Control σ = 0.1: +0.0071 [+0.0048, +0.0093], +0.0083 [+0.0056, +0.0110], +0.0076 [+0.0050, +0.0104]. Control accept_off − accept_on: +0.41 [+0.38, +0.45], +0.40 [+0.37, +0.44], +0.41 [+0.38, +0.44]. All three claims hold on all three seeds |
+| `python benchmarks/run_task_benchmark.py --credit-modes --json benchmarks/results/task_credit_modes_receipt.json` | Credit modes compared on 3 seeds with paired 95% CIs. `classic` and `scale_free` keep the scale bias (control accept_off − accept_on +0.41 / +0.32, task error worse than gate-only). `running_reference` (credit from the mean momentum of earlier proposals) removes it: informative σ = 0 accepts 98.5% of on-task and 0% of drift, task error 0.0005 vs gate-only 0.0354; control σ = 0.1 accepts both kinds equally (0.852 / 0.852) and task error matches gate-only (paired CI spans zero) |
+| `python benchmarks/run_auditor_signal.py --json benchmarks/results/auditor_signal_receipt.json` | Constraint signal from the repo's own `AdversarialConsensus` with three rubric critics (plane, anchor-only, partial-view subspace); pressure = per-rejection pressure × rejecting critics, swept over [0.05, 0.1, 0.2, 0.4]; 3 seeds, paired CIs. The anchor-only critic rejects every proposal, so unanimous consensus freezes the agent. Classic credit never beats the frozen agent (task error 0.0152). `running_reference` credit beats gate-only, the frozen agent and consensus at 0.1 (task error 0.0050) and 0.2 (0.0126) per rejection, but admits too much drift at 0.05 and freezes at 0.4 |
+| `python benchmarks/run_pressure_window.py --json benchmarks/results/pressure_window_receipt.json` | Derives the votes-to-pressure window from the `running_reference` rule L_corr(k·p) ≤ H(x_ref): measured x_ref 0.1427 (pooled), modal 1 rejection on on-task and 3 on off-task proposals, w\* = 0.1496, derived window (0.0499, 0.1496]. Sweeps p over [0.025 … 0.4] (11 points) on 3 seeds with paired CIs against gate-only, the frozen agent and an uninformative control (critics voting at their measured rates, independent of the move). `running_reference` beats all three on every seed for p ∈ {0.075 … 0.25}; every point of the item-4 window 0.1–0.2 is inside, with no conclusion changing there. Lowest task error 0.0030 at 0.075 |
 
 ## Reproducibility caveat
 
-The committed benchmark and ablation receipts are deterministic for a given
+The committed receipts (benchmark, ablation, task, bootstrap, credit-mode and
+auditor-signal) are deterministic for a given
 seed set on a single platform, but are **not bit-reproducible across platforms**:
 7th-decimal floating-point drift arises from differences in math library
 implementations (e.g. glibc vs musl, x87 vs SSE/AVX transcendental functions).
@@ -151,3 +157,86 @@ pass/fail verdicts, but per-trial energy and similarity values may differ in the
    strict < 0.9539 check. Fixed with `COLLAPSE_TOLERANCE = 1e-9`; the real
    collapse fraction is 0.00. This artifact is labeled `[open]` in the
    constant register. `[open]`
+6. The task benchmark (`benchmarks/run_task_benchmark.py`) is the first
+   harness with a task to make progress on and metrics that do not reuse τ
+   (task error to a goal, off-task fraction, per-kind acceptance). With an
+   **informative** simulated constraint signal the dual channel helps: it
+   rejects every drift proposal and reaches task error 0.0038 against 0.0354
+   for gate-only. The signal is simulated and informative by construction, so
+   this shows the mechanism *can use* a good signal, not that real invariant
+   checkers produce one. Robustness: the paired difference (dual − gate-only)
+   is −0.031 to −0.033 on three base seeds, every 95% CI below zero. `[conj]`
+7. The same harness exposes a **scale bias** in the dual channel. Its credit
+   H(x) = x²/2 grows with move size regardless of usefulness, so small useful
+   moves earn almost no credit: even with a perfect signal only 12% of on-task
+   proposals are admitted, and with σ ≥ 0.05 fewer than 5%. With an
+   **uninformative** signal it admits large drift moves (98%) far more often
+   than small useful ones (57%) and does worse than the gate alone. Both
+   effects hold on three base seeds under a **paired** bootstrap (task error
+   +0.007 to +0.008, accept_off − accept_on ≈ +0.41, every 95% CI above
+   zero). An earlier check compared two independent CIs, found them slightly
+   overlapping and downgraded the task-error claim; that test ignores the
+   paired design (same seeds and proposal streams in every arm) and is too
+   conservative. The bias itself is established in this simulation `[conj]`.
+   **Candidate fix** (`credit_mode="running_reference"`, off by default):
+   credit the mean momentum of earlier proposals instead of the current
+   proposal's own size, so acceptance depends on pressure alone. On three
+   seeds it keeps the informative-signal gain (task error 0.0005 vs 0.0354)
+   and removes the bias under the control (equal acceptance, task error equal
+   to gate-only). The agent's `scale_free` ratio mode does not remove it.
+   Caveats: the reference drifts with the proposal mix (a stream dominated by
+   large moves raises everyone's credit), and the signal is still simulated.
+   Fix established in simulation `[conj]`; whether it survives a real checker
+   and a live model is `[open]`.
+8. In the ADCCL controller the correction force fires only when the dual
+   channel **rejects** a proposal; at zero constraint pressure nothing is
+   rejected, so it never fires there. The ablation's `gate_correction` arm
+   instead applies the same step whenever the gate clips, which is why that
+   arm differs slightly (similarity 0.9593 vs 0.9556).
+9. The repository's own adversarial consensus can serve as the constraint
+   signal (`benchmarks/run_auditor_signal.py`). With three imperfect rubric
+   critics, two findings stand out. First, **unanimous consensus freezes the
+   agent**: a critic that knows only the anchor reads progress toward the goal
+   as drift and rejects every move, so the panel never admits anything.
+   Second, **feeding the votes into the dual channel recovers progress, but
+   only with `running_reference` credit and only in a window of the
+   votes-to-pressure mapping** (0.1–0.2 per rejecting critic): task error
+   0.0050 at 0.1 against 0.0152 frozen and 0.0354 gate-only, on all three
+   seeds. Classic credit never beats the frozen agent. The critics are
+   hand-written stand-ins for model critics. `[conj]` for this simulation;
+   the right pressure mapping for real critics is `[open]`.
+   **The window is no longer a bare free parameter**
+   (`benchmarks/run_pressure_window.py`). With `running_reference` credit a
+   proposal with k rejections is admitted iff L_corr(k·p) ≤ H(x_ref); since
+   L_corr is strictly increasing this is k·p ≤ w\* = L_corr⁻¹(x_ref²/2), so
+   on-task moves (k_on rejections) pass and drift (k_off) fails exactly when
+   w\*/k_off < p ≤ w\*/k_on. That step is algebra on the code's acceptance
+   rule, checked at the edges against `DualChannelAction` in
+   `tests/test_pressure_window.py` (not machine-checked). The numbers come
+   from the simulation `[conj]`: x_ref ≈ 0.143, k_on = 1 (anchor critic),
+   k_off = 3, giving w\* ≈ 0.150 and a derived window of about (0.05, 0.15].
+   A finer sweep (11 points, 3 seeds, paired bootstrap CIs, plus an
+   uninformative control whose critics vote at their measured rates but
+   ignore the move) finds `running_reference` beating gate-only, the frozen
+   agent and the control on every seed for p from 0.075 to 0.25. The lower
+   edge matches the derivation (at 0.05 ≈ w\*/3 about half the drift gets
+   through). The upper edge sits above w\* because the running reference is
+   higher early in a trial (median peak 0.21, so w\*/1 ≈ 0.22): above 0.15
+   only those early on-task moves get in, and the gain fades smoothly to the
+   frozen error by 0.3–0.4. **No conclusion changes inside 0.1–0.2**; the
+   reported window was conservative on both sides, and the best point on the
+   grid (task error 0.0030) is at 0.075, outside it. Classic credit still
+   never beats the frozen agent at any grid point. The mapping for real
+   critics remains `[open]`: the derivation says it must be re-fit to their
+   vote counts and to the momentum scale of real proposals.
+10. `benchmarks/live_backend.py` connects real model output to the loop:
+    responses are embedded, and the step between consecutive response
+    embeddings is the proposal, passed through the existing fail-closed
+    `CallableBackend`. **No live run has been performed**; `--mock` runs are
+    plumbing checks only. The offline mock already shows one thing to measure
+    in a live run: every scripted response, on-topic ones included, falls
+    outside the 17.5° cone, so the gate clips every cycle. The mock's
+    feature-hashing embedder is crude, but real embedding models also often
+    score paraphrases below cosine 0.95, so τ = 0.9539 (measured on ADCCL
+    reasoning loops) may be far too tight in embedding space. Calibrating τ
+    per embedding model is part of E1. `[open]`

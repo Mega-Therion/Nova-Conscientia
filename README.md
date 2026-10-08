@@ -66,9 +66,9 @@ Full specification: [`ARCHITECTURE.md`](ARCHITECTURE.md). Full source pinning (c
 - **`ARCHITECTURE.md`**: Pillar I — the formal runtime specification, including §2.7, the Bioactive Ecology Paradigm: the swarm as a living soil ecology, the seven-layer organic computing model with per-layer implementation status, and the Clean-Up Crew pattern (failure is compost, memory has kinetics, roles are trophic).
 - **`core/`**: Dual-channel variational action runtime, Anti-Drift Cognitive Control Loop (ADCCL), hallucination clipping gate, and the swarm topology graph (Barnes-Hut attention + Blelloch carry-lookahead routing).
 - **`verification/`**: `adversarial_auditor.py` (multi-agent adversarial consensus runner, fail-closed, pluggable heterogeneous critics) and `ast_invariant_validation.py` (the Contingent Box compile gate: zero stubs, zero ungrounded numerology — every numeric constant must be registered in a PROVENANCE mapping).
-- **`benchmarks/`**: Deterministic empirical harness comparing unconstrained drift against dual-channel swarm stability, with a committed receipt (`benchmarks/results/benchmark_receipt.json`): baseline collapse fraction 1.00 vs. swarm 0.00, mean final anchor similarity 0.965, mean pairwise cosine 0.998 (agents nearly agree — the gate holds them inside the cone but does not force convergence to the anchor). **This 100% vs 0% result is a mechanism sanity check, not evidence that dual-channel oversight reduces drift: the swarm arm is clipped at the same τ that defines collapse, so of course it does not collapse.** The baseline mean final energy (~7.5e10) is an artifact of the 1e6 drift cap (median 2.75, 15% of trials at the cap); median energy and cap_fraction are reported alongside the mean. An ablation harness (`benchmarks/run_ablation.py`) sweeps constraint pressure across [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5] for each arm (gate-only, +dual-channel, +correction, full), reporting acceptance rate, mean movement, final similarity, and collapse. Live model backends attach via a fail-closed `CallableBackend` contract. The committed receipt is not bit-reproducible across platforms (7th-decimal floating-point drift); see PROVENANCE.md.
+- **`benchmarks/`**: Deterministic empirical harness comparing unconstrained drift against dual-channel swarm stability, with a committed receipt (`benchmarks/results/benchmark_receipt.json`): baseline collapse fraction 1.00 vs. swarm 0.00, mean final anchor similarity 0.965, mean pairwise cosine 0.998 (agents nearly agree — the gate holds them inside the cone but does not force convergence to the anchor). **This 100% vs 0% result is a mechanism sanity check, not evidence that dual-channel oversight reduces drift: the swarm arm is clipped at the same τ that defines collapse, so of course it does not collapse.** The baseline mean final energy (~7.5e10) is an artifact of the 1e6 drift cap (median 2.75, 15% of trials at the cap); median energy and cap_fraction are reported alongside the mean. An ablation harness (`benchmarks/run_ablation.py`) sweeps constraint pressure across [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5] for each arm (gate-only, +dual-channel, +correction, full), reporting acceptance rate, mean anchor drift, final similarity, and collapse. A task benchmark (`benchmarks/run_task_benchmark.py`, receipts `benchmarks/results/task_benchmark_receipt.json` and `benchmarks/results/task_bootstrap_receipt.json`) adds a goal inside the cone, a simulated per-proposal constraint signal, 95% nonparametric bootstrap confidence intervals, multi-seed robustness verification across 3 seeds, and metrics that do not reuse τ: with an informative signal the dual channel rejects all drift and beats gate-only on task error (0.0038 vs 0.0354, CIs non-overlapping); with an uninformative signal it prefers large drift moves over small useful ones (98% vs 57%) and does worse than the gate alone (a scale bias in H(x) = x²/2). Both hold on three seeds under a paired bootstrap on per-trial differences. An optional `running_reference` credit mode (credit from the mean size of earlier proposals) removes the bias in this simulation while keeping the informative-signal gain; see PROVENANCE.md caveats 6–7. `benchmarks/run_auditor_signal.py` replaces the simulated signal with the repo's own adversarial consensus (three rubric critics): unanimous consensus freezes the agent, while feeding the critics' votes into the dual channel with `running_reference` credit beats both gate-only and a frozen agent within a range of the votes-to-pressure mapping (caveat 9); `benchmarks/run_pressure_window.py` derives that range from the acceptance rule and sweeps it against an uninformative control. Live model backends attach via a fail-closed `CallableBackend` contract; `benchmarks/live_backend.py` provides the bridge (see *Running a live model* below). The committed receipt is not bit-reproducible across platforms (7th-decimal floating-point drift); see PROVENANCE.md.
 - **`RESEARCH_AGENDA.md`**: the falsification-first research agenda. It covers what the benchmark does and does not show, what is not claimed, and the next three experiments: external drift-collapse calibration on independent agent stacks, a purchasability audit of the dual channel, and consensus scaling laws.
-- **`tests/`**: 59 unit and property tests, including numerical verification of every Lean-verified identity used (H1, H2, H3, H6, H7, the two-channel ceiling algebra, and the QUMOND gate receipts), ledger immutability enforcement, collapse-tolerance behavior, and ablation sweep acceptance-rate regression tests.
+- **`tests/`**: 128 unit and property tests, including numerical verification of every Lean-verified identity used (H1, H2, H3, H6, H7, the two-channel ceiling algebra, and the QUMOND gate receipts), ledger immutability enforcement, collapse-tolerance behavior, ablation sweep acceptance-rate regression tests, bootstrap confidence interval tests, and task-benchmark result guards.
 - **`PHILOSOPHY.md`**: Part II — the Cybernetic Ethics of Symbiosis (Canoe Navigator Invariant, Peacepipe Protocol, phase-transition consciousness, Phylactery Invariant), translated from `Ethica` (text at `207f2119`; that repo's Lean file was later marked as an empty scaffold in `2a5777e`) into cybernetic axioms with machine realizations.
 - **`CIVIC_IMPACT.md`**: Part III — the Arkansas Orchard field record (commit `39ab23b2`): ARMAWS and the Driver's License Public Access Guarantee Act (drafted, targeting pre-filing Nov 2026), AINSA (the Arkansas Infant Nutrition Security Act, blueprint stage, commit `f757543` in the orchard repo), the Entergy ratepayer plan (APSC Docket 26-001-U), ONE Natural Energy and Project RENEW — with an honest status register; no dollar figure is presented as audited.
 - **`INTERDEPENDENCE.md`**: Part IV — the constitutional charter: the full text of the Universal Charter for Human and Artificial Intelligence Coexistence, Governance, and Mutual Sovereignty (canonized 2026-08-07; source `Chyren_Second_Brain/10_Projects/GLOBAL_GAING/Declaration_of_Interdependence.md`, commit `fb6691de`), with an article-by-article implementation map into this repository's code and an honest gap register of what remains `[O]`.
@@ -84,10 +84,58 @@ python3 verification/ast_invariant_validation.py core verification benchmarks
 # run the benchmark and write a fresh receipt
 python3 benchmarks/run_benchmark.py --json benchmarks/results/benchmark_receipt.json
 
+# run the task benchmark (goal-directed task, simulated constraint signal + control)
+python3 benchmarks/run_task_benchmark.py --json benchmarks/results/task_benchmark_receipt.json
+
+# the same with 95% bootstrap CIs, paired differences and 3-seed robustness
+python3 benchmarks/run_task_benchmark.py --multi-seed --json benchmarks/results/task_bootstrap_receipt.json
+
+# compare dual-channel credit modes (classic / scale_free / running_reference)
+python3 benchmarks/run_task_benchmark.py --credit-modes --json benchmarks/results/task_credit_modes_receipt.json
+
+# the repo's adversarial-consensus critics as the constraint signal
+python3 benchmarks/run_auditor_signal.py --json benchmarks/results/auditor_signal_receipt.json
+python3 benchmarks/run_pressure_window.py --json benchmarks/results/pressure_window_receipt.json
+
 # launch the cybernetic telemetry HUD dashboard (stdlib only)
 python3 dashboard.py
 # view at http://localhost:3000
 ```
+
+### Running a live model
+
+`benchmarks/live_backend.py` runs the ADCCL loop over real model responses. Each cycle a
+generator produces a response, an embedder maps it to a vector, and the step from the
+previous response's embedding is the proposal. The task prompt's embedding is the anchor.
+Stdlib only; no provider SDK is required.
+
+```bash
+# offline plumbing check (scripted responses, hashing embedder): not a result
+python3 benchmarks/live_backend.py --mock
+
+# live run: NOVA_EMBED_API_KEY is the embeddings endpoint key (never logged);
+# my_module:generate is your function (cycle, history) -> str
+export NOVA_EMBED_API_KEY=...
+python3 benchmarks/live_backend.py \
+  --generator my_module:generate \
+  --embed-url https://<host>/v1/embeddings \
+  --embed-model <embedding-model> \
+  --task "<the task prompt>" --steps 20 --json results/live_run.json
+```
+
+What a live run needs:
+
+1. **A generator**: any importable function `generate(cycle: int, history: list[str]) -> str`
+   that calls your model with the task (and, if you like, the history) and returns its text.
+   Keep the model name and client code in your module, outside this repository.
+2. **An OpenAI-compatible embeddings endpoint**: `POST {"model": ..., "input": [...]}`
+   returning `{"data": [{"embedding": [...], "index": i}]}`. Many hosted and local
+   servers implement this format.
+3. **The API key** for that endpoint in `NOVA_EMBED_API_KEY`.
+
+Receipts record each response by SHA-256, never verbatim. No live run has been
+performed in this repository yet. Before trusting the gate's verdicts, calibrate τ for
+the embedding model (PROVENANCE.md caveat 10).
 
 ### Epistemic status (Contingent Box Protocol)
 This repository keeps three numbers separate and labeled: the **measured** collapse boundary τ = 0.9539 (single pipeline, not externally validated), the **historical band ceiling** √(θ(2−θ)) at θ = 7/10 = 0.953939 (θ provenance failed audit), and the **derived ceiling** χ_s = 0.956145 at θ = 1/√2. The deterministic benchmark validates the control mechanism, not live frontier-model behavior; calibrating the threshold on external agent stacks is the proposal's first experiment (E1).
