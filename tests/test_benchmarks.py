@@ -83,12 +83,29 @@ class TestBenchmarkArms(unittest.TestCase):
         """The dual-channel swarm holds the anchor across the whole trial (arm B)."""
         record = run_swarm_trial(seed=BASE_SEED, steps=DEFAULT_STEPS, dim=DEFAULT_DIM,
                                  swarm=4, cohesion_rate=0.05)
+        # By construction: arm B applies the gate last, at MEASURED_TAU, so these two
+        # assertions can fail only through a REJECT or a HALT.  The non-circular
+        # comparison is arm B' (test_projection_removed_arm_beats_baseline).
         self.assertGreaterEqual(record["final_similarity"], MEASURED_TAU)
         self.assertFalse(record["collapsed"])
         self.assertEqual(record["halts"], 0)
         # The gate holds exploration inside the cone: agents are not identical.
         self.assertLess(record["pairwise_cosine"], 1.0)
         self.assertGreater(record["pairwise_cosine"], -1.0)
+
+    def test_projection_removed_arm_beats_baseline(self):
+        """Arm B' (projection removed, verdicts tallied) still reduces drift.
+
+        This is the claim the in-cone result cannot make by itself: with the
+        gate's projection switched off, the dual channel, correction force and
+        cohesion alone keep the swarm closer to the anchor than raw integration.
+        """
+        base = run_baseline_trial(seed=BASE_SEED, steps=DEFAULT_STEPS, dim=DEFAULT_DIM)
+        record = run_swarm_trial(seed=BASE_SEED, steps=DEFAULT_STEPS, dim=DEFAULT_DIM,
+                                 swarm=4, cohesion_rate=0.05, project=False)
+        self.assertGreater(record["final_similarity"], base["final_similarity"])
+        self.assertEqual(record["gate_evaluations"], 4 * DEFAULT_STEPS * 2)
+        self.assertGreater(record["gate_clips"], 0)
 
     def test_full_harness_receipt(self):
         """The receipt is deterministic, well-formed, and shows the mechanism."""
@@ -97,9 +114,15 @@ class TestBenchmarkArms(unittest.TestCase):
         baseline = receipt["metrics"]["baseline_unconstrained"]
         swarm = receipt["metrics"]["dual_channel_swarm"]
         self.assertGreater(baseline["collapse_fraction"], 0.0)
-        self.assertEqual(swarm["collapse_fraction"], 0.0)
+        self.assertEqual(swarm["collapse_fraction"], 0.0)  # by construction (arm B)
         self.assertGreater(swarm["mean_final_similarity"],
                            baseline["mean_final_similarity"])
+        unprojected = receipt["metrics"]["swarm_projection_removed"]
+        self.assertGreater(unprojected["mean_final_similarity"],
+                           baseline["mean_final_similarity"])
+        for arm in (swarm, unprojected):
+            self.assertGreaterEqual(arm["gate_clip_fraction"], 0.0)
+            self.assertLessEqual(arm["gate_clip_fraction"], 1.0)
         self.assertIn("provenance", receipt)
         self.assertIn("parameters", receipt)
         # Determinism: a second identical run reproduces the receipt bit-for-bit
@@ -115,6 +138,8 @@ class TestBenchmarkArms(unittest.TestCase):
         receipt = run_benchmark(trials=DEFAULT_TRIALS, steps=DEFAULT_STEPS,
                                 dim=DEFAULT_DIM)
         self.assertEqual(len(receipt["per_trial"]["baseline"]), DEFAULT_TRIALS)
+        self.assertEqual(len(receipt["per_trial"]["swarm_projection_removed"]),
+                         DEFAULT_TRIALS)
         self.assertEqual(receipt["metrics"]["baseline_unconstrained"]
                          ["collapse_fraction"], 1.0)
 
