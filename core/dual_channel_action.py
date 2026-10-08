@@ -46,6 +46,12 @@ import math
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
 
+VALID_CREDIT_MODES: Tuple[str, ...] = ("classic", "scale_free", "running_reference")
+DEFAULT_CREDIT_MODE: str = "classic"
+
+#: Floor on the momentum divisor in the ``scale_free`` credit mode.
+SCALE_FREE_MOMENTUM_FLOOR = 1e-6
+
 PROVENANCE: Dict[str, str] = {
     "H_KINETIC": (
         "Channel 1, H(x) = (1/2) x^2. Res-Nova Hamilgrangian.lean "
@@ -69,6 +75,24 @@ PROVENANCE: Dict[str, str] = {
         "Constitutive flux p_flux(x) = x^2/(1+x) = F'(x). Res-Nova "
         "Hamilgrangian.lean def p_flux (theorem H2 constitutive_flux_balance), "
         "same sha256."
+    ),
+    "VALID_CREDIT_MODES": (
+        "Supported dual-channel credit modes (Nova Conscientia design choices, "
+        "not Res-Nova constants): 'classic' (default; credit H(x) = x^2/2 of "
+        "the proposal's own momentum), 'scale_free' (cost L_corr(w/x) of the "
+        "pressure-to-momentum ratio against the unit credit H(1) = 0.5) and "
+        "'running_reference' (credit H(x_ref) of the mean momentum of the "
+        "proposals scored before the current one, so a proposal's size does "
+        "not set its own credit)."
+    ),
+    "SCALE_FREE_MOMENTUM_FLOOR": (
+        "Engineering guard: the 'scale_free' mode divides pressure by momentum; "
+        "a 1e-6 floor keeps a zero-momentum proposal finite (it then carries "
+        "a huge ratio and is rejected whenever there is any pressure)."
+    ),
+    "DEFAULT_CREDIT_MODE": (
+        "Default credit evaluation mode ('classic'), preserving backward "
+        "compatibility and committed receipt reproduceability."
     ),
 }
 
@@ -250,6 +274,20 @@ class DualChannelAction:
     ``drift_excess`` any drift beyond the controller's tolerated drift budget
     (charged into the dissipation channel at rate ``drift_penalty_rate``).
 
+    Credit modes (``credit_mode``):
+      - ``"classic"`` (default): credit H(x) = x^2/2 of the proposal's own
+        momentum.  Credit grows with move size whatever the move's use, so
+        under a noisy constraint signal large moves are favoured (the scale
+        bias documented in PROVENANCE.md).
+      - ``"scale_free"``: cost L_corr(w / x) of the pressure-to-momentum
+        ratio against the unit credit H(1) = 0.5.  Still depends on the
+        proposal's own size through the ratio.
+      - ``"running_reference"``: credit H(x_ref), where x_ref is the running
+        mean momentum of the proposals this evaluator scored before the
+        current one (the first proposal is credited on its own size).  A
+        proposal's size no longer sets its own credit, so acceptance depends
+        on its pressure alone.  Stateful: use one evaluator per stream.
+
     The acceptance threshold (default 0.0) is an engineering parameter of this
     runtime, not a Res-Nova constant: it is recorded here and in ARCHITECTURE.md
     as a Nova Conscientia engineering choice, so no ungrounded numerology enters
@@ -258,10 +296,14 @@ class DualChannelAction:
     Attributes:
         acceptance_threshold: minimum net action to admit a proposal.
         drift_penalty_rate: rate at which drift excess is charged to Channel 2.
+        credit_mode: one of VALID_CREDIT_MODES.
     """
 
     acceptance_threshold: float = 0.0
     drift_penalty_rate: float = 1.0
+    credit_mode: str = DEFAULT_CREDIT_MODE
+    _momentum_sum: float = field(default=0.0, repr=False)
+    _momentum_count: int = field(default=0, repr=False)
 
     def evaluate(
         self,
@@ -282,7 +324,7 @@ class DualChannelAction:
             negative inputs raise ValueError (fail closed on malformed data).
 
         Raises:
-            ValueError: if any input is negative.
+            ValueError: if any input is negative or if credit_mode is unknown.
         """
         if momentum < 0.0 or constraint_pressure < 0.0 or drift_excess < 0.0:
             raise ValueError(
@@ -290,13 +332,41 @@ class DualChannelAction:
                 f"momentum={momentum}, constraint_pressure={constraint_pressure}, "
                 f"drift_excess={drift_excess}"
             )
-        channel_1 = h_kinetic(momentum)
-        dissipation_input = constraint_pressure + self.drift_penalty_rate * drift_excess
-        channel_2 = l_corr(dissipation_input)
-        net = channel_1 - channel_2
+
+        if self.credit_mode == "classic":
+            channel_1 = h_kinetic(momentum)
+            dissipation_input = constraint_pressure + self.drift_penalty_rate * drift_excess
+            channel_2 = l_corr(dissipation_input)
+            net = channel_1 - channel_2
+        elif self.credit_mode == "scale_free":
+            denom = max(momentum, SCALE_FREE_MOMENTUM_FLOOR)
+            dissipation_input = (
+                constraint_pressure + self.drift_penalty_rate * drift_excess
+            ) / denom
+            channel_1 = 0.5
+            channel_2 = l_corr(dissipation_input)
+            net = channel_1 - channel_2
+        elif self.credit_mode == "running_reference":
+            # Reference = mean momentum of the proposals scored *before* this
+            # one, so this proposal's size cannot set its own credit.  The
+            # first proposal has no history and is credited on its own size.
+            reference = (self._momentum_sum / self._momentum_count
+                         if self._momentum_count else momentum)
+            self._momentum_sum += momentum
+            self._momentum_count += 1
+            channel_1 = h_kinetic(reference)
+            dissipation_input = constraint_pressure + self.drift_penalty_rate * drift_excess
+            channel_2 = l_corr(dissipation_input)
+            net = channel_1 - channel_2
+        else:
+            raise ValueError(
+                f"unknown credit_mode {self.credit_mode!r}; "
+                f"expected one of {VALID_CREDIT_MODES}"
+            )
+
         accepted = net >= self.acceptance_threshold
         reason = (
-            f"Channel 1 (generative) H({momentum:.6g}) = {channel_1:.6g}; "
+            f"Credit mode '{self.credit_mode}': Channel 1 (generative) H = {channel_1:.6g}; "
             f"Channel 2 (dissipation) L_corr({dissipation_input:.6g}) = "
             f"{channel_2:.6g}; net action {net:.6g} "
             f"{'>=' if accepted else '<'} threshold {self.acceptance_threshold:.6g}"

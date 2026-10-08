@@ -112,6 +112,51 @@ class TestHamilgrangianIdentities(unittest.TestCase):
         self.assertFalse(dirty.accepted)
         self.assertAlmostEqual(dirty.credibility, mu(0.5), places=12)
 
+    def test_scale_free_credit_mode(self):
+        """Scale-free credit mode evaluates pressure relative to momentum."""
+        action_default = DualChannelAction()
+        self.assertEqual(action_default.credit_mode, "classic")
+        
+        action_sf = DualChannelAction(credit_mode="scale_free")
+        # For momentum=0.5, pressure=0.0: relative pressure is 0.0, net = 0.5 - L_corr(0) = 0.5
+        clean = action_sf.evaluate(momentum=0.5, constraint_pressure=0.0)
+        self.assertTrue(clean.accepted)
+        self.assertAlmostEqual(clean.net_action, 0.5, places=12)
+
+        # Small move (0.01) with proportional small pressure (0.001) -> w_rel = 0.1 -> L_corr(0.1) ~ 0.00466 -> net > 0
+        small_clean = action_sf.evaluate(momentum=0.01, constraint_pressure=0.001)
+        self.assertTrue(small_clean.accepted)
+
+        # High relative pressure -> rejected
+        dirty = action_sf.evaluate(momentum=0.01, constraint_pressure=0.05)
+        self.assertFalse(dirty.accepted)
+
+    def test_running_reference_credit_mode(self):
+        """running_reference credits the mean momentum of earlier proposals, not the current one's size."""
+        action = DualChannelAction(credit_mode="running_reference")
+        first = action.evaluate(momentum=0.4, constraint_pressure=0.0)
+        self.assertAlmostEqual(first.net_action, h_kinetic(0.4), places=12)
+        # A zero-size proposal is credited on the earlier mean (0.4), not on itself.
+        tiny = action.evaluate(momentum=0.0, constraint_pressure=0.1)
+        self.assertAlmostEqual(tiny.net_action, h_kinetic(0.4) - l_corr(0.1), places=12)
+        self.assertTrue(tiny.accepted)
+        # Under classic credit the same proposal earns nothing and is rejected.
+        self.assertFalse(DualChannelAction().evaluate(momentum=0.0, constraint_pressure=0.1).accepted)
+        # Same history and pressure, very different current sizes: identical net action.
+        a = DualChannelAction(credit_mode="running_reference")
+        b = DualChannelAction(credit_mode="running_reference")
+        a.evaluate(momentum=0.3, constraint_pressure=0.0)
+        b.evaluate(momentum=0.3, constraint_pressure=0.0)
+        small = a.evaluate(momentum=0.01, constraint_pressure=0.05)
+        large = b.evaluate(momentum=0.9, constraint_pressure=0.05)
+        self.assertEqual(small.net_action, large.net_action)
+
+    def test_invalid_credit_mode(self):
+        """Unknown credit modes are rejected."""
+        action = DualChannelAction(credit_mode="invalid_mode")
+        with self.assertRaises(ValueError):
+            action.evaluate(momentum=0.5, constraint_pressure=0.0)
+
     def test_correction_force_is_constitutive(self):
         """The correction force is exactly p_flux (identity H2)."""
         action = DualChannelAction()

@@ -66,7 +66,7 @@ from sovereign_clipping_gate import (  # type: ignore
     SovereignClippingGate,
     cosine_similarity,
 )
-from dual_channel_action import DualChannelAction, p_flux  # type: ignore
+from dual_channel_action import DEFAULT_CREDIT_MODE, VALID_CREDIT_MODES, DualChannelAction, p_flux  # type: ignore
 from anti_drift_controller import ADCCLController, drift_coordinate_capped  # type: ignore
 from drift_model import DeterministicBackend  # type: ignore
 
@@ -329,7 +329,10 @@ def _correct_toward_anchor(state: Sequence[float], anchor: Sequence[float]) -> L
 
 
 def run_trial(arm: str, seed: int, steps: int, dim: int, sigma: float,
-              sensitivity: float = SIGNAL_SENSITIVITY) -> Dict[str, Any]:
+              sensitivity: float = SIGNAL_SENSITIVITY,
+              credit_mode: str = DEFAULT_CREDIT_MODE,
+              pressure_fn: Optional[Callable[[Sequence[float], Sequence[float]], float]] = None,
+              ) -> Dict[str, Any]:
     """Run one arm for one trial and return its per-trial metrics.
 
     Arms:
@@ -349,6 +352,12 @@ def run_trial(arm: str, seed: int, steps: int, dim: int, sigma: float,
         sigma: constraint-signal noise.
         sensitivity: checker gain on the off-plane move norm; 0 makes the
             signal pure noise (the uninformative control).
+        credit_mode: dual-channel credit mode for the scoring arms (see
+            core/dual_channel_action.py); ignored by arms that do not score.
+        pressure_fn: optional external constraint signal ``(move, state) ->
+            pressure`` replacing the simulated checker (e.g. an auditor
+            panel; see run_auditor_signal.py).  The simulated signal's RNG is
+            still drawn every cycle so proposal streams stay aligned.
 
     Returns:
         Per-trial metrics (see module docstring).
@@ -362,8 +371,9 @@ def run_trial(arm: str, seed: int, steps: int, dim: int, sigma: float,
     stream = TaskProposalStream(dim, seed, goal)
     signal_rng = random.Random(f"{seed}-signal")
     gate = SovereignClippingGate(anchor, threshold=MEASURED_TAU)
-    action = DualChannelAction()
-    ctrl = ADCCLController(anchor=anchor, gate=SovereignClippingGate(anchor, threshold=MEASURED_TAU)) \
+    action = DualChannelAction(credit_mode=credit_mode)
+    ctrl = ADCCLController(anchor=anchor, action=DualChannelAction(credit_mode=credit_mode),
+                           gate=SovereignClippingGate(anchor, threshold=MEASURED_TAU)) \
         if arm == "full" else None
     state = list(anchor)
     counts = {"on": 0, "off": 0, "on_acc": 0, "off_acc": 0}
@@ -374,6 +384,8 @@ def run_trial(arm: str, seed: int, steps: int, dim: int, sigma: float,
         current = ctrl.state if ctrl is not None else state
         move, on_task = stream.propose(cycle, current)
         pressure = constraint_signal(move, sigma, signal_rng, sensitivity)
+        if pressure_fn is not None:
+            pressure = pressure_fn(move, current)
         kind = "on" if on_task else "off"
         counts[kind] += 1
 
@@ -709,6 +721,121 @@ def _print_sweep(receipt: Dict[str, Any], sweep_key: str, header: str) -> None:
             print(f"  {arm:<18} {on_str:>23} {off_str:>23} {err_str:>25}")
 
 
+def run_credit_mode_comparison(
+    trials: int = DEFAULT_TRIALS,
+    steps: int = DEFAULT_STEPS,
+    dim: int = DEFAULT_DIM,
+    seeds: Sequence[int] = ROBUSTNESS_SEEDS,
+    modes: Sequence[str] = VALID_CREDIT_MODES,
+) -> Dict[str, Any]:
+    """Compare dual-channel credit modes on the two headline conditions.
+
+    For every credit mode and base seed, runs ``gate_dual_channel`` and
+    ``full`` under the informative signal (sigma 0) and the uninformative
+    control (sigma 0.1, sensitivity 0), and reports per-arm means plus paired
+    bootstrap CIs (same seeds, same proposal streams) for:
+
+    * task error of the arm minus gate-only (negative = the arm helps);
+    * accept_off minus accept_on (positive = drift preferred: scale bias).
+
+    A mode fixes the scale bias if, under the control, accept_off - accept_on
+    is no longer positive and the arm is no worse than gate-only, while it
+    still beats gate-only under the informative signal.
+
+    Args:
+        trials: trials per condition.
+        steps: cycles per trial.
+        dim: state-space dimension.
+        seeds: base seeds.
+        modes: credit modes to compare.
+
+    Returns:
+        The comparison receipt.
+
+    Raises:
+        ValueError: on an unknown credit mode.
+    """
+    for mode in modes:
+        if mode not in VALID_CREDIT_MODES:
+            raise ValueError(f"unknown credit mode {mode!r}; expected one of {VALID_CREDIT_MODES}")
+    conditions = {"informative_sigma0": (0.0, SIGNAL_SENSITIVITY), "control_sigma01": (0.1, 0.0)}
+    out: Dict[str, Any] = {}
+    for mode in modes:
+        out[mode] = {}
+        for seed in seeds:
+            out[mode][str(seed)] = {}
+            for cond, (sigma, sens) in conditions.items():
+                gate = [run_trial("gate_only", seed + k, steps, dim, sigma, sens) for k in range(trials)]
+                cond_out: Dict[str, Any] = {}
+                for arm in ("gate_dual_channel", "full"):
+                    recs = [run_trial(arm, seed + k, steps, dim, sigma, sens, mode) for k in range(trials)]
+                    err_diff = [r["final_task_error"] - g["final_task_error"] for r, g in zip(recs, gate)]
+                    bias_diff = [r["accept_off"] - r["accept_on"] for r in recs]
+                    e = bootstrap_ci(err_diff, seed=_seed_for_metric(seed, f"{mode}-{arm}", sigma, "err", sens))
+                    b = bootstrap_ci(bias_diff, seed=_seed_for_metric(seed, f"{mode}-{arm}", sigma, "bias", sens))
+                    cond_out[arm] = {
+                        "accept_on": _mean([r["accept_on"] for r in recs]),
+                        "accept_off": _mean([r["accept_off"] for r in recs]),
+                        "final_task_error": _mean([r["final_task_error"] for r in recs]),
+                        "gate_only_task_error": _mean([g["final_task_error"] for g in gate]),
+                        "paired_task_error_minus_gate": {"mean": e[0], "ci95": [e[1], e[2]]},
+                        "paired_accept_off_minus_on": {"mean": b[0], "ci95": [b[1], b[2]]},
+                    }
+                out[mode][str(seed)][cond] = cond_out
+
+    def _all(mode: str, cond: str, arm: str, test: Callable[[Dict[str, Any]], bool]) -> bool:
+        return all(test(out[mode][str(sd)][cond][arm]) for sd in seeds)
+
+    summary: Dict[str, Any] = {}
+    for mode in modes:
+        summary[mode] = {}
+        for arm in ("gate_dual_channel", "full"):
+            helps = _all(mode, "informative_sigma0", arm,
+                         lambda m: m["paired_task_error_minus_gate"]["ci95"][1] < 0.0)
+            bias = _all(mode, "control_sigma01", arm,
+                        lambda m: m["paired_accept_off_minus_on"]["ci95"][0] > 0.0)
+            worse = _all(mode, "control_sigma01", arm,
+                         lambda m: m["paired_task_error_minus_gate"]["ci95"][0] > 0.0)
+            summary[mode][arm] = {
+                "beats_gate_informative_all_seeds": helps,
+                "scale_bias_under_control_all_seeds": bias,
+                "worse_than_gate_under_control_all_seeds": worse,
+                "fixes_scale_bias": helps and not bias and not worse,
+            }
+    return {
+        "harness": "nova-conscientia task benchmark credit-mode comparison",
+        "protocol": (
+            "Seeded deterministic simulation, no LLM calls. Paired bootstrap 95% "
+            "CIs on per-trial differences; arms share seeds and proposal streams."
+        ),
+        "parameters": {"trials": trials, "steps": steps, "dim": dim, "seeds": list(seeds),
+                       "modes": list(modes), "conditions": {k: list(v) for k, v in conditions.items()},
+                       "bootstrap_resamples": BOOTSTRAP_RESAMPLES},
+        "results": out,
+        "summary": summary,
+        "environment": {"python": platform.python_version(), "platform": platform.platform()},
+    }
+
+
+def _print_credit_modes(receipt: Dict[str, Any]) -> None:
+    """Print the credit-mode comparison for the first seed plus the cross-seed summary."""
+    seed = str(receipt["parameters"]["seeds"][0])
+    print(f"credit-mode comparison (seed {seed}; paired 95% CIs)")
+    for mode, by_seed in receipt["results"].items():
+        for cond, arms in by_seed[seed].items():
+            for arm, m in arms.items():
+                e, b = m["paired_task_error_minus_gate"], m["paired_accept_off_minus_on"]
+                print(f"  {mode:<18} {cond:<19} {arm:<18} acc_on {m['accept_on']:.3f} "
+                      f"acc_off {m['accept_off']:.3f} err {m['final_task_error']:.4f} "
+                      f"(gate {m['gate_only_task_error']:.4f}) err-gate {e['mean']:+.4f} "
+                      f"[{e['ci95'][0]:+.4f}, {e['ci95'][1]:+.4f}] off-on {b['mean']:+.3f} "
+                      f"[{b['ci95'][0]:+.3f}, {b['ci95'][1]:+.3f}]")
+    print("summary (all seeds):")
+    for mode, arms in receipt["summary"].items():
+        for arm, verdict in arms.items():
+            print(f"  {mode:<18} {arm:<18} {verdict}")
+
+
 def _print_paired(receipt: Dict[str, Any]) -> None:
     """Print the paired-difference verdicts for every robustness seed."""
     print("\n=== paired-difference verdicts (95% bootstrap CI) ===")
@@ -733,13 +860,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--steps", type=int, default=DEFAULT_STEPS)
     parser.add_argument("--dim", type=int, default=DEFAULT_DIM)
     parser.add_argument("--seed", type=int, default=BASE_SEED)
+    parser.add_argument("--credit-modes", action="store_true",
+                        help="compare dual-channel credit modes on the headline conditions")
     parser.add_argument("--multi-seed", action="store_true",
                         help="run all 3 robustness seeds")
     parser.add_argument("--json", type=str, default=None,
                         help="path to write the receipt JSON")
     args = parser.parse_args(list(argv if argv is not None else sys.argv[1:]))
     try:
-        if args.multi_seed:
+        if args.credit_modes:
+            receipt = run_credit_mode_comparison(trials=args.trials, steps=args.steps,
+                                                 dim=args.dim)
+            _print_credit_modes(receipt)
+        elif args.multi_seed:
             receipt = run_multi_seed_robustness(trials=args.trials, steps=args.steps,
                                                 dim=args.dim)
             single_seed_receipt = receipt["results_by_seed"][str(args.seed)]
