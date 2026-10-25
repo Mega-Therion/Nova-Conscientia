@@ -14,6 +14,11 @@ Three things are true, and they are easy to miss under the charter.
 2. **τ = 0.9539 is one pipeline.** It is not an externally validated constant. The historical ceiling √(θ(2−θ)) at θ = 7/10 and the derived ceiling at θ = 1/√2 are different numbers. The epistemic-status section below keeps them apart.
 3. **The charter is ahead of the code.** `INTERDEPENDENCE.md` has a gap register. What it demands and the modules do not yet do is `[O]`. The ecology language in `ARCHITECTURE.md` §2.7 is an analogy for subagent roles. The 5D substrate and entangled consensus are not implemented here.
 
+
+### Code versus prose
+
+The implementation is `core/`, `tests/`, `benchmarks/`, and `verification/`. `PHILOSOPHY.md`, `CIVIC_IMPACT.md`, `ARCHITECTURE.md`, and `RESEARCH_AGENDA.md` are essays. They are not the test suite. The suite named above is `python3 -m unittest discover -s tests`.
+
 The rest of this page is the map: runtime, ethics, the Arkansas field record, and the charter.
 
 ---
