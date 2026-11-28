@@ -1,3 +1,6 @@
+> **Track:** `TRACK_IV` | **Author:** Ryan W. Yett (`Mega-Therion`) | **ORCID:** `0009-0001-1303-7190`
+> **Epistemic Fencing:** `[P]` Proved · `[D]` Derived · `[E]` Empirical · `[O]` Open · `[X]` Falsified
+
 # Nova Conscientia (Nova C)
 ## Cybernetic Dual-Channel Oversight Architecture & Multi-Agent Swarm Laboratory
 
