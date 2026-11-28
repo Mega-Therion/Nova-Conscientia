@@ -156,12 +156,18 @@ def hard_veto(
             artifact's state (``GateDecision.verdict``); ``"REJECT"`` is a
             veto, ``"PASS"``/``"CLIP"`` are not, ``None`` means the caller
             did not gate (recorded as no gate input, not as a pass claim).
+            Any other value is not a gate result at all — a typo or an
+            unsupported verdict fails closed (veto), because an artifact
+            must not be scored on a gate outcome nobody can interpret.
 
     Returns:
         1 iff every supplied check holds, else 0.
     """
-    if gate_verdict is not None and gate_verdict == "REJECT":
-        return 0
+    if gate_verdict is not None:
+        if gate_verdict == "REJECT":
+            return 0
+        if gate_verdict not in ("PASS", "CLIP"):
+            return 0
     return 1 if (schema_valid and signature_valid and antifabrication_ok) else 0
 
 

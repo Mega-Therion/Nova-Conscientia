@@ -199,6 +199,18 @@ class TestHardVeto(unittest.TestCase):
             0,
         )
 
+    def test_unknown_gate_verdict_fails_closed(self):
+        """A verdict outside PASS/CLIP/REJECT is not a gate result: veto."""
+        for verdict in ("PAS", "reject", "UNKNOWN", "", "PASS "):
+            self.assertEqual(
+                hard_veto(
+                    schema_valid=True, signature_valid=True,
+                    antifabrication_ok=True, gate_verdict=verdict,
+                ),
+                0,
+                verdict,
+            )
+
     def test_gate_clip_does_not_veto(self):
         """A clipped (boundary-projected) state is not a veto."""
         self.assertEqual(
