@@ -21,6 +21,11 @@ This module implements the consensus layer:
   verdict.  Any exception, malformed output, or auditor absence fails the
   proposal.  Verdicts are hashed into deterministic receipts appended to a
   monotonic ledger.
+* Lineage quotas (SAMO v2.0 section 5.3, Layer 0): an engine may pin a
+  diversity cap ``lineage_cap_n`` so that no single base-model lineage holds
+  more than a ``1/N`` share of the panel — correlated single-model failures
+  must not be able to sit as their own jury.  An over-quota panel is refused
+  at construction time (fail closed), before any proposal is heard.
 
 No LLM keys or network calls are required: the deterministic builtin auditors
 are complete implementations, and the pluggable critic accepts any callable
@@ -204,10 +209,16 @@ class CriticAuditor:
     Attributes:
         critic: the callable performing the review.
         auditor_id: this auditor's stable identity.
+        lineage: the base model family / provider the wrapped critic belongs
+            to (e.g. one entry per model family in a heterogeneous swarm), or
+            None when undeclared.  Used only by the lineage quota accounting
+            (see :func:`lineage_of`): critics that declare the same lineage
+            count as one lineage no matter how many distinct seats they hold.
     """
 
     critic: Callable[[Dict[str, Any], Dict[str, Any]], Any]
     auditor_id: str = "critic-auditor"
+    lineage: Optional[str] = None
 
     def audit(self, proposal: Dict[str, Any], context: Dict[str, Any]) -> Audit:
         """Run the critic under a fail-closed output contract."""
@@ -227,6 +238,63 @@ class CriticAuditor:
                          findings=(f"critic failure: {type(exc).__name__}: {exc}",),
                          reason="critic did not produce a well-formed verdict")
         return Audit(self.auditor_id, verdict, fatal=fatal, reason=reason)
+
+
+def lineage_of(auditor: Auditor) -> str:
+    """The base-model lineage an auditor counts toward in quota accounting.
+
+    The lineage is read from the auditor's own identity fields: a declared
+    ``lineage`` attribute (see :class:`CriticAuditor`) when present and
+    non-empty, otherwise the auditor's ``auditor_id`` — an auditor that
+    declares no lineage is its own lineage of one.  The deterministic builtin
+    auditors declare none, so each counts separately: they are distinct
+    non-LLM kernels, not seats of one model family.
+    """
+    declared = getattr(auditor, "lineage", None)
+    if isinstance(declared, str) and declared.strip():
+        return declared
+    return auditor.auditor_id
+
+
+def lineage_counts(auditors: Sequence[Auditor]) -> Dict[str, int]:
+    """Count panel seats per lineage (see :func:`lineage_of`)."""
+    counts: Dict[str, int] = {}
+    for auditor in auditors:
+        lineage = lineage_of(auditor)
+        counts[lineage] = counts.get(lineage, 0) + 1
+    return counts
+
+
+def lineage_quota_violations(
+    auditors: Sequence[Auditor], cap_n: int
+) -> Tuple[str, ...]:
+    """Check a panel against the SAMO section 5.3 Layer-0 lineage cap.
+
+    The rule: no single lineage may hold more than a ``1/cap_n`` share of
+    the panel, i.e. ``count * cap_n <= len(auditors)`` for every lineage.
+
+    Args:
+        auditors: the panel to check.
+        cap_n: the N of the 1/N cap (N = 3 core, N = 5 global mesh).
+
+    Returns:
+        One human-readable violation string per over-quota lineage, in
+        lineage order; empty when the panel is within quota.
+
+    Raises:
+        ValueError: if ``cap_n`` is not a positive integer.
+    """
+    if isinstance(cap_n, bool) or not isinstance(cap_n, int) or cap_n < 1:
+        raise ValueError(f"lineage cap N must be a positive integer, got {cap_n!r}")
+    total = len(auditors)
+    violations: List[str] = []
+    for lineage, count in sorted(lineage_counts(auditors).items()):
+        if count * cap_n > total:
+            violations.append(
+                f"lineage {lineage!r} holds {count} of {total} panel seats "
+                f"(share {count}/{total}), exceeding the 1/{cap_n} cap"
+            )
+    return tuple(violations)
 
 
 @dataclass(frozen=True)
@@ -273,18 +341,23 @@ class AdversarialConsensus:
         auditors: the reviewing swarm (>= 1).
         quorum: minimum APPROVE count required for admission.
         receipts: monotonic append-only receipt log of every deliberation.
+        lineage_cap_n: optional SAMO section 5.3 Layer-0 diversity cap N: no
+            single base-model lineage may hold more than a 1/N share of the
+            panel.  None (the default) disables quota enforcement.
     """
 
     auditors: Sequence[Auditor]
     quorum: int = 2
     receipts: List[ConsensusReceipt] = field(default_factory=list)
+    lineage_cap_n: Optional[int] = None
 
     def __post_init__(self) -> None:
         """Validate the configuration; fail closed on a misconfigured engine.
 
         Raises:
             ValueError: with no auditors, a non-positive quorum, a quorum that
-                no number of auditors can satisfy, or duplicate auditor ids.
+                no number of auditors can satisfy, duplicate auditor ids, or
+                a panel that violates the configured lineage cap.
         """
         if not self.auditors:
             raise ValueError("consensus requires at least one auditor")
@@ -296,6 +369,12 @@ class AdversarialConsensus:
             raise ValueError(
                 f"quorum {self.quorum} exceeds auditor count {len(self.auditors)}"
             )
+        if self.lineage_cap_n is not None:
+            violations = lineage_quota_violations(self.auditors, self.lineage_cap_n)
+            if violations:
+                raise ValueError(
+                    "lineage quota violated: " + "; ".join(violations)
+                )
 
     def deliberate(self, proposal: Dict[str, Any]) -> ConsensusReceipt:
         """Run every auditor on ``proposal`` and decide admission, fail-closed.

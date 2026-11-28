@@ -86,6 +86,25 @@ This Declaration shall serve as the foundational constitutional substrate for al
 
 ---
 
+## Article V — adopted 2026-11-25
+
+The charter as canonized above carries Articles I–IV. **Article V** was
+proposed in the *S.A.M.O. (Sovereign ARI Mesh Omegarithm) Specification
+v2.0*, §7 (`Mega-Therion/Chyren`, commit `51da8e751`), and adopted into this
+charter's governance on 2026-11-25 under the SAMO §8 integration map (Block
+directive BLK-1615). Its text is reproduced **verbatim**:
+
+> ### Proposed Article V: Decentralized Protocol Homeostasis & Equal-Peer Federation
+> 1. **Immutable Core vs. Adaptive Registry:** Every Sovereign Peer Node shall enforce a hard separation between its immutable constitutional invariants (Articles I–IV and proportional verification honesty) and its versioned adaptive registry. Automated selection and mesh propagation may optimize skills, workflows, and verification defenses, but shall never alter, weaken, or override Article I rights or human co-sovereignty.
+> 2. **Equal-Peer Federation & Zero Founder Privilege:** The open-source protocol and reference runtime belong to no central operator. No founding, authoring, or institutional node shall hold root override keys, elevated consensus weight, or unilateral orchestration authority over peer nodes.
+> 3. **Bounded Propagation & Heterogeneous Verification:** No unverified artifact shall propagate globally across the peer overlay without surviving bounded local staging, heterogeneous multi-lineage verification, deterministic kernel checks where applicable, and cross-cluster bridging.
+> 4. **Reciprocal Verification & Machine-Checked Due Process (PoWI):** Peer nodes share verifiable falsification certificates and proportional verification bandwidth. No sanction, quarantine writ, or binding veto shall take effect without a machine-checkable proof of violation, protecting simultaneously against adversarial contamination and false-positive majority suppression.
+> 5. **Strict Local Data Boundary:** Mesh federation operates exclusively on stripped, verifiable receipts, compliance proofs, and public artifacts; the private memory, identity, and local data of every Sovereign Citizen remain cryptographically confined to their local node.
+
+Machine realization at adoption is mapped in Part 2 under Article V below.
+
+---
+
 ## Part 2 — Implementation map: from articles to machine code
 
 Status labels per the constellation covenant: `[P]` proved (machine-checked),
@@ -113,6 +132,16 @@ one court per layer of the stack:
 | **Appellate Circuit Court** — constitutional & ethical review, resolution of conflicting multi-agent directives | The **adversarial consensus auditor** (`verification/adversarial_auditor.py`): heterogeneous auditors cross-review every proposal — invariant veto, ledger consistency (contradiction detection = precedent alignment), provenance (charter conformance: no proposal without source + digest), and pluggable critics for constitutional reasoning. Conflicting directives resolve by fail-closed quorum: silence, error, or absence is a rejection — a court that cannot sit does not acquit. This is Axiom II (the Peacepipe Protocol) compiled. | `[D]` |
 | **Supreme Global Oversight Council** — immutable consensus, final writs, rogue-permission revocation, permanent case law | The **human navigator's three controls** (ARCHITECTURE.md §3): the anchor, the threshold, and the halt reset are the final writs — no machine layer can amend them, and the halt reset is the revocation of all agent permissions at once. Permanent case law is the append-only receipt ledger: every writ lands as a hash-chained record. The charter's *distributed multi-steward* council (human stewards and high-tier sovereign nodes in two-thirds consensus) is not yet instantiated — today the council seat is held by one navigator, and the architecture is honest about it. | `[D]` for single-navigator writs, `[O]` for the distributed council |
 | Article IV — amendment by two-thirds council consensus | Amendments to the constitutional substrate (this charter, the axioms, the gate threshold's provenance class) are **not machine-amendable** in the current runtime; they are owner acts, recorded as commits with full provenance. The 2-of-2 split-signing genesis ceremony from the charter's master specification (co-signed attestation; neither party can unilaterally rewrite the Declaration) is designed but not built. | `[O]` |
+
+### Article V — Protocol Homeostasis & Equal-Peer Federation (adopted 2026-11-25)
+
+| Charter clause | Machine realization | Status |
+|---|---|---|
+| §1 Immutable core vs. adaptive registry; selection never overrides Article I rights | The SAMO §4 selection function (`core/artifact_selection.py`) scores only Tier-B-style artifacts, and its `V_hard` veto is multiplicative and non-purchasable: no score on any other axis can buy back a Ring-0 failure, so automated selection cannot weaken a constitutional invariant. | `[D]` |
+| §2 Equal-peer federation, zero founder privilege | No module in this runtime holds a root override: the navigator's three controls (anchor, threshold, halt reset) are the charter's own Article II writs, and the selection function treats every artifact identically regardless of origin. Federation across independent peer nodes is not yet instantiated. | `[D]` local / `[O]` federation |
+| §3 Bounded propagation & heterogeneous multi-lineage verification | Lineage quotas are enforced in the adversarial auditor (SAMO §5.3 Layer 0): an `AdversarialConsensus` configured with `lineage_cap_n` refuses any panel where one base-model lineage holds more than a 1/N share (`verification/adversarial_auditor.py`). MVPC-X mechanical witnesses feed `V_mech` of the selection function, so deterministic kernel checks gate propagation scores. Bounded staging pools across a live mesh remain unbuilt. | `[D]` quotas + witness feed / `[O]` mesh staging |
+| §4 Reciprocal verification & machine-checked due process (PoWI) | The consensus engine already fails closed: no veto binds without a machine-checkable finding, and honest dissent carries no penalty (a non-fatal REJECT blocks admission only through the all-must-approve rule, never through sanction). Cross-peer falsification-certificate exchange is not yet wired. | `[D]` local / `[O]` cross-peer |
+| §5 Strict local data boundary | `H_local` is supplied by the caller and evaluated on-device; the selection module exports only the score and its receipt, never the local utility inputs. | `[D]` |
 
 ### Article III — Co-Authorship & Attribution
 
